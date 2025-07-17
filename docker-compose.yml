@@ -7,6 +7,8 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - suntransit-net
 
   kafka:
     image: confluentinc/cp-kafka:7.5.0
@@ -22,13 +24,109 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/9092"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - suntransit-net
 
   producer:
     build: ./producer
     container_name: suntransit-producer
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
     environment:
       KAFKA_BROKER: kafka:9092
       KAFKA_TOPIC: vehicle_positions
       GTFS_URL: https://mna.mecatran.com/utw/ws/gtfsfeed/vehicles/valleymetro?apiKey=4f22263f69671d7f49726c3011333e527368211f
+    networks:
+      - suntransit-net
+
+  spark:
+    build: ./spark-image
+    container_name: suntransit-spark
+    depends_on:
+      - kafka
+      - redis
+    volumes:
+      - ./spark-jobs:/app
+    environment:
+      - SPARK_MODE=master
+      - SPARK_MASTER_HOST=spark
+      - USER=root
+      - HADOOP_USER_NAME=spark
+    ports:
+      - "8080:8080"   # Spark UI
+    networks:
+      - suntransit-net
+
+  spark-worker:
+    build: ./spark-image
+    depends_on:
+      - spark
+      - kafka
+      - redis
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark:7077
+      - USER=spark
+      - HADOOP_USER_NAME=spark
+    networks:
+      - suntransit-net
+
+  redis:
+    image: redis/redis-stack:latest
+    container_name: suntransit-redis
+    ports:
+      - "6379:6379"   # Redis server port
+      - "8001:8001"   # RedisInsight UI port
+    environment:
+      - REDIS_ARGS=--requirepass myStrongPassword123
+      - REDISTIMESERIES_ARGS=RETENTION_POLICY=3600000  # 1 hour retention in ms
+    networks:
+      - suntransit-net
+  
+  # redisinsight:
+  #   image: redis/redisinsight:latest
+  #   container_name: redisinsight
+  #   ports:
+  #     - "5540:5540"
+  #   networks:
+  #     - suntransit-net
+  #   depends_on:
+  #     - redis
+
+  dashboard:
+    build: ./streamlit-dashboard
+    container_name: suntransit-dashboard
+    depends_on:
+      - redis
+    ports:
+      - "8501:8501"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
+      - REDIS_PASSWORD=myStrongPassword123
+    networks:
+      - suntransit-net
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    ports:
+      - "8081:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    depends_on:
+      - kafka
+      - zookeeper
+    networks:
+      - suntransit-net
+networks:
+  suntransit-net:
+    driver: bridge
