@@ -7,6 +7,11 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo ruok | nc localhost 2181 | grep imok"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     networks:
       - suntransit-net
 
@@ -24,6 +29,7 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LOG_RETENTION_MS: 7200000
     healthcheck:
       test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/9092"]
       interval: 5s
@@ -32,22 +38,37 @@ services:
     networks:
       - suntransit-net
 
-  producer:
+  producer-valley-metro:
     build: ./producer
-    container_name: suntransit-producer
+    container_name: producer-valley-metro
     depends_on:
       kafka:
         condition: service_healthy
     environment:
       KAFKA_BROKER: kafka:9092
-      KAFKA_TOPIC: vehicle_positions
+      KAFKA_TOPIC: valley_metro_positions
+      GTFS_AGENCY: valley-metro
       GTFS_URL: https://mna.mecatran.com/utw/ws/gtfsfeed/vehicles/valleymetro?apiKey=4f22263f69671d7f49726c3011333e527368211f
     networks:
       - suntransit-net
+  
+  producer-mbta:
+    build: ./producer
+    container_name: producer-mbta
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      KAFKA_BROKER: kafka:9092
+      KAFKA_TOPIC: mbta_positions
+      GTFS_AGENCY: mbta-metro
+      GTFS_URL: https://cdn.mbta.com/realtime/VehiclePositions.pb
+    networks:
+      - suntransit-net
 
-  spark:
+  spark-master:
     build: ./spark-image
-    container_name: suntransit-spark
+    container_name: spark-master
     depends_on:
       - kafka
       - redis
@@ -55,25 +76,43 @@ services:
       - ./spark-jobs:/app
     environment:
       - SPARK_MODE=master
-      - SPARK_MASTER_HOST=spark
+      - SPARK_MASTER_HOST=spark-master
       - USER=root
       - HADOOP_USER_NAME=spark
     ports:
-      - "8080:8080"   # Spark UI
+      - "8080:8080"
+      - "4040:4040"   # Spark Application UI (first app)
+      - "4041:4041"   # Spark Application UI (second app)
+      - "7078:7078"   # Spark driver port
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
     networks:
       - suntransit-net
+    
 
   spark-worker:
     build: ./spark-image
     depends_on:
-      - spark
+      - spark-master
       - kafka
       - redis
     environment:
       - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark:7077
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_CORES=1
+      - SPARK_WORKER_MEMORY=2G
       - USER=spark
       - HADOOP_USER_NAME=spark
+    # ports:
+    #   - "8081:8081"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
     networks:
       - suntransit-net
 
@@ -85,19 +124,9 @@ services:
       - "8001:8001"   # RedisInsight UI port
     environment:
       - REDIS_ARGS=--requirepass myStrongPassword123
-      - REDISTIMESERIES_ARGS=RETENTION_POLICY=3600000  # 1 hour retention in ms
+      - REDISTIMESERIES_ARGS="RETENTION_POLICY=300000"  # 5 minutes retention in ms
     networks:
       - suntransit-net
-  
-  # redisinsight:
-  #   image: redis/redisinsight:latest
-  #   container_name: redisinsight
-  #   ports:
-  #     - "5540:5540"
-  #   networks:
-  #     - suntransit-net
-  #   depends_on:
-  #     - redis
 
   dashboard:
     build: ./streamlit-dashboard
@@ -113,18 +142,35 @@ services:
       - REDIS_PASSWORD=myStrongPassword123
     networks:
       - suntransit-net
-  kafka-ui:
-    image: provectuslabs/kafka-ui:latest
-    container_name: kafka-ui
-    ports:
-      - "8081:8080"
-    environment:
-      - KAFKA_CLUSTERS_0_NAME=local
-      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
-      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+  # kafka-ui:
+  #   image: provectuslabs/kafka-ui:latest
+  #   container_name: kafka-ui
+  #   ports:
+  #     - "8181:8080"
+  #   environment:
+  #     - KAFKA_CLUSTERS_0_NAME=local
+  #     - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+  #     - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+  #   depends_on:
+  #     - kafka
+  #     - zookeeper
+  #   networks:
+  #     - suntransit-net
+
+  spark-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.spark-dev
+    container_name: spark-dev
     depends_on:
       - kafka
-      - zookeeper
+    volumes:
+      - ./notebooks:/app
+    ports:
+      - "8888:8888"  # JupyterLab
+      - "4141:4040"  # Spark UI
+    environment:
+      - SPARK_MODE=client
     networks:
       - suntransit-net
 networks:

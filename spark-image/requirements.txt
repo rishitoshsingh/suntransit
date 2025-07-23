@@ -1,1 +1,4 @@
 redis
+pymongo
+boto3
+confluent-kafka
