@@ -1,10 +1,16 @@
-# 🚌 SunTransit: Real-Time Public Transport Delay Tracker
+# 🚌 SunTransit: Real-Time Public Transport Map and Historic Delay Tracker
 
 SunTransit is a scalable, distributed system that processes GTFS real-time feeds and historical schedules to compute transit delays, publish them via Kafka, and store them in S3 for downstream analytics.
 
 Built using Apache Spark, Kafka, Redis, and AWS S3, the system is containerized using Docker and deployable on both standalone clusters and Kubernetes.
 
 ---
+
+## System 
+
+![SunTransit System Dataflow](./dataflow.png)
+
+The diagram below illustrates the end-to-end data flow in SunTransit, from GTFS real-time feed ingestion, through Spark-based delay computation, Kafka event streaming, Redis offset management, and S3-based storage for analytics.
 
 ## 🔧 Project Features
 
@@ -13,7 +19,6 @@ Built using Apache Spark, Kafka, Redis, and AWS S3, the system is containerized 
 * ✅ Redis-based stateful offset tracking for fault tolerance
 * ✅ S3-based storage for hourly, agency-wise partitioned Parquet files
 * ✅ Support for both standalone Spark cluster and Kubernetes
-* ✅ Easily configurable via `.env` files per agency
 
 ---
 
