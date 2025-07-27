@@ -7,8 +7,10 @@ from src.utils.redis_utils import (
     connect_redis,
     fetch_trail,
     get_latest_bearing,
+    get_trip_route,
     get_vehicle_ids,
 )
+from src.utils.trips_info import get_trip_df
 from streamlit_autorefresh import st_autorefresh
 
 # Setup logging
@@ -17,19 +19,38 @@ logger = logging.getLogger("streamlit-trails")
 
 # Streamlit page setup
 st.set_page_config(layout="wide")
-st_autorefresh(interval=1_000, key="refresh")
+st_autorefresh(interval=10_000, key="refresh")
 st.sidebar.title("SunTransit Dashboard")
 st.sidebar.markdown("### Creator\nRishitosh Singh")
-city = st.sidebar.selectbox("Select City", options=["Phoenix", "San Francisco", "New York"], index=0)
-st.sidebar.markdown(f"**Selected city:** {city}")
+city = st.sidebar.selectbox("Select City", options=["Phoenix", "Boston"], index=0)
+
+# Track the selected city and trip_df in session_state
+if "last_selected_city" not in st.session_state:
+    st.session_state.last_selected_city = None
+if "trips_df" not in st.session_state:
+    st.session_state.trips_df = None
+
+# Only reload DataFrame if city has changed
+if city != st.session_state.last_selected_city:
+    st.session_state.last_selected_city = city
+    st.session_state.trips_df = get_trip_df(city.lower())
+
+# Use the cached trips_df
+trips_df = st.session_state.trips_df
 
 # Connect to Redis
-r = connect_redis()
+db = {"Phoenix": 0, "Boston": 1}.get(city)
+city_coords = {
+    "Phoenix": {"latitude": 33.4484, "longitude": -112.0740},
+    "Boston": {"latitude": 42.3554, "longitude": -71.0605},
+}
+r = connect_redis(db)
 st.sidebar.success("Connected to RedisTimeSeries")
 
 # Read data from Redis and build trails
 vehicle_ids = get_vehicle_ids(r)
 trails, dot_data = [], []
+vehicles_info = []
 
 for vid in vehicle_ids:
     path = fetch_trail(r, vid)
@@ -37,20 +58,39 @@ for vid in vehicle_ids:
         continue
 
     bearing = get_latest_bearing(r, vid)
+    trip_id, route_id = get_trip_route(r, vid)
+    
+    if trips_df is None:
+        st.error("Trip data not loaded. Please refresh the page.")
+        continue
 
-    trails.append({"vehicle_id": vid, "path": path})
-    dot_data.append({
-        "position": path[0],
+    trip_info = trips_df[trips_df["trip_id"] == trip_id].iloc[0] if trip_id in trips_df["trip_id"].values else None
+    if trip_info is None:
+        continue
+
+    route_color = trip_info.get("route_color")
+    trip_headsign = trip_info.get("trip_headsign")
+    route_short_name = trip_info.get("route_short_name")
+    if route_short_name is None or trip_headsign is None:
+        continue
+
+    vehicles_info.append({
         "vehicle_id": vid,
+        "path": path,
+        "position": path[0],
         "bearing": (bearing + 180) % 360,
+        "trip_id": trip_id,
+        "route_id": route_id,
+        "route_color": route_color,
+        "trip_headsign": trip_headsign,
+        "route_short_name": route_short_name
     })
-
 # Path layer
 path_layer = pdk.Layer(
     "PathLayer",
-    [{"vehicle_id": t["vehicle_id"], "path": t["path"]} for t in trails],
+    vehicles_info,
     get_path="path",
-    get_color=[0, 128, 255],
+    get_color="route_color",
     width_scale=20,
     width_min_pixels=2,
     pickable=True,
@@ -59,9 +99,9 @@ path_layer = pdk.Layer(
 # Dot layer
 dot_layer = pdk.Layer(
     "ScatterplotLayer",
-    dot_data,
+    vehicles_info,
     get_position="position",
-    get_fill_color=[0, 128, 255],
+    get_fill_color="route_color",
     get_radius=20,
     radius_scale=3,
     radius_min_pixels=10,
@@ -71,8 +111,13 @@ dot_layer = pdk.Layer(
 )
 
 # View state
-view_state = pdk.ViewState(latitude=33.4484, longitude=-112.0740, zoom=11, pitch=0)
-
+coords = city_coords.get(city, {"latitude": 0, "longitude": 0})
+view_state = pdk.ViewState(
+    latitude=coords["latitude"],
+    longitude=coords["longitude"],
+    zoom=11,
+    pitch=0
+)
 # Custom CSS for full-screen
 st.markdown("""
 <style>
@@ -94,7 +139,9 @@ st.pydeck_chart(
     pdk.Deck(
         layers=[path_layer, dot_layer],
         initial_view_state=view_state,
-        tooltip={"text": "Vehicle {vehicle_id}"},
+        tooltip={"text": "{route_short_name}: {trip_headsign}"},
+        map_provider="carto",
+        map_style="dark",
         height=1000
     ),
     use_container_width=True

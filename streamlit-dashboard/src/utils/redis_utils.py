@@ -4,12 +4,12 @@ import redis
 
 logger = logging.getLogger("streamlit-trails")
 
-def connect_redis():
+def connect_redis(db):
     from os import getenv
     return redis.Redis(
         host=getenv("REDIS_HOST", "redis"),
         port=int(getenv("REDIS_PORT", 6379)),
-        db=int(getenv("REDIS_DB", 0)),
+        db=db,
         password=getenv("REDIS_PASSWORD", None),
         decode_responses=True
     )
@@ -17,6 +17,10 @@ def connect_redis():
 def get_vehicle_ids(r):
     keys = r.keys("ts:vehicle:*:lat")
     return [key.split(":")[2] for key in keys]
+
+def get_trip_route(r, vehicle_id):
+    return (r.get(f"vehicle:{vehicle_id}:trip_id"),
+            r.get(f"vehicle:{vehicle_id}:route_id"))
 
 def fetch_trail(r, vehicle_id, count=5):
     try:
