@@ -1,9 +1,9 @@
 # Start from the official Bitnami Spark image
-FROM bitnami/spark:latest
+FROM bitnami/spark:3.5.2
 
 # Switch to the root user to perform administrative tasks
 USER root
-
+RUN install_packages curl
 # Bitnami images run Spark as user 1001. We ensure this user exists and has a name.
 # Create a group and user 'spark' with the expected UID/GID.
 # Create directories and set ownership. This prevents permission errors.
@@ -26,3 +26,12 @@ WORKDIR /app
 # Switch to the non-root user we just configured.
 # All subsequent commands and the container's main process will run as this user.
 USER 1001
+
+RUN curl https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.262/aws-java-sdk-bundle-1.12.262.jar --output /opt/bitnami/spark/jars/aws-java-sdk-bundle-1.12.262.jar
+RUN curl https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.2/spark-sql-kafka-0-10_2.12-3.5.2.jar --output /opt/bitnami/spark/jars/spark-sql-kafka-0-10_2.12-3.5.2.jar
+RUN curl https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/3.5.2/kafka-clients-3.5.2.jar --output /opt/bitnami/spark/jars/kafka-clients-3.5.2.jar
+RUN curl https://repo1.maven.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/3.5.2/spark-token-provider-kafka-0-10_2.12-3.5.2.jar --output /opt/bitnami/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.2.jar
+RUN curl https://repo1.maven.org/maven2/org/apache/commons/commons-pool2/2.11.1/commons-pool2-2.11.1.jar --output /opt/bitnami/spark/jars/commons-pool2-2.11.1.jar
+
+# For PostgreSQL connectivity
+RUN curl https://jdbc.postgresql.org/download/postgresql-42.7.3.jar --output /opt/bitnami/spark/jars/postgresql-42.7.3.jar
