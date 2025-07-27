@@ -1,0 +1,36 @@
+FROM bitnami/spark:3.5.2
+
+USER root
+RUN install_packages curl
+
+# Install Python, pip, and dependencies
+RUN apt-get update && \
+    apt-get install -y python3-pip python3-dev curl && \
+    pip3 install --upgrade pip && \
+    pip3 install \
+    pyspark==4.0.0 \
+    pandas \
+    numpy \
+    jupyterlab \
+    boto3 \
+    pyarrow \
+    kafka-python \
+    pymongo[srv] \
+    confluent-kafka
+
+# Set environment variables
+ENV PYSPARK_PYTHON=python3
+ENV PYSPARK_DRIVER_PYTHON=jupyter
+ENV PYSPARK_DRIVER_PYTHON_OPTS="lab --ip=0.0.0.0 --allow-root --NotebookApp.token='qweasdzxc' --NotebookApp.password='spideramn45'"
+WORKDIR /app
+
+RUN curl https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.262/aws-java-sdk-bundle-1.12.262.jar --output /opt/bitnami/spark/jars/aws-java-sdk-bundle-1.12.262.jar
+RUN curl https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.2/spark-sql-kafka-0-10_2.12-3.5.2.jar --output /opt/bitnami/spark/jars/spark-sql-kafka-0-10_2.12-3.5.2.jar
+RUN curl https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/3.5.2/kafka-clients-3.5.2.jar --output /opt/bitnami/spark/jars/kafka-clients-3.5.2.jar
+RUN curl https://repo1.maven.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/3.5.2/spark-token-provider-kafka-0-10_2.12-3.5.2.jar --output /opt/bitnami/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.2.jar
+RUN curl https://repo1.maven.org/maven2/org/apache/commons/commons-pool2/2.11.1/commons-pool2-2.11.1.jar --output /opt/bitnami/spark/jars/commons-pool2-2.11.1.jar
+
+RUN curl https://jdbc.postgresql.org/download/postgresql-42.7.3.jar --output /opt/bitnami/spark/jars/postgresql-42.7.3.jar
+
+EXPOSE 8888 4040
+CMD ["jupyter", "lab", "--no-browser", "--ip=0.0.0.0", "--allow-root"]
