@@ -4,6 +4,7 @@ import os
 from math import asin, cos, radians, sin, sqrt
 
 import redis
+
 # from upstash_redis import Redis
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, from_json
@@ -16,7 +17,6 @@ REDIS_PASSWORD = os.getenv("REDIS_PASSWORD")
 REDIS_DB = int(os.getenv("REDIS_DB"))
 KAFKA_BOOTSTRAP = os.getenv("KAFKA_BROKER")
 
-
 # Setup logging
 logging.basicConfig(
     level=logging.INFO,
@@ -24,17 +24,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(f"SunTransitKafkaToRedis-{GTFS_AGENCY}")
 
-# Define schema matching your vehicle JSON structure
-# vehicle_schema = StructType() \
-#     .add("vehicle_id", StringType()) \
-#     .add("label", StringType()) \
-#     .add("lat", DoubleType()) \
-#     .add("lon", DoubleType()) \
-#     .add("bearing", DoubleType()) \
-#     .add("speed", DoubleType()) \
-#     .add("route_id", StringType()) \
-#     .add("trip_id", StringType()) \
-#     .add("timestamp", LongType())
 vehicle_schema = StructType([
     StructField("id", StringType()),  # Entity ID
     StructField("vehicle", StructType([
@@ -185,12 +174,6 @@ if __name__ == "__main__":
         .option("failOnDataLoss", "false") \
         .load()
 
-    # value_df = kafka_df.selectExpr("CAST(value AS STRING) as json_str")
-
-    # vehicles_df = value_df.select(
-    #     from_json(col("json_str"), vehicle_schema).alias("data")
-    # ).select("data.*")
-
     value_df = kafka_df.selectExpr("CAST(value AS STRING) as json_str")
 
     vehicles_df = value_df.select(
@@ -220,4 +203,4 @@ if __name__ == "__main__":
         # .option("checkpointLocation", "/app/checkpoints/kafka_to_redis") \
 
     logger.info("✅ Spark streaming query started. Awaiting termination...")
-    query.awaitTermination()
+    query.awaitTermination()    query.awaitTermination()

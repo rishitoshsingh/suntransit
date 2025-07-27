@@ -6,6 +6,12 @@ Built using Apache Spark, Kafka, Redis, and AWS S3, the system is containerized 
 
 ---
 
+## System 
+
+![SunTransit System Dataflow](./dataflow.png)
+
+The diagram below illustrates the end-to-end data flow in SunTransit, from GTFS real-time feed ingestion, through Spark-based delay computation, Kafka event streaming, Redis offset management, and S3-based storage for analytics.
+
 ## 🔧 Project Features
 
 * ✅ GTFS real-time trip delay calculator using Spark
@@ -13,7 +19,6 @@ Built using Apache Spark, Kafka, Redis, and AWS S3, the system is containerized 
 * ✅ Redis-based stateful offset tracking for fault tolerance
 * ✅ S3-based storage for hourly, agency-wise partitioned Parquet files
 * ✅ Support for both standalone Spark cluster and Kubernetes
-* ✅ Easily configurable via `.env` files per agency
 
 ---
 

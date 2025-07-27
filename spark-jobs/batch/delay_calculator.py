@@ -3,20 +3,19 @@ import os
 from offset import OffsetManager
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import (
+    abs,
     col,
     concat_ws,
     date_add,
     from_json,
     from_unixtime,
+    lit,
+    lpad,
     row_number,
     to_date,
+    to_timestamp,
     unix_timestamp,
     when,
-    lit,
-    to_timestamp,
-    lpad,
-    to_date,
-    abs,
 )
 from pyspark.sql.types import (
     DoubleType,
