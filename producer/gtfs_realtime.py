@@ -19,7 +19,29 @@ def fetch_vehicle_positions(gtfs_url):
 
     feed = gtfs_realtime_pb2.FeedMessage()
     feed.ParseFromString(response.content)
+
+    # vehicles = []
+    # for entity in feed.entity:
+    #     if entity.HasField("vehicle"):
+    #         v = entity.vehicle
+    #         vehicles.append({
+    #             "vehicle_id": v.vehicle.id,
+    #             "label": v.vehicle.label if v.vehicle.HasField("label") else None,
+    #             "lat": v.position.latitude,
+    #             "lon": v.position.longitude,
+    #             "bearing": v.position.bearing if v.position.HasField("bearing") else None,
+    #             "speed": v.position.speed if v.position.HasField("speed") else None,
+    #             "route_id": v.trip.route_id,
+    #             "trip_id": v.trip.trip_id,
+    #             "timestamp": v.timestamp,
+    #             "stop_id": v.stop_id if v.HasField("stop_id") else None,
+    #             "current_status": v.current_status if v.HasField("current_status") else None,
+    #             "current_stop_sequence": v.current_stop_sequence if v.HasField("current_stop_sequence") else None,
+    #             "odometer": v.position.odometer if v.position.HasField("odometer") else None,
+    #             "vehicle_label": v.vehicle.label if v.vehicle.HasField("label") else None,
+    #         })
     
+    # return vehicles
     vehicle_data = []
     for entity in feed.entity:
         if entity.HasField("vehicle"):

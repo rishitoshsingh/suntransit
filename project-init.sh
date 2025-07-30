@@ -25,12 +25,14 @@ echo "🚀 Submitting Spark jobs to suntransit-spark..."
 for redis_agency_env in massachusetts_bay_transportation_authority valley_metro; do
   redis_env_file="/app/env/${redis_agency_env}.env"
   common_env_file="/app/env/.env"
+  credentials_env_file="/app/env/credentials.env"
   echo "🚀 Launching producer for $redis_agency_env with envs $common_env_file and $redis_env_file"
 
   docker exec -d --user spark spark-master bash -c "
     set -a
     [ -f $common_env_file ] && source $common_env_file
     [ -f $redis_env_file ] && source $redis_env_file
+    [ -f $credentials_env_file ] && source $credentials_env_file
     set +a
 
     nohup spark-submit \

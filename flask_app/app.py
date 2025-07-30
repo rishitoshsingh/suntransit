@@ -1,55 +1,109 @@
+import os
+import logging
+from dotenv import load_dotenv
+load_dotenv("credentials.env")
+from datetime import datetime, timedelta
+
+import pandas as pd
 from flask import Flask, render_template, jsonify
-from src.utils.redis_utils import (
-    connect_redis,
-    fetch_trail,
-    get_latest_bearing,
-    get_trip_route,
-    get_vehicle_ids,
-)
-from src.utils.trips_info import get_trip_df
+from src.live_data import get_city_vehicles_live
+from src.utils.trips_info import get_city_stops
+
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
+from models import db, StopMeanDelay, RouteMeanDelay, AgencyMeanDelay
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv("POSTGRESQL_URL")
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-city_coords = {
-    "Phoenix": {"lat": 33.4484, "lon": -112.0740, "db": 0},
-    "Boston": {"lat": 42.3554, "lon": -71.0605, "db": 1}
+db.init_app(app)
+
+cities = {
+    "Phoenix": {
+        "coordinates": [33.4484, -112.0740],
+        "db": 0,
+        "agency": "ValleyMetro"
+    },
+    "Boston": {
+        "coordinates": [42.3601, -71.0589],
+        "db": 1,
+        "agency": "MassachusettsBayTransportationAuthority"
+    }
 }
 
 @app.route("/")
 def home():
-    return render_template("map.html", cities=list(city_coords.keys()))
+    return render_template("map.html", cities=cities)
 
 @app.route("/positions/<city>")
 def positions(city):
-    if city not in city_coords:
-        return jsonify([])
-
-    r = connect_redis(city_coords[city]["db"])
-    trip_df = get_trip_df(city.lower())
-    vehicle_ids = get_vehicle_ids(r)
-
-    result = []
-    for vid in vehicle_ids:
-        path = fetch_trail(r, vid)
-        if not path:
-            continue
-        bearing = get_latest_bearing(r, vid)
-        trip_id, route_id = get_trip_route(r, vid)
-        trip_info = trip_df[trip_df["trip_id"] == trip_id]
-        if trip_info.empty:
-            continue
-        info = trip_info.iloc[0]
-        result.append({
-            "vehicle_id": vid,
-            "trail": [[point[1], point[0]] for point in path],  # lat, lon pairs for Leaflet
-            "lat": path[0][1],
-            "lon": path[0][0],
-            "bearing": (bearing + 180) % 360,
-            "route_color": f"#{info['route_color']}",
-            "trip_headsign": info["trip_headsign"],
-            "route_short_name": info["route_short_name"],
-            "trip_id": info["trip_id"],
-            "route_id": info["route_id"],
-        })
-
+    result = get_city_vehicles_live(city, cities[city]["db"])
     return jsonify(result)
+
+@app.route("/stop_delays/<city>/<date>")
+def stop_delays(city, date):
+    end_date = datetime.strptime(date, "%Y-%m-%d").date()
+    start_date = end_date - timedelta(days=6)
+    stop_delays = StopMeanDelay.query.filter(
+        StopMeanDelay.agency == cities[city]["agency"],
+        StopMeanDelay.date >= start_date,
+        StopMeanDelay.date <= end_date
+    ).statement
+    df = pd.read_sql(stop_delays, db.engine)
+    logging.info(df.shape)
+    df = df.groupby(['agency','stop_id'], as_index=False).agg(
+        mean_delay=('mean_delay', 'mean'),
+        total_trips=('total_trips', 'sum')
+    )
+    logging.info(df.shape)
+    # Drop outliers based on mean_delay using IQR
+    q1 = df['mean_delay'].quantile(0.25)
+    q3 = df['mean_delay'].quantile(0.75)
+    iqr = q3 - q1
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+    df = df[(df['mean_delay'] >= lower_bound) & (df['mean_delay'] <= upper_bound)]
+    stops_df = get_city_stops(city)
+    df = pd.merge(df, stops_df, on='stop_id', how='left')
+
+
+    df['norm_delay'] = df['mean_delay'].clip(lower=-df['mean_delay'].abs().max(), upper=df['mean_delay'].abs().max()) / df['mean_delay'].abs().max()
+    df["scaled_delay"] = 0.5 + df["norm_delay"] / (2 * max(abs(df["norm_delay"].max()), abs(df["norm_delay"].min()), 1))
+    df["scaled_delay"] = df["scaled_delay"].clip(0, 1)
+    
+    top_5_stops = df.nlargest(5, 'mean_delay')
+    bottom_5_stops = df.nsmallest(5, 'mean_delay')
+
+    # Send both dataframes as JSON
+    return jsonify({
+        "delays": df.to_dict(orient='records'),
+        "top_5_stops": top_5_stops.to_dict(orient='records'),
+        "bottom_5_stops": bottom_5_stops.to_dict(orient='records')
+    })
+
+@app.route("/route_delays/<city>/<date>")
+def route_delays(city, date):
+    date = datetime.strptime(date, "%Y-%m-%d").date() \
+        if date else datetime.now().date() - timedelta(days=2)
+    route_delays = RouteMeanDelay.query.filter_by(agency=cities[city]["agency"], date=date).statement
+    df = pd.read_sql(route_delays, db.engine)
+    return jsonify(df.to_dict(orient='records'))
+
+@app.route("/agency_delays/<agency>/<date>")
+def agency_delays(agency, date):
+    date = datetime.strptime(date, "%Y-%m-%d").date() \
+        if date else datetime.now().date() - timedelta(days=2)
+    agency_delays = AgencyMeanDelay.query.filter_by(agency=agency,date=date).statement
+    df = pd.read_sql(agency_delays, db.engine)
+    return jsonify(df.to_dict(orient='records'))
+
+@app.route("/oldest_date/<agency>")
+def oldest_date(agency):
+    oldest_date = db.session.query(func.min(AgencyMeanDelay.date)) \
+        .filter_by(agency=agency).scalar()
+    return jsonify({"oldest_date": oldest_date.strftime("%Y-%m-%d") if oldest_date else None})

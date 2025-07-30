@@ -42,6 +42,7 @@ class OffsetManager:
             return "earliest"
 
     def get_all_partitions(self, topic):
+        # admin_client = AdminClient({"bootstrap.servers": "localhost:9092"})
         admin_client = AdminClient({"bootstrap.servers": self.bootstrap_servers})
         topic_metadata = admin_client.list_topics(topic=topic, timeout=10)
         if topic not in topic_metadata.topics:

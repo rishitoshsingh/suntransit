@@ -9,7 +9,8 @@ DATA_FOLDER = {
 gtfs_columns = {
     "trips.txt": ["route_id", "trip_id", "trip_headsign", "shape_id"],
     "routes.txt": ["route_id", "route_short_name", "route_color"],
-    "shapes.txt": None  # Load all columns
+    "shapes.txt": None,  # Load all columns
+    "stops.txt": ["stop_id", "stop_name", "stop_lat", "stop_lon"],
 }
 
 def get_shape_paths(shapes_df):
@@ -26,7 +27,7 @@ def hex_to_rgb(h):
 
 def get_trip_df(city):
 
-    data_path = DATA_FOLDER[city]
+    data_path = DATA_FOLDER[city.lower()]
     trips_df = pd.read_csv(os.path.join(data_path, "trips.txt"), usecols=gtfs_columns["trips.txt"])
     routes_df = pd.read_csv(os.path.join(data_path, "routes.txt"), usecols=gtfs_columns["routes.txt"])
     shapes_df = pd.read_csv(os.path.join(data_path, "shapes.txt"))
@@ -39,3 +40,11 @@ def get_trip_df(city):
     # trips_df["route_color"] = trips_df["route_color"].apply(hex_to_rgb)
 
     return pd.merge(trips_df, shapes_df, on='shape_id', how='left').fillna("")
+
+def get_city_stops(city):
+    data_path = DATA_FOLDER[city.lower()]
+    stops_df = pd.read_csv(os.path.join(data_path, "stops.txt"), usecols=gtfs_columns["stops.txt"])
+    stops_df["stop_id"] = stops_df["stop_id"].astype(str)
+    stops_df["stop_lat"] = stops_df["stop_lat"].astype(float)
+    stops_df["stop_lon"] = stops_df["stop_lon"].astype(float)
+    return stops_df

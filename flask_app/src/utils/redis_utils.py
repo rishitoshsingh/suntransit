@@ -7,10 +7,10 @@ logger = logging.getLogger("streamlit-trails")
 def connect_redis(db):
     from os import getenv
     return redis.Redis(
-        host=getenv("REDIS_HOST", "redis"),
+        host=getenv("REDIS_HOST"),
         port=int(getenv("REDIS_PORT", 6379)),
         db=db,
-        password=getenv("REDIS_PASSWORD", None),
+        password=getenv("REDIS_PASSWORD"),
         decode_responses=True
     )
 
@@ -34,7 +34,7 @@ def fetch_trail(r, vehicle_id, count=5):
         if len(lat_series) != len(lon_series):
             return []
 
-        return [[float(lon[1]), float(lat[1])] for lat, lon in zip(lat_series, lon_series)]
+        return [[float(lon[1]), float(lat[1]), int(lat[0])] for lat, lon in zip(lat_series, lon_series)]
     except Exception as e:
         logger.warning(f"Vehicle {vehicle_id} error: {e}")
         return []
