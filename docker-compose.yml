@@ -11,7 +11,7 @@ services:
       test: ["CMD", "bash", "-c", "echo ruok | nc localhost 2181 | grep imok"]
       interval: 5s
       timeout: 5s
-      retries: 10
+      retries: 50
     networks:
       - suntransit-net
 
@@ -34,7 +34,7 @@ services:
       test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/9092"]
       interval: 5s
       timeout: 5s
-      retries: 10
+      retries: 50
     networks:
       - suntransit-net
 
@@ -71,7 +71,7 @@ services:
     container_name: spark-master
     depends_on:
       - kafka
-    # - redis
+      - redis
     volumes:
       - ./spark-jobs:/app
     environment:
@@ -98,7 +98,7 @@ services:
     depends_on:
       - spark-master
       - kafka
-    # - redis
+      - redis
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
@@ -146,8 +146,10 @@ services:
     build: ./flask_app
     ports:
       - "80:80"
-    # depends_on:
-    # - redis
+    volumes:
+      - ./flask_app:/app
+    depends_on:
+    - redis
     environment:
       - TIMEZONE=America/Phoenix
     networks:

@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 from flask import Flask, render_template, jsonify
 from src.live_data import get_city_vehicles_live
-from src.utils.trips_info import get_city_stops
+from src.utils.trips_info import get_city_stops, get_trip_df
 
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import func
@@ -55,19 +55,15 @@ def stop_delays(city, date):
         StopMeanDelay.date <= end_date
     ).statement
     df = pd.read_sql(stop_delays, db.engine)
-    logging.info(df.shape)
     df = df.groupby(['agency','stop_id'], as_index=False).agg(
         mean_delay=('mean_delay', 'mean'),
         total_trips=('total_trips', 'sum')
     )
-    logging.info(df.shape)
     # Drop outliers based on mean_delay using IQR
-    q1 = df['mean_delay'].quantile(0.25)
-    q3 = df['mean_delay'].quantile(0.75)
-    iqr = q3 - q1
-    lower_bound = q1 - 1.5 * iqr
-    upper_bound = q3 + 1.5 * iqr
-    df = df[(df['mean_delay'] >= lower_bound) & (df['mean_delay'] <= upper_bound)]
+    logging.info(f"Initial stop delays shape: {df.shape}")
+    df = remove_outliers(df, 'mean_delay')
+    logging.info(f"Filtered stop delays shape: {df.shape}")
+
     stops_df = get_city_stops(city)
     df = pd.merge(df, stops_df, on='stop_id', how='left')
 
@@ -88,18 +84,46 @@ def stop_delays(city, date):
 
 @app.route("/route_delays/<city>/<date>")
 def route_delays(city, date):
-    date = datetime.strptime(date, "%Y-%m-%d").date() \
-        if date else datetime.now().date() - timedelta(days=2)
-    route_delays = RouteMeanDelay.query.filter_by(agency=cities[city]["agency"], date=date).statement
+    end_date = datetime.strptime(date, "%Y-%m-%d").date()
+    start_date = end_date - timedelta(days=6)
+    route_delays = RouteMeanDelay.query.filter(
+        RouteMeanDelay.agency == cities[city]["agency"],
+        RouteMeanDelay.date >= start_date,
+        RouteMeanDelay.date <= end_date
+    ).statement
     df = pd.read_sql(route_delays, db.engine)
-    return jsonify(df.to_dict(orient='records'))
+    df = df.groupby(['agency','route_id'], as_index=False).agg(
+        mean_delay=('mean_delay', 'mean'),
+        total_trips=('total_trips', 'sum')
+    )
+
+    trip_df = get_trip_df(city)
+    trip_df.drop_duplicates(subset=['route_id'], inplace=True)
+    df = pd.merge(df, trip_df, on='route_id', how='left')
+    df["route_color"] = df["route_color"].apply(lambda x: f"#{x}")
+
+    top_5_routes = df.nlargest(5, 'mean_delay')
+    bottom_5_routes = df.nsmallest(5, 'mean_delay')
+
+    return jsonify({
+        "top_5_routes": top_5_routes.to_dict(orient='records'),
+        "bottom_5_routes": bottom_5_routes.to_dict(orient='records')
+    })
 
 @app.route("/agency_delays/<agency>/<date>")
 def agency_delays(agency, date):
-    date = datetime.strptime(date, "%Y-%m-%d").date() \
-        if date else datetime.now().date() - timedelta(days=2)
-    agency_delays = AgencyMeanDelay.query.filter_by(agency=agency,date=date).statement
-    df = pd.read_sql(agency_delays, db.engine)
+
+    end_date = datetime.strptime(date, "%Y-%m-%d").date()
+    start_date = end_date - timedelta(days=6)
+    agency_delays = AgencyMeanDelay.query.filter(
+        AgencyMeanDelay.agency == agency,
+        AgencyMeanDelay.date >= start_date,
+        AgencyMeanDelay.date <= end_date
+    ).statement
+    df = pd.read_sql(agency_delays, db.engine) \
+        .sort_values(by='date', ascending=False)
+    df["date"] = pd.to_datetime(df["date"]).dt.strftime("%d %b")
+
     return jsonify(df.to_dict(orient='records'))
 
 @app.route("/oldest_date/<agency>")
@@ -107,3 +131,12 @@ def oldest_date(agency):
     oldest_date = db.session.query(func.min(AgencyMeanDelay.date)) \
         .filter_by(agency=agency).scalar()
     return jsonify({"oldest_date": oldest_date.strftime("%Y-%m-%d") if oldest_date else None})
+
+
+def remove_outliers(df, column):
+    q1 = df[column].quantile(0.25)
+    q3 = df[column].quantile(0.75)
+    iqr = q3 - q1
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+    return df[(df[column] >= lower_bound) & (df[column] <= upper_bound)]

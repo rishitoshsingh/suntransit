@@ -43,7 +43,5 @@ def get_city_vehicles_live(city, db):
             "trip_id": info["trip_id"],
             "route_id": info["route_id"],
         })
-    print(f"Using timezone: {TIMEZONE}")
-
     
     return result

@@ -45,7 +45,7 @@ for redis_agency_env in massachusetts_bay_transportation_authority valley_metro;
 /opt/bitnami/spark/jars/kafka-clients-3.5.2.jar,\
 /opt/bitnami/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.2.jar,\
 /opt/bitnami/spark/jars/commons-pool2-2.11.1.jar \
-      /app/push_redis.py >> /tmp/REDIS-${redis_agency_env}.log
+      /app/push_redis.py
   "
 done
 

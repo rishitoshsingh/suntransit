@@ -8,6 +8,7 @@ function clear_map() {
             }
         });
         mapLayers = [];
+        markers = {};
     }
     // Remove live-status-map-div if present
     const statusDiv = document.getElementById("live-status-map-div");

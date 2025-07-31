@@ -30,9 +30,9 @@ function updateHeatmap(city) {
                     maxZoom: 13,
                     gradient: {
                         0.0: '#00ff00',
-                        0.25: '#aaff00',
+                        0.1: '#aaff00',
                         0.5: '#ffff00',
-                        0.75: '#ff7f00',
+                        0.9: '#ff7f00',
                         1.0: '#ff0000'
                     }
                 }
@@ -57,7 +57,7 @@ function updateHeatmap(city) {
                     [element.stop_lat, element.stop_lon], { icon: red_stop_icon }
                 ).addTo(map).bindPopup(
                     `<b>${element.stop_name}</b><br>
-                    Mean Delay: ${element.mean_delay.toFixed(2)} min`
+                    Mean Delay: ${element.mean_delay.toFixed(2)} seconds`
                 )
                 mapLayers.push(stop_layer);
             });
@@ -66,7 +66,7 @@ function updateHeatmap(city) {
                     [element.stop_lat, element.stop_lon], { icon: green_stop_icon }
                 ).addTo(map).bindPopup(
                     `<b>${element.stop_name}</b><br>
-                    Mean Delay: ${element.mean_delay.toFixed(2)} min`
+                    Mean Delay: ${element.mean_delay.toFixed(2)} seconds`
                 )
                 mapLayers.push(stop_layer);
             });
