@@ -28,6 +28,16 @@ Due to cost constraints, SunTransit is currently online only for fetching data f
    This is also a batch job that is configured to run in the morning at 2AM, to process the previous day's data (T-1). It reads the last day's data from S3, and finds the mean delay across the trips for each stop and route, then for the whole agency.
 
 ---
+## Screenshots
+
+1. Live Tracking  
+  ![Live Map Demo](docs/livemap.gif)
+
+2. Stops Delay Heatmap
+  ![Stops Delay Heatmap](docs/heatmap.png)
+
+
+---
 
 ## Project Setup
 
