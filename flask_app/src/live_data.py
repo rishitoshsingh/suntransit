@@ -15,7 +15,7 @@ tz = pytz.timezone(TIMEZONE)
 
 def get_city_vehicles_live(city, db):
     r = connect_redis(db)
-    trip_df = get_trip_df(city.lower())
+    trip_df = get_trip_df(city.lower()).fillna("")
     vehicle_ids = get_vehicle_ids(r)
 
     result = []
@@ -39,7 +39,7 @@ def get_city_vehicles_live(city, db):
             "bearing": (bearing + 180) % 360,
             "route_color": f"#{info['route_color']}",
             "trip_headsign": info["trip_headsign"],
-            "route_short_name": info["route_short_name"],
+            "route_short_name": info["route_short_name"] if info["route_short_name"] else "",
             "trip_id": info["trip_id"],
             "route_id": info["route_id"],
         })

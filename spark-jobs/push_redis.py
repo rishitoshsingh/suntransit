@@ -92,7 +92,7 @@ def should_save_to_redis(row, metrics, redis_client):
             if not redis_client.exists(key):
                 redis_client.execute_command(
                     "TS.CREATE", key,
-                    "RETENTION", 120000,
+                    "RETENTION", 300000,
                     "LABELS", "vehicle_id", row.vehicle_id, "metric", metric
                 )
                 redis_client.expire(key, 300)

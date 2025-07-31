@@ -117,14 +117,14 @@ services:
       - suntransit-net
 
   redis:
-    image: redis/redis-stack-server:latest
+    image: redis/redis-stack:latest
     container_name: suntransit-redis
     ports:
       - "6379:6379"   # Redis server port
-    # - "8001:8001"   # RedisInsight UI port
+      - "8001:8001"   # RedisInsight UI port
     environment:
       - REDIS_ARGS=--requirepass myStrongPassword123
-      - REDISTIMESERIES_ARGS="RETENTION_POLICY=120000"  # 2 minutes retention in ms
+      - REDISTIMESERIES_ARGS="RETENTION_POLICY=300000"  # 2 minutes retention in ms
     networks:
       - suntransit-net
 
