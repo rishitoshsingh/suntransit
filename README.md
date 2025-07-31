@@ -1,165 +1,106 @@
-# 🚌 SunTransit: Real-Time Public Transport Delay Tracker
+# 🚌 SunTransit
 
-SunTransit is a scalable, distributed system that processes GTFS real-time feeds and historical schedules to compute transit delays, publish them via Kafka, and store them in S3 for downstream analytics.
+SunTransit continuously fetches live vehicle positions from multiple transit agencies, calculates delays for each stop, and stores this data for analysis. The system powers a dashboard that lets users track real-time vehicle locations and evaluate agency performance, similar to how FlightRadar24 visualizes flights. Designed for fault tolerance, scalability, and cloud agnosticism, SunTransit can be deployed seamlessly across any cloud platform.
 
-Built using Apache Spark, Kafka, Redis, and AWS S3, the system is containerized using Docker and deployable on both standalone clusters and Kubernetes.
+Due to cost constraints, SunTransit is currently online only for fetching data from two transit agencies: Valley Metro and Massachusetts Bay Transportation Authority, as it is deployed locally to save on cloud costs.
 
----
 
-## 🔧 Project Features
+## System Walkthrough
 
-* ✅ GTFS real-time trip delay calculator using Spark
-* ✅ Kafka producer to push delay events to a topic
-* ✅ Redis-based stateful offset tracking for fault tolerance
-* ✅ S3-based storage for hourly, agency-wise partitioned Parquet files
-* ✅ Support for both standalone Spark cluster and Kubernetes
-* ✅ Easily configurable via `.env` files per agency
+![SunTransit Banner](docs/dataflow.png)
 
----
+### Major Components
+1. **Kafka**: Kafka is being used as a message broker; there are n topics for n transit agencies. Each topic is dedicated to that agency's vehicle positions.  
+2. **Spark**: Spark handles all major data processing tasks due to its scalability, distributed computing capabilities, and support for large-scale batch analytics. It processes GTFS real-time feeds from Kafka Topics and schedules to compute delays efficiently. Primarily, it is used for three jobs (1 streaming, and 2 batch), discussed later.
+3. **Amazon S3**: This is being used to store the delay of each vehicle for the stop it stopped at. Data is saved in parquet format partitioned by agency, and date.
+4. **Redis**: This is used just to store the live position for each vehicle of a transit agency. The positions have a TTL of 2 minutes. This is only used by the dashboard to visualize all the vehicles on the map.
+5. **PostgreSQL**: This database is used to store the average delay for all the stops for each route, an agency. It has 3 tables: stops_mean_delay, route_mean_delay, agency_mean_delay.
+6. **MongoDB**: This is just used to store the offset for batch jobs so that the next job starts from the next available message in Kafka topic
 
-## 📁 Project Structure
-
-```
-.
-├── batch/                       # Spark batch jobs
-│   ├── delay_calculator.py     # Main batch job
-│   └── offset.py               # Redis-based offset tracking
-├── env/                        # Per-agency and shared .env files
-│   ├── valley_metro.env
-│   └── .env
-├── spark-image/                # Docker image for Spark + dependencies
-│   ├── Dockerfile
-│   └── requirements.txt
-├── docker-compose.yml
-└── README.md
-```
+### Jobs and files
+1. `producer/producer.py`  
+   This simply fetches the GTFS RT Feeds from a transit agency and pushes it to the respective Kafka topic.
+2. `spark-jobs/push_redis.py` (Job 1)
+   This is a Spark streaming job which takes vehicle positions from the Kafka topic, discards repeated messages, and saves the latest vehicle position in Redis time series with a retention of 2 minutes.
+3. `spark-jobs/batch/delay_calculator.py` (Job 2)
+   This is a Spark batch job that is configured to run every hour to process the last hour's messages from the Kafka topic. It calculates the delay of a vehicle to reach the scheduled stop, and saves the data to S3 in Parquet format.
+4. `spark-jobs/analyze_daily_records.py`  (Job 3)
+   This is also a batch job that is configured to run in the morning at 2AM, to process the previous day's data (T-1). It reads the last day's data from S3, and finds the mean delay across the trips for each stop and route, then for the whole agency.
 
 ---
 
-## 🚀 Getting Started
+## Project Setup
 
-### 1️⃣ Build Spark Image
+### Provisioning Cloud Resources
 
-```bash
-docker build -t suntransit-spark:latest ./spark-image
+Before running SunTransit, provision the following cloud resources (you can use your preferred providers; examples are given below):
+
+1. **S3 Bucket**  
+  Used for storing Parquet files with delay data.  
+  _Example: [Amazon S3](https://aws.amazon.com/s3/)_
+
+2. **MongoDB Database**  
+  Used for storing batch job offsets.  
+  _Example: [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database)_
+
+3. **PostgreSQL Database**  
+  Used for storing aggregated delay metrics.  
+  _Example: [Neon.tech](https://neon.tech/)_
+
+Make sure to note the connection details for each resource, as you'll need them when creating your `credentials.env` file.
+
+### Creating `credentials.env`
+
+1. After provisioning your cloud resources, create a `credentials.env` file with the following values:
+
+```env
+AWS_ACCESS_KEY_ID=<your-aws-access-key-id>
+AWS_SECRET_ACCESS_KEY=<your-aws-secret-access-key>
+
+REDIS_HOST=redis
+REDIS_PASSWORD=myPassword123
+
+MONGODB_URL="mongodb+srv://<username>:<password>@<cluster-url>/<dbname>"
+POSTGRESQL_URL="jdbc:postgresql://<host>:<port>/<dbname>"
 ```
 
-### 2️⃣ Launch Docker Compose (Standalone Spark)
+2. Place this `credentials.env` file in both of these locations:
+  - `spark-jobs/env/credentials.env`
+  - `flask_app/credentials.env`
 
-```bash
-docker-compose up -d
-```
+3. Update `S3_BUCKET` in `spark-jobs/env/.env` with your bucket name.
 
 ---
 
-## 🧪 Run Spark Job
+### Starting the Services
 
-```bash
-for agency in valley_metro; do
-  docker exec --user spark suntransit-spark bash -c "
-    set -a
-    source /app/env/.env
-    source /app/env/${agency}.env
-    set +a
+1. **Start all services with Docker Compose:**
+  ```bash
+  docker compose up -d --scale spark-worker=3
+  ```
 
-    spark-submit \
-      --master spark://spark-master:7077 \
-      --conf spark.sql.session.timeZone=America/Phoenix \
-      --conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem \
-      --conf spark.hadoop.fs.s3a.path.style.access=true \
-      --conf spark.hadoop.fs.s3a.access.key=\$AWS_ACCESS_KEY_ID \
-      --conf spark.hadoop.fs.s3a.secret.key=\$AWS_SECRET_ACCESS_KEY \
-      --conf spark.hadoop.fs.s3a.endpoint=s3.\$AWS_REGION.amazonaws.com \
-      --conf spark.hadoop.fs.s3a.aws.credentials.provider=org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider \
-      --py-files /app/batch/offset.py \
-      /app/batch/delay_calculator.py >> /tmp/\${agency}.log 2>&1
-  "
-done
+2. **Initialize Kafka topics and start the producer (Job 1):**
+  ```bash
+  bash project-init.sh
+  ```
+
+3. **Schedule batch and analysis jobs:**
+  - Set up a cron job to run `batch_job.sh` every hour.
+  - Set up a cron job to run `analysis_job.sh` daily at 2 AM.
+
+Example cron entries:
+```cron
+0 * * * * /path/to/batch_job.sh
+0 2 * * * /path/to/analysis_job.sh
 ```
 
----
 
 ## ☁️ Deploy on Kubernetes (Optional)
 
-1. Push Docker image to registry:
+Currently working on
 
-```bash
-docker tag suntransit-spark your-dockerhub-username/suntransit-spark:latest
-docker push your-dockerhub-username/suntransit-spark:latest
-```
-
-2. Apply Spark Operator:
-
-```bash
-helm repo add spark-operator https://googlecloudplatform.github.io/spark-on-k8s-operator
-helm install spark-operator spark-operator/spark-operator --namespace spark-operator --create-namespace
-```
-
-3. Submit job via `SparkApplication` CRD.
 
 ---
-
-## ⚙️ Environment Variables
-
-Each agency gets its own `.env` file inside `/app/env/`.
-
-### Sample `.env` for `valley_metro.env`
-
-```env
-S3_BUCKET=s3a://suntransit/valley_metro
-KAFKA_TOPIC=valley_metro_delay
-KAFKA_BROKER=kafka:9092
-GTFS_AGENCY=ValleyMetro
-MONGODB_URL=mongodb://mongo:27017
-MONGODB_DB=suntransit
-MONGODB_COLLECTION=valley_metro_trips
-AWS_ACCESS_KEY_ID=your-access-key
-AWS_SECRET_ACCESS_KEY=your-secret-key
-AWS_REGION=us-west-2
-TIMEZONE=America/Phoenix
-```
-
----
-
-## 🚩 Output
-
-Delays are written to S3 as hourly-partitioned Parquet files:
-
-```
-s3a://suntransit/valley_metro/
-  └── agency=ValleyMetro/
-      └── day=2025-07-22/
-          └── hour=22-00/
-              └── part-*.parquet
-```
-
----
-
-## 📊 Future Improvements
-
-* [ ] Add job scheduler (via Airflow or K8s CronJob)
-* [ ] Support for PostgreSQL or Delta Lake
-* [ ] Monitoring and metrics with Prometheus + Grafana
-* [ ] Use AWS IAM roles for authentication instead of access keys
-
----
-
-## 🧐 Tech Stack
-
-| Tech         | Purpose                     |
-| ------------ | --------------------------- |
-| Apache Spark | Batch processing            |
-| Kafka        | Delay event messaging       |
-| Redis        | Offset checkpointing        |
-| S3 (S3A)     | Partitioned Parquet storage |
-| Docker       | Containerization            |
-| Kubernetes   | Orchestration (optional)    |
-
----
-
-## 👨‍💼 Author
 
 Built with ❤️ by [@rishitoshsingh](https://github.com/rishitoshsingh)
-~Written by ChatGPT
-
 ---
