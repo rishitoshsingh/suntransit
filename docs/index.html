@@ -12,6 +12,7 @@
         body {
             margin: 0;
             padding: 0;
+            margin-bottom: 5vh;
         }
 
         body {
@@ -19,27 +20,26 @@
             background-color: #fdfdfd;
             color: #242424;
             line-height: 1.7;
-            max-width: 680px;
-            margin: 0 auto;
-            padding: 2rem 1rem 4rem;
         }
 
         .banner {
             width: 100vw;
-            height: 320px;
-            /* Increased height */
+            height: 500px;
             background-image: url('banner.jpg');
-            /* Replace with actual banner path */
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
             margin: 0;
             position: relative;
-            left: 50%;
-            right: 50%;
-            margin-left: -50vw;
-            margin-right: -50vw;
+            margin: 0 calc(50% - 50vw);
+            /* This recenters the full-width banner */
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 1rem;
         }
 
         h1,
@@ -98,7 +98,11 @@
 
         .blog-image {
             width: 90%;
+            max-width: 600px;
+            margin: 2rem auto;
             display: block;
+            border-radius: 8px;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
         }
 
         .caption {
@@ -168,74 +172,150 @@
         .github-btn:hover {
             text-decoration: none;
         }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(to right, #0077b6, #00b4d8);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            z-index: 100;
+            padding: 0.7rem 1rem;
+            color: white;
+        }
+
+        .navbar-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-logo:hover {
+            animation: wiggle 0.5s ease-in-out;
+        }
+
+        .navbar-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="banner" role="img" aria-label="Banner image"></div>
+    <div class="container-fluid">
 
-    <h1>SunTransit</h1>
-
-    <p>
-        <strong>SunTransit</strong> is a project that helps you see where public transit vehicles are in real time, and
-        how well they are running on schedule. It fetches live bus and train locations from different agencies, checks
-        if they are delayed at each stop, and stores this information for later analysis.
-    </p>
-    <p>
-        With SunTransit, you can view a dashboard that shows all vehicles moving on a map, similar to how flight
-        tracking websites work for airplanes. This makes it easy to track your bus or train, and also see how reliable a
-        transit agency is over time.
-    </p>
-    <p>
-        <strong>Currently, SunTransit tracks:</strong>
-    <ul>
-        <li>Valley Metro (Phoenix, AZ)</li>
-        <li>Massachusetts Bay Transportation Authority (Boston, MA)</li>
-    </ul>
-    <span style="color:#888;font-size:0.95em;">(More agencies can be added in the future as resources allow.)</span>
-    </p>
-    <img src="dataflow.png" alt="SunTransit Data Flow" class="blog-image" />
-    <div class="caption">How SunTransit collects and processes transit data</div>
-    <h2>What can SunTransit do?</h2>
-    <ul>
-        <li>Show live locations of buses and trains on a map</li>
-        <li>Tell you if a vehicle is running late or on time at each stop</li>
-        <li>Help agencies and riders understand overall transit performance</li>
-        <li>Store historical data for deeper analysis</li>
-    </ul>
-    <p>
-        SunTransit is designed to be reliable and easy to deploy on any cloud platform, but is currently running locally
-        to save on costs.
-    </p>
-
-    <div class="text-center mt-5">
-        <a href="https://github.com/rishitoshsingh/suntransit" target="_blank"
-            class="btn btn-glass d-inline-flex align-items-center gap-2 px-4 py-2 github-btn">
-            <i class="bi bi-github fs-5"></i>
-            <span class="align-middle">View on GitHub</span>
-        </a>
-    </div>
-
-    <div class="author-box">
-        <img src="https://media.licdn.com/dms/image/v2/D5603AQH5ldf1BCFksg/profile-displayphoto-shrink_400_400/B56ZTiRfUBHEAg-/0/1738963023384?e=1756339200&v=beta&t=65tJVJcAJx8M1ObSG8vCzLlAIzyu8QjZ6VH0sw0_PME"
-            alt="Author" class="author-image" />
-        <div class="author-details">
-            <h3>Rishitosh Singh</h3>
-            <p>A MLE, with experience in Data Engineering, building models, and deploying them.</p>
-            <div class="socials">
-                <a href="https://github.com/rishitoshsingh" class="social-btn" target="_blank" aria-label="GitHub">
-                    <i class="bi bi-github"></i>
-                </a>
-                <a href="https://linkedin.com/in/rishitoshsingh" class="social-btn" target="_blank"
-                    aria-label="LinkedIn">
-                    <i class="bi bi-linkedin"></i>
-                </a>
-                <a href="mailto:rishitoshs@gmail.com" class="social-btn" aria-label="Email">
-                    <i class="bi bi-envelope-fill"></i>
+        <nav class="navbar navbar-dark sticky-top">
+            <div class="navbar-content">
+                <a href="https://rishitoshsingh.github.io/"
+                    style="display: flex; align-items: center; gap: 1rem; text-decoration: none;">
+                    <img src="https://0.gravatar.com/avatar/d391fa37f93e8cf1193cba1c40e15fee950e021f4005e52c531f80ba774cf6e8?size=64&d=initials"
+                        alt="Logo" class="navbar-logo" />
+                    <span class="navbar-title">Rishitosh Singh</span>
                 </a>
             </div>
+        </nav>
+        <div class="container">
+
+            <div class="banner" role="img" aria-label="Banner image"></div>
+
+            <h1>SunTransit: Real-time Public Transit Tracking with Performance Dashboard</h1>
+
+            <p>
+                <strong>SunTransit</strong> is a project that helps you see where public transit vehicles are in real
+                time, and how well they are running on schedule. It fetches live bus and train locations from different
+                agencies, checks if they are delayed at each stop, and stores this information for later analysis.
+            </p>
+            <p>
+                With SunTransit, you can view a dashboard that shows all vehicles moving on a map, similar to how flight
+                tracking websites work for airplanes. This makes it easy to track your bus or train, and also see how
+                reliable a transit agency is over time.
+            </p>
+            <p>
+                In addition to real-time tracking, SunTransit continuously saves detailed historical data for every trip
+                and stop. If you're an urban planner, researcher, or developer and want to use this dataset for your own
+                analysis or project, feel free to reach out — I’m happy to share access. Just credit me in your work!
+            </p>
+            <p>
+                <strong>Currently, SunTransit tracks:</strong>
+            <ul>
+                <li>Valley Metro (Phoenix, AZ)</li>
+                <li>Massachusetts Bay Transportation Authority (Boston, MA)</li>
+            </ul>
+            <span style="color:#888;font-size:0.95em;">(More agencies can be added in the future as resources
+                allow.)</span>
+            </p>
+            <img src="dataflow.png" alt="SunTransit Data Flow" style="max-width: 100%;" />
+            <div class="caption">How SunTransit collects and processes transit data</div>
+            <h2>What can SunTransit do?</h2>
+            <ul>
+                <li>Show live locations of buses and trains on a map</li>
+                <li>Tell you if a vehicle is running late or on time at each stop</li>
+                <li>Help agencies and riders understand overall transit performance</li>
+                <li>Store historical data for deeper analysis</li>
+            </ul>
+            <p>
+                SunTransit is designed to be reliable and easy to deploy on any cloud platform, but is currently running
+                locally
+                to save on costs.
+            </p>
+            <h2>SunTransit Has Two Main Products</h2>
+            <p>
+                <strong>1. The Data Product:</strong> A complete record of every transit trip — capturing when each
+                vehicle actually arrived at each stop compared to its scheduled time. This data is useful for analyzing
+                delay patterns, transit reliability, and overall agency performance.
+            </p>
+            <p>
+                <strong>2. The Dashboard:</strong> A live web interface that visualizes this data alongside real-time
+                bus and train locations. It helps users and agencies monitor transit performance at a glance.
+            </p>
+            <p>
+                <em>Want to use this dataset for your own project?</em> Just contact me — I'm happy to give you access.
+                All I ask is that you give me a credit in your project or publication.
+            </p>
+            <div class="text-center mt-5">
+                <a href="https://github.com/rishitoshsingh/suntransit" target="_blank"
+                    class="btn btn-glass d-inline-flex align-items-center gap-2 px-4 py-2 github-btn">
+                    <i class="bi bi-github fs-5"></i>
+                    <span class="align-middle">View on GitHub</span>
+                </a>
+            </div>
+
+            <div class="author-box">
+                <img src="https://media.licdn.com/dms/image/v2/D5603AQH5ldf1BCFksg/profile-displayphoto-shrink_400_400/B56ZTiRfUBHEAg-/0/1738963023384?e=1756339200&v=beta&t=65tJVJcAJx8M1ObSG8vCzLlAIzyu8QjZ6VH0sw0_PME"
+                    alt="Author" class="author-image" />
+                <div class="author-details">
+                    <h3>Rishitosh Singh</h3>
+                    <p>A MLE, with experience in Data Engineering, building models, and deploying them.</p>
+                    <div class="socials">
+                        <a href="https://github.com/rishitoshsingh" class="social-btn" target="_blank"
+                            aria-label="GitHub">
+                            <i class="bi bi-github"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/rishitoshsingh" class="social-btn" target="_blank"
+                            aria-label="LinkedIn">
+                            <i class="bi bi-linkedin"></i>
+                        </a>
+                        <a href="mailto:rishitoshs@gmail.com" class="social-btn" aria-label="Email">
+                            <i class="bi bi-envelope-fill"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
+
     </div>
 
 </body>
