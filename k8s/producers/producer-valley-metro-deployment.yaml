@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer-valley-metro
+  namespace: suntransit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producer-valley-metro
+  template:
+    metadata:
+      labels:
+        app: producer-valley-metro
+    spec:
+      enableServiceLinks: false
+      containers:
+        - name: producer
+          image: suntransit/producer:latest
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: common-env
+            - configMapRef:
+                name: valley-metro-env
+          env:
+            - name: GTFS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: gtfs-keys
+                  key: GTFS_URL
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"

@@ -1,0 +1,71 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: batch-jobs-valley-metro
+  namespace: suntransit
+spec:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          enableServiceLinks: false
+          restartPolicy: OnFailure
+          containers:
+            - name: batch-jobs-valley-metro
+              image: suntransit/spark:latest
+              imagePullPolicy: Never
+              command:
+                - /opt/spark/bin/spark-submit
+                - --master
+                - spark://spark-master:7077
+                - --conf
+                - spark.jars.ivy=/tmp/.ivy2
+                - --conf
+                - spark.executor.cores=1
+                - --conf
+                - spark.cores.max=1
+                - --conf
+                - spark.executor.memory=1800mb
+                - --conf
+                - spark.sql.adaptive.enabled=true
+                - --conf
+                - spark.sql.adaptive.coalescePartitions.enabled=true
+                - --conf
+                - spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem
+                - --conf
+                - spark.hadoop.fs.s3a.block.size=134217728
+                - --conf
+                - spark.hadoop.fs.s3a.buffer.dir=/tmp
+                - --conf
+                - spark.hadoop.fs.s3a.committer.name=magic
+                - --conf
+                - spark.hadoop.fs.s3a.committer.magic.enabled=true
+                - --conf
+                - spark.hadoop.mapreduce.outputcommitter.factory.scheme.s3a=org.apache.hadoop.fs.s3a.commit.S3ACommitterFactory
+                - --py-files
+                - /app/batch/offset.py
+                - /app/batch/delay_calculator.py
+              envFrom:
+                - configMapRef:
+                    name: common-env
+                - configMapRef:
+                    name: valley-metro-env
+                - secretRef:
+                    name: credentials
+              env:
+                - name: GTFS_URL
+                  valueFrom:
+                    secretKeyRef:
+                      name: gtfs-keys
+                      key: GTFS_URL
+              resources:
+                requests:
+                  cpu: "200m"
+                  memory: "512Mi"
+                limits:
+                  cpu: "500m"
+                  memory: "1Gi"

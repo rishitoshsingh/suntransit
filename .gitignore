@@ -11,3 +11,7 @@ testing/
 graphify-out/
 
 spark-jobs/offsets.json
+
+# k8s secrets — only .example files are committed
+k8s/secrets/*.yaml
+!k8s/secrets/*.yaml.example

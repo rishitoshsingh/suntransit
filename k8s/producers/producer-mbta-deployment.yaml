@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer-mbta
+  namespace: suntransit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: producer-mbta
+  template:
+    metadata:
+      labels:
+        app: producer-mbta
+    spec:
+      enableServiceLinks: false
+      containers:
+        - name: producer
+          image: suntransit/producer:latest
+          imagePullPolicy: Never
+          envFrom:
+            - configMapRef:
+                name: common-env
+            - configMapRef:
+                name: mbta-env
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"

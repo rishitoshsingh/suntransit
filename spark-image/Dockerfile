@@ -5,10 +5,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf 
 
 RUN mkdir -p /app /tmp/.ivy2 && chown -R 185:185 /app /tmp/.ivy2
 
-COPY requirements.txt /tmp/requirements.txt
+COPY spark-image/requirements.txt /tmp/requirements.txt
 RUN python3 -m pip install --upgrade pip && python3 -m pip install --no-cache-dir -r /tmp/requirements.txt && rm /tmp/requirements.txt
 
-COPY log4j.properties /opt/spark/conf/log4j.properties
+COPY spark-image/log4j.properties /opt/spark/conf/log4j.properties
+
+COPY spark-jobs /app
 
 WORKDIR /app
 
