@@ -1,5 +1,8 @@
 import os
-from zoneinfo import ZoneInfo
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    from backports.zoneinfo import ZoneInfo
 import datetime
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, countDistinct, mean, stddev, sum as _sum, expr, lit, to_date

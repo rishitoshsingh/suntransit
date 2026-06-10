@@ -33,9 +33,6 @@ S3_BUCKET = os.getenv("S3_BUCKET")  # use s3a:// not s3://
 KAFKA_TOPIC = os.getenv("KAFKA_TOPIC")
 KAFKA_BOOTSTRAP = os.getenv("KAFKA_BROKER")
 GTFS_AGENCY = os.getenv("GTFS_AGENCY")
-MONGODB_URL = os.getenv("MONGODB_URL")
-MONGODB_DB = os.getenv("MONGODB_DB")
-MONGODB_COLLECTION = os.getenv("MONGODB_COLLECTION")
 TIMEZONE = os.getenv("TIMEZONE")
 
 STOP_TIMES_PATH = f"{S3_BUCKET}/static_gtfs/{GTFS_AGENCY}/stop_times.txt"
@@ -54,9 +51,6 @@ logger.info(f"S3_BUCKET: {S3_BUCKET}")
 logger.info(f"KAFKA_TOPIC: {KAFKA_TOPIC}")
 logger.info(f"KAFKA_BOOTSTRAP: {KAFKA_BOOTSTRAP}")
 logger.info(f"GTFS_AGENCY: {GTFS_AGENCY}")
-logger.info(f"MONGODB_URL: {MONGODB_URL}")
-logger.info(f"MONGODB_DB: {MONGODB_DB}")
-logger.info(f"MONGODB_COLLECTION: {MONGODB_COLLECTION}")
 logger.info(f"TIMEZONE: {TIMEZONE}")
 
 
@@ -160,12 +154,7 @@ def main():
 
     try:
         logger.info("🔁 Initializing OffsetManager")
-        offset_manager = OffsetManager(
-            mongo_url=MONGODB_URL,
-            db_name=MONGODB_DB,
-            collection_name=MONGODB_COLLECTION,
-            bootstrap_servers=KAFKA_BOOTSTRAP
-        )
+        offset_manager = OffsetManager(bootstrap_servers=KAFKA_BOOTSTRAP)
 
         logger.info("📌 Reading Kafka Offsets")
         starting_offsets = offset_manager.read_offsets(topic=KAFKA_TOPIC, job_type="batch_job")

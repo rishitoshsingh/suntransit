@@ -35,16 +35,16 @@ for redis_agency_env in massachusetts_bay_transportation_authority valley_metro;
     [ -f $credentials_env_file ] && source $credentials_env_file
     set +a
 
-    nohup spark-submit \
+    nohup /opt/spark/bin/spark-submit \
       --master spark://spark-master:7077 \
       --conf 'spark.jars.ivy=/tmp/.ivy2' \
       --conf spark.executor.cores=1 \
       --conf spark.cores.max=1 \
       --conf spark.executor.memory=900m \
-      --jars /opt/bitnami/spark/jars/spark-sql-kafka-0-10_2.12-3.5.2.jar,\
-/opt/bitnami/spark/jars/kafka-clients-3.5.2.jar,\
-/opt/bitnami/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.2.jar,\
-/opt/bitnami/spark/jars/commons-pool2-2.11.1.jar \
+      --jars /opt/spark/jars/spark-sql-kafka-0-10_2.12-3.5.2.jar,\
+/opt/spark/jars/kafka-clients-3.5.2.jar,\
+/opt/spark/jars/spark-token-provider-kafka-0-10_2.12-3.5.2.jar,\
+/opt/spark/jars/commons-pool2-2.11.1.jar \
       /app/push_redis.py >> /tmp/REDIS-${redis_agency_env}.log
   "
 done

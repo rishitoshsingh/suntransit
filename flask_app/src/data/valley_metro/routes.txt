@@ -1,114 +1,113 @@
-route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color,route_division,alt_route_type
-0,1,0,"Central Ave",,3,,371D4F,FFFFFF,PHNS,704
-0A,1,0A,"South Central Shuttle",,3,,591769,FFFFFF,PHNS,704
-1,1,1,"Washington St",,3,,371D4F,FFFFFF,PHNS,704
-3,1,3,"Van Buren St",,3,,371D4F,FFFFFF,PHW,704
-7,1,7,"7th St",,3,,371D4F,FFFFFF,PHNS,704
-7s,1,7s,"7th St",,3,,371D4F,FFFFFF,PHNS,704
-8,1,8,"7th Ave",,3,,371D4F,FFFFFF,PHNS,704
-10,1,10,"Roosevelt St",,3,,371D4F,FFFFFF,PHNS,704
-12,1,12,"12th St",,3,,371D4F,FFFFFF,PHNS,704
-13,1,13,"Buckeye Rd",,3,,371D4F,FFFFFF,PHW,704
-15,1,15,"15th Ave",,3,,371D4F,FFFFFF,PHNS,704
-16,1,16,"16th St",,3,,371D4F,FFFFFF,PHNS,704
-16s,1,16s,"16th St",,3,,371D4F,FFFFFF,PHNS,704
-17,1,17,"McDowell Rd",,3,,371D4F,FFFFFF,PHW,704
-17s,1,17s,"McDowell Rd",,3,,371D4F,FFFFFF,PHW,704
-19,1,19,"19th Ave",,3,,371D4F,FFFFFF,PHNS,704
-27,1,27,"27th Ave",,3,,371D4F,FFFFFF,PHNS,704
-28,1,28,"Lower Buckeye Rd",,3,,371D4F,FFFFFF,PHNS,704
-29,1,29,"Thomas Rd",,3,,371D4F,FFFFFF,PHW,704
-30,1,30,"University Dr",,3,,371D4F,FFFFFF,VMTM,704
-32,1,32,"32nd St/40th St",,3,,371D4F,FFFFFF,PHNS,704
-32s,1,32s,"32nd St/40th St",,3,,371D4F,FFFFFF,PHNS,704
-35,1,35,"35th Ave",,3,,371D4F,FFFFFF,PHNS,704
-39,1,39,"North 40th St",,3,,371D4F,FFFFFF,PHNS,704
-40,1,40,"Main St",,3,,371D4F,FFFFFF,VMTM,704
-41,1,41,"Indian School Rd",,3,,371D4F,FFFFFF,PHW,704
-43,1,43,"43rd Ave",,3,,371D4F,FFFFFF,PHW,704
-44,1,44,"44th St/Tatum Blvd",,3,,371D4F,FFFFFF,PHNS,704
-45,1,45,"Broadway Rd",,3,,371D4F,FFFFFF,VMTM,704
-48,1,48,"48th St",,3,,371D4F,FFFFFF,VMTM,704
-50,1,50,"Camelback Rd",,3,,371D4F,FFFFFF,PHNS,704
-51,1,51,"51st Ave",,3,,371D4F,FFFFFF,PHW,704
-52,1,52,"Roeser Rd",,3,,371D4F,FFFFFF,PHNS,704
-52s,1,52s,"Roeser Rd",,3,,371D4F,FFFFFF,PHNS,704
-56,1,56,"Priest Dr",,3,,371D4F,FFFFFF,VMTM,704
-59,1,59,"59th Ave",,3,,371D4F,FFFFFF,PHW,704
-59s,1,59s,"59th Ave",,3,,371D4F,FFFFFF,PHW,704
-60,1,60,"Bethany Home Rd",,3,,371D4F,FFFFFF,PHNS,704
-61,1,61,"Southern Ave",,3,,371D4F,FFFFFF,VMTM,704
-61s,1,61s,"Southern Ave",,3,,371D4F,FFFFFF,VMTM,704
-62,1,62,"Hardy Dr",,3,,371D4F,FFFFFF,VMTM,704
-62s,1,62s,"Hardy Dr",,3,,371D4F,FFFFFF,VMTM,704
-66,1,66,"Mill Ave/Kyrene Rd",,3,,371D4F,FFFFFF,VMTM,704
-67,1,67,"67th Ave",,3,,371D4F,FFFFFF,PHW,704
-70,1,70,"24th St/Glendale Ave",,3,,371D4F,FFFFFF,PHNS,704
-72,1,72,"Scottsdale Rd/Rural Rd",,3,,371D4F,FFFFFF,VMTM,704
-75,1,75,"75th Ave",,3,,371D4F,FFFFFF,PHW,704
-77,1,77,"Baseline Rd",,3,,371D4F,FFFFFF,VMTM,704
-80,1,80,"Northern Ave/Shea Blvd",,3,,371D4F,FFFFFF,PHNS,704
-81,1,81,"Hayden Rd/McClintock Dr",,3,,371D4F,FFFFFF,VMTM,704
-81s,1,81s,"Hayden Rd/McClintock Dr",,3,,371D4F,FFFFFF,VMTM,704
-83,1,83,"83rd Ave",,3,,371D4F,FFFFFF,PHW,704
-90,1,90,"Dunlap Ave/Cave Creek Rd",,3,,371D4F,FFFFFF,PHNS,704
-96,1,96,"Dobson Rd",,3,,371D4F,FFFFFF,VMTM,704
-104,1,104,"Alma School Rd",,3,,371D4F,FFFFFF,VMTM,704
-106,1,106,"Peoria Ave",,3,,371D4F,FFFFFF,PHNS,704
-108,1,108,"Elliot Rd/48th St",,3,,371D4F,FFFFFF,VMTM,704
-112,1,112,"Country Club Dr/Arizona Ave",,3,,371D4F,FFFFFF,VMTM,704
-120,1,120,"Mesa Dr",,3,,371D4F,FFFFFF,VMTM,704
-122,1,122,"Cactus Rd",,3,,371D4F,FFFFFF,PHNS,704
-128,1,128,"Stapley Dr",,3,,371D4F,FFFFFF,VMTM,704
-136,1,136,"Gilbert Rd",,3,,371D4F,FFFFFF,VMTM,704
-138,1,138,"Thunderbird Rd",,3,,371D4F,FFFFFF,PHNS,704
-140,1,140,"Ray Rd",,3,,371D4F,FFFFFF,VMTM,704
-154,1,154,"Greenway Rd",,3,,371D4F,FFFFFF,PHNS,704
-156,1,156,"Chandler Blvd",,3,,371D4F,FFFFFF,VMTM,704
-170,1,170,"Bell Rd",,3,,371D4F,FFFFFF,PHNS,704
-184,1,184,"Power Rd",,3,,371D4F,FFFFFF,VMTM,704
-186,1,186,"Union Hills Dr/Mayo Blvd",,3,,371D4F,FFFFFF,PHNS,704
-514,1,514,"Scottsdale Express",,3,,371D4F,FFFFFF,VMTM,702
-521,1,521,"Central Tempe Express",,3,,371D4F,FFFFFF,VMTM,702
-522,1,522,"South Tempe Express",,3,,371D4F,FFFFFF,VMTM,702
-531,1,531,"Mesa/Gilbert Express",,3,,371D4F,FFFFFF,VMTM,702
-533,1,533,"Mesa Express",,3,,371D4F,FFFFFF,VMTM,702
-535,1,535,"Northeast Mesa Express",,3,,371D4F,FFFFFF,VMTM,702
-542,1,542,"Chandler Express",,3,,371D4F,FFFFFF,VMTM,702
-562,1,562,"Goodyear Express",,3,,591769,FFFFFF,VMW-TB,702
-563,1,563,"Avondale/Buckeye Express",,3,,591769,FFFFFF,VMW-TB,702
-571,1,571,"Surprise Express",,3,,591769,FFFFFF,VMW-TB,702
-573,1,573,"West Glendale Express",,3,,591769,FFFFFF,VMW-TB,702
-575,1,575,"North Glendale Express",,3,,591769,FFFFFF,VMW-TB,702
-685,1,685,"Ajo/Gila Bend",,3,,591769,FFFFFF,VMRU-TB,701
-68CM,1,68CM,"68th St/Camelback Rd",,3,,591769,FFFFFF,SC,798
-A,1,A,"Valley Metro Rail A Line",,0,,1E8ECD,000000,VMR,903
-ALEX,1,ALEX,"ALEX Circulator",,3,,371D4F,FFFFFF,PHNS,798
-B,1,B,"Valley Metro Rail B Line",,0,,B76912,000000,VMR,903
-DASH,1,DASH,"Downtown DASH",,3,,371D4F,FFFFFF,PHNS,798
-DBUZ,1,DBUZ,"Downtown BUZZ",,3,,371D4F,FFFFFF,VMTM,798
-EART,1,EART,"Orbit Earth",,3,,371D4F,FFFFFF,VMTM,798
-FBUZ,1,FBUZ,"Fiesta BUZZ",,3,,371D4F,FFFFFF,VMTM,798
-FLSH,1,FLSH,"FLASH",,3,,371D4F,FFFFFF,VMTM,798
-GAL,1,GAL,"Grand Ave Limited",,3,,591769,FFFFFF,VMW-TB,704
-GUS1,1,GUS1,"GUS 1",,3,,591769,FFFFFF,GL,798
-GUS2,1,GUS2,"GUS 2",,3,,591769,FFFFFF,GL,798
-GUS3,1,GUS3,"GUS 3",,3,,591769,FFFFFF,GL,798
-I10E,1,I10E,"I-10 East RAPID",,3,,371D4F,FFFFFF,PHNS,702
-I10W,1,I10W,"I-10 West RAPID",,3,,371D4F,FFFFFF,PHNS,702
-I17,1,I17,"I-17 RAPID",,3,,371D4F,FFFFFF,PHNS,702
-JUPI,1,JUPI,"Orbit Jupiter",,3,,371D4F,FFFFFF,VMTM,798
-MARS,1,MARS,"Orbit Mars",,3,,371D4F,FFFFFF,VMTM,798
-MARY,1,MARY,"MARY Circulator",,3,,371D4F,FFFFFF,PHW,798
-MARz,1,MARz,"Orbit Mars",,3,,371D4F,FFFFFF,VMTM,798
-MERC,1,MERC,"Orbit Mercury",,3,,371D4F,FFFFFF,VMTM,798
-MLHD,1,MLHD,"Miller Rd/Hayden Rd",,3,,591769,FFFFFF,SC,798
-MSTG,1,MSTG,"Mustang",,3,,591769,FFFFFF,SC,798
-S,1,S,"Valley Metro Streetcar",,0,,6D8932,000000,VMR,902
-SKYT,10,SKYT,"PHX Sky Train",,0,https://www.skyharbor.com/PHXSkyTrain,53565F,FFFFFF,SKYT,905
-SME,1,SME,"South Mountain East RAPID",,3,,371D4F,FFFFFF,PHNS,702
-SMRT,1,SMRT,"SMART Circulator",,3,,371D4F,FFFFFF,PHNS,798
-SMW,1,SMW,"South Mountain West RAPID",,3,,371D4F,FFFFFF,PHNS,702
-SR51,1,SR51,"SR 51 RAPID",,3,,371D4F,FFFFFF,PHNS,702
-STRN,1,STRN,"Orbit Saturn",,3,,371D4F,FFFFFF,VMTM,798
-VENU,1,VENU,"Orbit Venus",,3,,371D4F,FFFFFF,VMTM,798
+route_id,agency_id,route_short_name,route_long_name,route_type,route_url,route_color,route_text_color,direction0_name,direction1_name,route_group,alt_route_type,ext_nextride_id,route_division
+0,1,0,Central Ave,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHNS
+1,1,1,Washington St,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+3,1,3,Van Buren St,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHW
+7s,1,7s,7th St school trips,3,,591769,FFFFFF,Northbound,Southbound,School Trips on Public Transit Routes,704,,PHNS
+7,1,7,7th  St,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHNS
+8,1,8,7th Ave,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHNS
+10,1,10,Roosevelt St,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+12,1,12,12th St,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHNS
+13,1,13,Buckeye Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHW
+15,1,15,15th Ave,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHNS
+16s,1,16s,16th St school trips,3,,591769,FFFFFF,Northbound,Southbound,School Trips on Public Transit Routes,704,,PHNS
+16,1,16,16th St,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHNS
+17s,1,17s,McDowell Rd school trips,3,,591769,FFFFFF,Eastbound,Westbound,School Trips on Public Transit Routes,704,,PHW
+17,1,17,McDowell Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHW
+19,1,19,19th Ave,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHNS
+27,1,27,27th Ave,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHNS
+28,1,28,Lower Buckeye Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+29,1,29,Thomas Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHW
+30,1,30,University Dr,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,VMTM
+32s,1,32s,32nd St school trips,3,,591769,FFFFFF,Northbound,Southbound,School Trips on Public Transit Routes,704,,PHNS
+32,1,32,32nd St,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHNS
+35,1,35,35th Ave,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHNS
+39,1,39,North 40th St,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHNS
+40,1,40,Main St,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,VMTM
+41,1,41,Indian School Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHW
+43,1,43,43rd Ave,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHW
+44,1,44,44th St/Tatum Blvd,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHNS
+45,1,45,Broadway Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,VMTM
+48,1,48,48th St,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,VMTM
+50,1,50,Camelback Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+51,1,51,51st Ave,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHW
+52s,1,52s,Roeser Rd school trips,3,,591769,FFFFFF,Eastbound,Westbound,School Trips on Public Transit Routes,704,,PHNS
+52,1,52,Roeser Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+56,1,56,Priest Dr,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,VMTM
+59s,1,59s,59th Ave school trips,3,,591769,FFFFFF,Northbound,Southbound,School Trips on Public Transit Routes,704,,PHW
+59,1,59,59th Ave,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHW
+60,1,60,Bethany Home Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+61s,1,61s,Southern Ave school trips,3,,591769,FFFFFF,Eastbound,Westbound,School Trips on Public Transit Routes,704,,VMTM
+61,1,61,Southern Ave,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,VMTM
+62s,1,62s,Hardy Dr school trips,3,,591769,FFFFFF,Northbound,Southbound,School Trips on Public Transit Routes,704,,VMTM
+62,1,62,Hardy Dr,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,VMTM
+66,1,66,Mill Ave/Kyrene Rd,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,VMTM
+67,1,67,67th Ave,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHW
+68CM,1,68CM,Scottsdale 68th St/Camelback Rd,3,,591769,FFFFFF,Northbound,Southbound,Neighborhood Circulators,798,,SC
+70,1,70,24th St/Glendale Ave,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+72,1,72,Scottsdale Rd/Rural Rd,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,VMTM
+75,1,75,75th Ave,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHW
+77,1,77,Baseline Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,VMTM
+80,1,80,Northern Ave/Shea Blvd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+81s,1,81s,Hayden Rd/McClintock Dr school trips,3,,591769,FFFFFF,Northbound,Southbound,School Trips on Public Transit Routes,704,,VMTM
+81,1,81,Hayden Rd/McClintock Dr,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,VMTM
+83,1,83,83rd Ave,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,PHW
+90,1,90,Dunlap Ave/Cave Creek Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+96,1,96,Dobson Rd,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,VMTM
+104,1,104,Alma School Rd,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,VMTM
+106,1,106,Peoria Ave,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+108,1,108,Elliot Rd/48th St,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,VMTM
+112,1,112,Country Club Dr/Arizona Ave,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,VMTM
+120,1,120,Mesa Dr,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,VMTM
+122,1,122,Cactus Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+128,1,128,Stapley Dr,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,VMTM
+136,1,136,Gilbert Rd,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,VMTM
+138,1,138,Thunderbird Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+140,1,140,Ray Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,VMTM
+154,1,154,Greenway Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+156,1,156,Chandler Blvd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,VMTM
+170,1,170,Bell Rd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+184,1,184,Power Rd,3,,591769,FFFFFF,Northbound,Southbound,Local Bus,704,,VMTM
+186,1,186,Union Hills Dr/Mayo Blvd,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,PHNS
+514,1,514,Scottsdale Express,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,VMTM
+521,1,521,Central Tempe Express,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,VMTM
+522,1,522,South Tempe Express,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,VMTM
+531,1,531,Mesa/Gilbert Express,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,VMTM
+533,1,533,Mesa Express,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,VMTM
+535,1,535,Northeast Mesa Express,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,VMTM
+542,1,542,Chandler Express,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,VMTM
+562,1,562,Goodyear Express,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,VMW
+563,1,563,Avondale/Buckeye Express,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,VMW
+571,1,571,Surprise Express,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,VMW
+573,1,573,West Glendale Express,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,VMW
+575,1,575,North Glendale Express,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,VMW
+685,1,685,Ajo/Gila Bend,3,,591769,FFFFFF,Northbound,Southbound,Rural Route,701,,VMRU-TB
+ALEX,1,ALEX,Phoenix ALEX Circulator,3,,591769,FFFFFF,Eastbound,Westbound,Neighborhood Circulators,798,,PHNS
+A,1,A,Valley Metro Rail A Line,0,,1E8ECD,000000,Eastbound,Westbound,Valley Metro Rail & Streetcar,903,102,VMR
+B,1,B,Valley Metro Rail B Line,0,,B76912,000000,Northbound,Southbound,Valley Metro Rail & Streetcar,903,103,VMR
+DASH,1,DASH,Phoenix Downtown DASH,3,,591769,FFFFFF,Eastbound,Westbound,Neighborhood Circulators,798,,PHNS
+DBUZ,1,DBUZ,Mesa Downtown BUZZ,3,,591769,FFFFFF,Eastbound,Westbound,Neighborhood Circulators,798,,VMTM
+EART,1,EART,Tempe Orbit Earth,3,,591769,FFFFFF,Eastbound,Westbound,Neighborhood Circulators,798,,VMTM
+FBUZ,1,FBUZ,Mesa Fiesta BUZZ,3,,591769,FFFFFF,Northbound,Southbound,Neighborhood Circulators,798,,VMTM
+FLSH,1,FLSH,Tempe FLASH,3,,591769,FFFFFF,Northbound,Southbound,Neighborhood Circulators,798,,VMTM
+GAL,1,GAL,Grand Avenue Limited,3,,591769,FFFFFF,Eastbound,Westbound,Local Bus,704,,VMW
+GUS1,1,GUS1,Glendale Urban Shuttle 1,3,,591769,FFFFFF,Clockwise,Counterclockwise,Neighborhood Circulators,798,,GL
+GUS2,1,GUS2,Glendale Urban Shuttle 2,3,,591769,FFFFFF,Clockwise,Counterclockwise,Neighborhood Circulators,798,,GL
+GUS3,1,GUS3,Glendale Urban Shuttle 3,3,,591769,FFFFFF,Clockwise,Counterclockwise,Neighborhood Circulators,798,,GL
+I10E,1,I10E,I-10 East RAPID,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,PHNS
+I10W,1,I10W,I-10 West RAPID,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,PHNS
+I17,1,I17,I-17 RAPID,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,PHNS
+JUPI,1,JUPI,Tempe Orbit Jupiter,3,,591769,FFFFFF,Northbound,Southbound,Neighborhood Circulators,798,,VMTM
+MARS,1,MARS,Tempe Orbit Mars,3,,591769,FFFFFF,Northbound,Southbound,Neighborhood Circulators,798,,VMTM
+MARY,1,MARY,Phoenix MARY Circulator,3,,591769,FFFFFF,Clockwise,Counterclockwise,Neighborhood Circulators,798,,PHW
+MARz,1,MARz,Tempe Orbit Mars school trips,3,,591769,FFFFFF,Northbound,Southbound,School Trips on Public Transit Routes,798,,VMTM
+MERC,1,MERC,Tempe Orbit Mercury,3,,591769,FFFFFF,Eastbound,Westbound,Neighborhood Circulators,798,,VMTM
+MLHD,1,MLHD,Scottsdale Miller/Hayden,3,,591769,FFFFFF,Northbound,Southbound,Neighborhood Circulators,798,,SC
+MSTG,1,MSTG,Scottsdale Mustang,3,,591769,FFFFFF,Northbound,Southbound,Neighborhood Circulators,798,,SC
+SKYT,10,SKYT,PHX Sky Train®,0,https://www.skyharbor.com/PHXSkyTrain,53565F,FFFFFF,Eastbound,Westbound,PHX Sky Train®,905,,SKYT
+SME,1,SME,South Mountain East RAPID,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,PHNS
+SMRT,1,SMRT,Phoenix SMART Circulator,3,,591769,FFFFFF,Eastbound,Westbound,Neighborhood Circulators,798,,PHNS
+SMW,1,SMW,South Mountain West RAPID,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,PHNS
+SR51,1,SR51,SR 51 RAPID,3,,591769,FFFFFF,Inbound,Outbound,Express & RAPID Bus,702,,PHNS
+STRN,1,STRN,Tempe Orbit Saturn,3,,591769,FFFFFF,Eastbound,Westbound,Neighborhood Circulators,798,,VMTM
+S,1,S,Valley Metro Streetcar,0,,6D8932,000000,Northbound,Southbound,Valley Metro Rail & Streetcar,902,104,VMR
+VENU,1,VENU,Tempe Orbit Venus,3,,591769,FFFFFF,Clockwise,Counterclockwise,Neighborhood Circulators,798,,VMTM

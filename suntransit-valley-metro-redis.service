@@ -1,0 +1,17 @@
+[Unit]
+Description=SunTransit Kafka->Redis - Valley Metro
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=simple
+User=rishitoshs
+WorkingDirectory=/home/rishitoshs/Documents/suntransit
+ExecStart=/home/rishitoshs/Documents/suntransit/run_valley_metro_redis.sh
+Restart=on-failure
+RestartSec=30s
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

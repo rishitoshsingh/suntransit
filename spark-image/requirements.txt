@@ -1,4 +1,5 @@
 redis
-pymongo
 boto3
 confluent-kafka
+psycopg2-binary
+backports.zoneinfo; python_version < "3.9"

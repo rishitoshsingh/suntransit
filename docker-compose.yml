@@ -4,6 +4,7 @@ services:
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     container_name: zookeeper
+    restart: unless-stopped
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
@@ -18,6 +19,7 @@ services:
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     container_name: kafka
+    restart: unless-stopped
     depends_on:
       - zookeeper
     ports:
@@ -41,6 +43,7 @@ services:
   producer-valley-metro:
     build: ./producer
     container_name: producer-valley-metro
+    restart: unless-stopped
     depends_on:
       kafka:
         condition: service_healthy
@@ -55,6 +58,7 @@ services:
   producer-mbta:
     build: ./producer
     container_name: producer-mbta
+    restart: unless-stopped
     depends_on:
       kafka:
         condition: service_healthy
@@ -69,21 +73,21 @@ services:
   spark-master:
     build: ./spark-image
     container_name: spark-master
+    hostname: spark-master
+    restart: unless-stopped
     depends_on:
       - kafka
       - redis
     volumes:
       - ./spark-jobs:/app
+    command: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.master.Master", "--host", "spark-master", "--port", "7077", "--webui-port", "8080"]
     environment:
-      - SPARK_MODE=master
-      - SPARK_MASTER_HOST=spark-master
-      - USER=root
       - HADOOP_USER_NAME=spark
     ports:
-      - "8080:8080"
-      - "4040:4040"   # Spark Application UI (first app)
-      - "4041:4041"   # Spark Application UI (second app)
-      - "7078:7078"   # Spark driver port
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:4040:4040"   # Spark Application UI (first app)
+      - "127.0.0.1:4041:4041"   # Spark Application UI (second app)
+      - "127.0.0.1:7078:7078"   # Spark driver port
     deploy:
       resources:
         limits:
@@ -91,20 +95,16 @@ services:
           memory: 1G
     networks:
       - suntransit-net
-    
 
   spark-worker:
     build: ./spark-image
+    restart: unless-stopped
     depends_on:
       - spark-master
       - kafka
       - redis
+    command: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.worker.Worker", "spark://spark-master:7077", "--cores", "1", "--memory", "2G"]
     environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_CORES=1
-      - SPARK_WORKER_MEMORY=2G
-      - USER=spark
       - HADOOP_USER_NAME=spark
     # ports:
     #   - "8081:8081"
@@ -120,8 +120,8 @@ services:
     image: redis/redis-stack:latest
     container_name: suntransit-redis
     ports:
-      - "6379:6379"   # Redis server port
-      - "8001:8001"   # RedisInsight UI port
+      - "127.0.0.1:6379:6379"   # Redis server port
+      - "127.0.0.1:8001:8001"   # RedisInsight UI port
     environment:
       - REDIS_ARGS=--requirepass myStrongPassword123
       - REDISTIMESERIES_ARGS="RETENTION_POLICY=300000"  # 2 minutes retention in ms
@@ -142,7 +142,7 @@ services:
   #     - REDIS_PASSWORD=myStrongPassword123
   #   networks:
   #     - suntransit-net
-  flask-web: 
+  flask-web:
     build: ./flask_app
     ports:
       - "80:80"
@@ -152,6 +152,9 @@ services:
     - redis
     environment:
       - TIMEZONE=America/Phoenix
+      - REDIS_HOST=suntransit-redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=myStrongPassword123
     networks:
       - suntransit-net
 # kafka-ui:

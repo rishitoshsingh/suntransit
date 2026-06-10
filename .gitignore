@@ -7,3 +7,7 @@ notebooks/
 **/__pycache__/
 
 testing/
+
+graphify-out/
+
+spark-jobs/offsets.json
