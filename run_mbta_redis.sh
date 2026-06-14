@@ -6,6 +6,10 @@ env_file="/app/env/${agency}.env"
 common_env_file="/app/env/.env"
 credentials_env_file="/app/env/credentials.env"
 
+echo "[$(date)] Killing any existing spark-submit for $agency inside container..."
+docker exec --user spark spark-master pkill -f "REDIS-${agency}" 2>/dev/null || true
+sleep 3
+
 echo "[$(date)] Starting Kafka->Redis job for $agency"
 docker exec --user spark spark-master bash -c "
   set -a

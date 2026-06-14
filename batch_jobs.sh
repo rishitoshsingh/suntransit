@@ -1,10 +1,18 @@
+#!/bin/bash
 export DOCKER_HOST=unix:///var/run/docker.sock
+cd /home/rishitoshs/Documents/suntransit
+
+echo "[$(date)] Scaling spark-worker to 3 for batch run..."
+docker compose up -d --scale spark-worker=3
+
+echo "[$(date)] Waiting for 3rd worker to register with master..."
+sleep 15
 
 for agency in massachusetts_bay_transportation_authority valley_metro; do
   env_file="/app/env/${agency}.env"
   common_env_file="/app/env/.env"
   credentials_env_file="/app/env/credentials.env"
-  echo "🚀 Launching delay calculator for $agency with envs $common_env_file and $env_file"
+  echo "[$(date)] Launching delay calculator for $agency"
   docker exec \
   --user spark spark-master bash -c "
     set -a
@@ -30,3 +38,6 @@ for agency in massachusetts_bay_transportation_authority valley_metro; do
       /app/batch/delay_calculator.py >> /tmp/${agency}.log
   "
 done
+
+echo "[$(date)] Batch jobs done. Scaling spark-worker back to 2..."
+docker compose up -d --scale spark-worker=2

@@ -1,0 +1,67 @@
+/* Two themes selected via <html data-theme="dark|light">.
+   Dark = neon command-center. Light = clean consumer app. */
+
+:root {
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "SF Mono", "JetBrains Mono", ui-monospace, monospace;
+  --radius: 14px;
+  --radius-sm: 9px;
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+  --t-fast: 140ms ease;
+}
+
+html[data-theme="dark"] {
+  --bg: #0a0e1a;
+  --bg-2: #111726;
+  --panel: rgba(17, 23, 38, 0.82);
+  --panel-solid: #111726;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text: #e8edf7;
+  --text-dim: #8794ad;
+  --text-faint: #59647e;
+  --accent: #34e7e4;
+  --accent-2: #7c83ff;
+  --good: #2ee6a6;
+  --warn: #ffc24b;
+  --bad: #ff5d6c;
+  --glow: 0 0 18px rgba(52, 231, 228, 0.35);
+  --map-style: "dark";
+}
+
+html[data-theme="light"] {
+  --bg: #eef1f6;
+  --bg-2: #ffffff;
+  --panel: rgba(255, 255, 255, 0.92);
+  --panel-solid: #ffffff;
+  --border: rgba(15, 23, 42, 0.1);
+  --border-strong: rgba(15, 23, 42, 0.18);
+  --text: #16203a;
+  --text-dim: #5a6680;
+  --text-faint: #93a0b8;
+  --accent: #0aa6a3;
+  --accent-2: #5b62e6;
+  --good: #11b07b;
+  --warn: #d9920c;
+  --bad: #e23b4e;
+  --glow: 0 4px 14px rgba(10, 166, 163, 0.22);
+  --map-style: "light";
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font-family: inherit; cursor: pointer; }
+
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 6px; }
+::-webkit-scrollbar-track { background: transparent; }

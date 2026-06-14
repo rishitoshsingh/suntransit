@@ -141,13 +141,14 @@ def save_to_redis(df, epoch_id):
                 continue
             
             vehicle_id = row.vehicle_id
-            ts = row.timestamp
+            ts = int(row.timestamp) * 1000  # GTFS timestamps are seconds; Redis TS expects ms
             for metric, value in metrics.items():
                 if value is None:
                     continue
                 key = f"ts:vehicle:{vehicle_id}:{metric}"
                 try:
                     r.execute_command("TS.ADD", key, ts, value)
+                    r.expire(key, 300)
                 except redis.exceptions.ResponseError as e:
                     pass
             
