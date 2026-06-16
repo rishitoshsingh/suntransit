@@ -2,15 +2,11 @@
 bunching, and a network-pulse summary. Used by both the WebSocket loop and a
 REST fallback endpoint.
 """
-import pytz
-from datetime import datetime
-from app.config import CITIES, TIMEZONE
+from app.config import CITIES
 from app.data import redis_client as rc
 from app.data import metrics
 from app.data.gtfs import get_trip_df
 from app.data.postgres import latest_agency_delay
-
-_tz = pytz.timezone(TIMEZONE)
 
 
 def build_snapshot(city: str) -> dict:
@@ -39,7 +35,7 @@ def build_snapshot(city: str) -> dict:
             "lon": trail[0][0],
             "trail": [[p[1], p[0]] for p in trail[:6]],  # [lat, lon] for the map
             "bearing": rc.fetch_bearing(r, vid) % 360,
-            "last_timestamp": datetime.fromtimestamp(trail[0][2] / 1000, _tz).strftime("%-I:%M %p"),
+            "last_timestamp": trail[0][2],
             "speed_mph": mph,
             "speed_class": metrics.speed_class(mph),
             "route_id": str(info["route_id"]),

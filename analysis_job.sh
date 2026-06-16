@@ -23,5 +23,6 @@ docker exec \
     --conf spark.hadoop.fs.s3a.committer.name=magic \
     --conf spark.hadoop.fs.s3a.committer.magic.enabled=true \
     --conf spark.hadoop.mapreduce.outputcommitter.factory.scheme.s3a=org.apache.hadoop.fs.s3a.commit.S3ACommitterFactory \
+    --py-files /app/h3_lookup.py \
     /app/analyze_daily_records.py >> /tmp/Analysis-Job.log
 "

@@ -2,25 +2,29 @@
 // add-source / add-layer / set-data plumbing lives here so the components stay clean.
 import maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
-import { BASEMAPS, delayColor, SPEED_COLORS } from "./basemaps.js";
+import { BASEMAPS, delayColor, SPEED_COLORS, resForZoom } from "./basemaps.js";
+import { fmtDelay } from "../util.js";
 
 const EMPTY = { type: "FeatureCollection", features: [] };
 
 // Source ids -> the layers that render them. Layers are added once and toggled per view.
-const SOURCES = ["routes", "stops", "trails", "bunching", "vehicles"];
+const SOURCES = ["routes", "stops", "trails", "bunching", "vehicles", "h3", "live-route"];
 // Selection-highlight sources (a clicked stop / a clicked route shape).
 const SEL_SOURCES = ["sel-stop", "sel-route"];
 
 export class MapController {
-  constructor(container, theme, onVehicleClick) {
+  constructor(container, theme, onVehicleClick, onH3Res) {
     this.theme = theme;
     this.onVehicleClick = onVehicleClick;
+    this.onH3Res = onH3Res; // h3 view: notify React when zoom changes the resolution
     this._data = {
-      routes: EMPTY, stops: EMPTY, trails: EMPTY, bunching: EMPTY, vehicles: EMPTY,
-      "sel-stop": EMPTY, "sel-route": EMPTY,
+      routes: EMPTY, stops: EMPTY, trails: EMPTY, bunching: EMPTY, vehicles: EMPTY, h3: EMPTY,
+      "live-route": EMPTY, "sel-stop": EMPTY, "sel-route": EMPTY,
     };
-    this._selRoute = null; // live: route_id whose vehicles are highlighted
+    this._selRoute = null;   // live: route_id whose vehicles are highlighted
+    this._h3Res = null;      // last resolution emitted to React
     this._view = "live";
+    this._stopPopup = null;  // MapLibre popup for clicked stop name
 
     this.map = new maplibregl.Map({
       container,
@@ -46,10 +50,38 @@ export class MapController {
       "line-opacity": 0.85,
     }, { "line-cap": "round", "line-join": "round" });
 
+    this._add("routes-label", "symbol", "routes", {
+      "text-color": ["get", "color"],
+      "text-halo-color": "rgba(0,0,0,0.85)",
+      "text-halo-width": 2,
+    }, {
+      "symbol-placement": "line",
+      "text-field": ["get", "label"],
+      "text-font": ["Open Sans Bold", "Arial Unicode MS Bold"],
+      "text-size": ["interpolate", ["linear"], ["zoom"], 9, 10, 14, 13],
+      "text-max-angle": 30,
+      "symbol-spacing": 220,
+      "text-padding": 2,
+    });
+
+    // Stops fade in at street level (zoom 13+) via opacity, not minzoom.
     this._add("stops-circle", "circle", "stops", {
-      "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 3, 15, 9],
-      "circle-color": ["get", "color"], "circle-opacity": 0.85,
-      "circle-stroke-width": 0.5, "circle-stroke-color": "rgba(0,0,0,0.3)",
+      "circle-radius": ["interpolate", ["linear"], ["zoom"], 13, 3, 15, 9],
+      "circle-color": "#8794ad",
+      "circle-opacity": ["interpolate", ["linear"], ["zoom"], 12.5, 0, 13.5, 0.7],
+      "circle-stroke-width": 0.5,
+      "circle-stroke-color": "rgba(0,0,0,0.3)",
+      "circle-stroke-opacity": ["interpolate", ["linear"], ["zoom"], 12.5, 0, 13.5, 1],
+    });
+
+    // Interpolated (no-stop) cells: transparent fill, faint border to show the grid.
+    this._add("h3-fill", "fill", "h3", {
+      "fill-color": ["get", "color"],
+      "fill-opacity": ["case", ["boolean", ["get", "interpolated"], false], 0, 0.45],
+    });
+    this._add("h3-outline", "line", "h3", {
+      "line-color": ["case", ["boolean", ["get", "interpolated"], false], "rgba(255,255,255,0.4)", "rgba(255,255,255,0.22)"],
+      "line-width": ["case", ["boolean", ["get", "interpolated"], false], 0.8, 0.5],
     });
 
     this._add("trails-line", "line", "trails", {
@@ -59,6 +91,12 @@ export class MapController {
     this._add("bunching-line", "line", "bunching", {
       "line-color": "#ff5d6c", "line-width": 2, "line-dasharray": [1, 1], "line-opacity": 0.9,
     });
+
+    // Dashed route shape shown when a route is selected in the live view.
+    this._add("live-route-dash", "line", "live-route", {
+      "line-color": ["get", "color"], "line-width": 2.5,
+      "line-opacity": 0.75, "line-dasharray": [4, 3],
+    }, { "line-cap": "round", "line-join": "round" });
 
     this._add("vehicles-circle", "circle", "vehicles", {
       "circle-radius": ["interpolate", ["linear"], ["zoom"], 9, 3.5, 14, 7],
@@ -81,19 +119,37 @@ export class MapController {
       "circle-stroke-color": "#ffffff",
     });
 
-    // click + hover on vehicles
+    // click + hover on vehicles and stops
     if (!this._wired) {
       this.map.on("click", "vehicles-circle", (e) => this.onVehicleClick?.(e.features[0].properties, e.lngLat));
       this.map.on("mouseenter", "vehicles-circle", () => (this.map.getCanvas().style.cursor = "pointer"));
       this.map.on("mouseleave", "vehicles-circle", () => (this.map.getCanvas().style.cursor = ""));
+
+      this.map.on("click", "stops-circle", (e) => {
+        e.originalEvent.stopPropagation();
+        const { stop_name, stop_id, mean_delay } = e.features[0].properties;
+        const name = stop_name || stop_id;
+        const delayHtml = mean_delay != null
+          ? `<div style="font-size:11px;margin-top:3px;color:${_delayTextColor(mean_delay)}">${fmtDelay(mean_delay)}</div>`
+          : "";
+        if (this._stopPopup) this._stopPopup.remove();
+        this._stopPopup = new maplibregl.Popup({ closeButton: true, closeOnClick: true, offset: 8 })
+          .setLngLat(e.lngLat)
+          .setHTML(`<div style="font-size:13px;font-weight:600">${name}</div>${delayHtml}`)
+          .addTo(this.map);
+      });
+      this.map.on("mouseenter", "stops-circle", () => (this.map.getCanvas().style.cursor = "pointer"));
+      this.map.on("mouseleave", "stops-circle", () => (this.map.getCanvas().style.cursor = ""));
+
+      this.map.on("zoomend", () => this._maybeUpdateH3Res());
       this._wired = true;
     }
     this.applyView(this._view);
   }
 
-  _add(id, type, source, paint, layout = {}) {
+  _add(id, type, source, paint, layout = {}, opts = {}) {
     if (this.map.getLayer(id)) return;
-    this.map.addLayer({ id, type, source, paint, layout });
+    this.map.addLayer({ id, type, source, paint, layout, ...opts });
   }
 
   _set(id, data) {
@@ -107,9 +163,13 @@ export class MapController {
     this._view = view;
     const vis = {
       "routes-line": view === "routes",
+      "routes-label": view === "routes",
       "stops-circle": view === "stops",
+      "h3-fill": view === "stops",
+      "h3-outline": view === "stops",
       "trails-line": view === "live",
       "bunching-line": view === "live",
+      "live-route-dash": view === "live",
       "vehicles-circle": view === "live",
       "sel-route-line": view === "routes",
       "sel-stop-ring": view === "stops",
@@ -118,6 +178,7 @@ export class MapController {
       if (this.map.getLayer(id)) this.map.setLayoutProperty(id, "visibility", on ? "visible" : "none");
     }
     this._applyVehicleHighlight(); // re-assert after (re)building layers
+    if (view === "stops") this._maybeUpdateH3Res(); // emit the resolution for the current zoom
   }
 
   // ---- data setters ----
@@ -167,10 +228,24 @@ export class MapController {
         .map((d) => ({
           type: "Feature",
           geometry: { type: "Point", coordinates: [d.stop_lon, d.stop_lat] },
-          properties: { ...d, color: delayColor(d.scaled_delay) },
+          properties: { stop_id: d.stop_id, stop_name: d.stop_name, mean_delay: d.mean_delay ?? null },
         })),
     });
   }
+
+  setLiveRoute(path, color = "#ffffff") {
+    if (!path || path.length < 2) { this._set("live-route", EMPTY); return; }
+    this._set("live-route", {
+      type: "FeatureCollection",
+      features: [{
+        type: "Feature",
+        geometry: { type: "LineString", coordinates: path.map((p) => [p[1], p[0]]) },
+        properties: { color },
+      }],
+    });
+  }
+
+  clearLiveRoute() { this._set("live-route", EMPTY); }
 
   setRoutes(routes) {
     this._set("routes", {
@@ -180,9 +255,41 @@ export class MapController {
         .map((r) => ({
           type: "Feature",
           geometry: { type: "LineString", coordinates: r.route_path.map((p) => [p[1], p[0]]) },
-          properties: { color: r._color },
+          properties: { color: r._color, label: r.route_short_name || r.route_id || "" },
         })),
     });
+  }
+
+  // Draw the H3 hex heatmap. cells come from /api/h3_delays with a closed
+  // [lng,lat] boundary ring and a 0..1 scaled_delay.
+  setH3(cells) {
+    this._set("h3", {
+      type: "FeatureCollection",
+      features: (cells || [])
+        .filter((c) => c.boundary && c.boundary.length > 2)
+        .map((c) => ({
+          type: "Feature",
+          geometry: { type: "Polygon", coordinates: [c.boundary] },
+          properties: {
+            h3_index: c.h3_index,
+            mean_delay: c.mean_delay,
+            total_trips: c.total_trips,
+            interpolated: c.interpolated || false,
+            color: c.interpolated ? "rgba(0,0,0,0)" : delayColor(c.scaled_delay),
+          },
+        })),
+    });
+  }
+
+  // In the stops (combined) view, map the current zoom to a resolution and tell React
+  // when it changes so it can fetch the matching hex cells.
+  _maybeUpdateH3Res() {
+    if (this._view !== "stops") return;
+    const res = resForZoom(this.map.getZoom());
+    if (res !== this._h3Res) {
+      this._h3Res = res;
+      this.onH3Res?.(res);
+    }
   }
 
   flyTo(center, zoom = 12) {
@@ -251,4 +358,11 @@ export class MapController {
 
   resize() { this.map.resize(); }
   destroy() { this.map.remove(); }
+}
+
+// Inline colour for delay text inside the stop popup HTML.
+function _delayTextColor(sec) {
+  if (sec == null || Math.abs(sec) < 30) return "inherit";
+  if (sec < 0) return "#facc15"; // yellow — early
+  return sec > 300 ? "#991b1b" : "#ef4444"; // dark-red vs red — late
 }

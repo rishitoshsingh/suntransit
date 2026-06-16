@@ -6,26 +6,28 @@ import HourlyPanel from "../panels/HourlyPanel.jsx";
 
 const HEAD = {
   live: ["Network Pulse", "Live fleet derived from Redis — speed and bunching computed on the fly."],
-  stops: ["Stop Delays", "Mean arrival delay per stop over the selected 7-day window."],
+  stops: ["Stops + Hex Heatmap", "Grey dots mark stop locations; hex colour shows rolling 30-day mean delay. Use the hour slider to filter by time of day."],
   routes: ["Route Delays", "Best and worst performing routes over the selected window."],
-  trends: ["Reliability Trends", "Full history of on-time performance — improving or worsening."],
-  hourly: ["The Late Clock", "When is transit late? Hour-of-day profile from the last 30 days."],
+  analytics: ["Analytics Dashboard", "System reliability trends and hour-of-day lateness profile."],
 };
 
 export default function SidePanel({
-  open, setOpen, view, city, date, agency, snapshot, colorBy, setColorBy, onFocus,
+  open, setOpen, view, city, date, agency, h3Res, snapshot, colorBy, setColorBy, onFocus,
   onSelectStop, selStop, onSelectRoute, selRouteId, onSelectLiveRoute, selLiveRoute,
 }) {
   const [title, sub] = HEAD[view] || ["", ""];
+  const isAnalytics = view === "analytics";
 
   return (
     <>
-      <button className={`icon-btn panel-toggle ${open ? "open" : ""}`} onClick={() => setOpen(!open)}
-        title="Toggle panel">
-        {open ? "›" : "‹"}
-      </button>
+      {!isAnalytics && (
+        <button className={`icon-btn panel-toggle ${open ? "open" : ""}`} onClick={() => setOpen(!open)}
+          title="Toggle panel">
+          {open ? "›" : "‹"}
+        </button>
+      )}
 
-      <aside className={`panel glass ${open ? "" : "closed"}`}>
+      <aside className={`panel glass ${open ? "" : "closed"} ${isAnalytics ? "analytics" : ""}`}>
         <div className="panel-head">
           <h2>{title}</h2>
           <p>{sub}</p>
@@ -34,8 +36,16 @@ export default function SidePanel({
           {view === "live" && <LivePanel snapshot={snapshot} colorBy={colorBy} setColorBy={setColorBy} onFocus={onFocus} onSelectRoute={onSelectLiveRoute} selRoute={selLiveRoute} />}
           {view === "stops" && <StopsPanel city={city} date={date} onSelect={onSelectStop} selStop={selStop} />}
           {view === "routes" && <RoutesPanel city={city} date={date} onSelect={onSelectRoute} selRouteId={selRouteId} />}
-          {view === "trends" && <TrendsPanel city={city} agency={agency} />}
-          {view === "hourly" && <HourlyPanel city={city} />}
+          {isAnalytics && (
+            <div className="analytics-grid">
+              <div className="analytics-col">
+                <TrendsPanel city={city} agency={agency} />
+              </div>
+              <div className="analytics-col">
+                <HourlyPanel city={city} />
+              </div>
+            </div>
+          )}
         </div>
       </aside>
     </>

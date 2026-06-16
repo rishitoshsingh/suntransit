@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import maplibregl from "maplibre-gl";
 
 // Renders a MapLibre popup for a clicked vehicle. Pure imperative bridge.
-export default function VehiclePopup({ map, popup, onClose }) {
+export default function VehiclePopup({ map, popup, onClose, cityTimezone }) {
   useEffect(() => {
     if (!map || !popup) return;
     const p = popup.props;
@@ -20,7 +20,7 @@ export default function VehiclePopup({ map, popup, onClose }) {
           <div class="vp-rows">
             <div>Vehicle <b>${p.vehicle_id}</b></div>
             <div>Speed <b>${speed}</b>${bunched ? ' · <b style="color:#ff5d6c">bunched</b>' : ""}</div>
-            <div>Last seen <b>${p.last_timestamp || "—"}</b></div>
+            <div>Last seen <b>${p.last_timestamp ? new Date(p.last_timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", timeZone: cityTimezone, timeZoneName: "short" }) : "—"}</b></div>
           </div>
         </div>
       `)

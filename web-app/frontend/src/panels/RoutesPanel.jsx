@@ -1,6 +1,10 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { API } from "../api.js";
 import { fmtDelay } from "../util.js";
+import { delayColor } from "../map/basemaps.js";
+
+const SCALE_MAX = 600;
+const delayColorFixed = (s) => delayColor(Math.max(0, Math.min(1, 0.5 + s / (2 * SCALE_MAX))));
 
 const BANDS = [
   { key: "early", label: "Early" },
@@ -53,7 +57,6 @@ export default function RoutesPanel({ city, date, onSelect, selRouteId }) {
 
 function RouteRow({ r, onSelect, selected }) {
   const d = r.mean_delay;
-  const color = Math.abs(d) < 60 ? "var(--text-faint)" : d < 0 ? "var(--good)" : "var(--bad)";
   return (
     <div className={`row ${selected ? "selected" : ""}`} style={{ cursor: "pointer" }} onClick={() => onSelect?.(r)}>
       <span className="chip" style={{ background: r.route_color }}>{r.route_short_name || "?"}</span>
@@ -61,7 +64,7 @@ function RouteRow({ r, onSelect, selected }) {
         <div className="t">Route {r.route_short_name || r.route_id}</div>
         <div className="s">{r.total_trips} trips</div>
       </div>
-      <span className="val" style={{ color }}>{fmtDelay(d)}</span>
+      <span className="val" style={{ color: delayColorFixed(d) }}>{fmtDelay(d)}</span>
     </div>
   );
 }

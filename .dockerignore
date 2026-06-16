@@ -1,0 +1,8 @@
+# Keep the (repo-root) build context small. The spark image build only needs
+# spark-image/ and spark-jobs/; exclude the heavy/irrelevant trees.
+.git
+**/node_modules
+**/.venv
+**/dist
+**/__pycache__
+*.pyc

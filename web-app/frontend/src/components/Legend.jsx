@@ -26,13 +26,31 @@ export default function Legend({ view, colorBy }) {
     );
   }
 
-  if (view === "stops" || view === "routes") {
+  if (view === "stops") {
     return (
       <div className="legend glass">
-        <h4>{view === "stops" ? "Stop delay" : "Route delay"}</h4>
-        <div className="lg-row"><span className="sw" style={{ background: delayColor(0) }} /> Early</div>
+        <h4>Area delay</h4>
+        <div className="lg-row"><span className="sw" style={{ background: delayColor(0) }} /> ≤ −10 min</div>
+        <div className="lg-row"><span className="sw" style={{ background: delayColor(0.25) }} /> −5 min</div>
         <div className="lg-row"><span className="sw" style={{ background: delayColor(0.5) }} /> On time</div>
-        <div className="lg-row"><span className="sw" style={{ background: delayColor(1) }} /> Late</div>
+        <div className="lg-row"><span className="sw" style={{ background: delayColor(0.75) }} /> +5 min</div>
+        <div className="lg-row"><span className="sw" style={{ background: delayColor(1) }} /> ≥ +10 min</div>
+        <div className="lg-row">
+          <span className="sw" style={{ background: "#8794ad", borderRadius: "50%" }} /> Stop location
+        </div>
+      </div>
+    );
+  }
+
+  if (view === "routes") {
+    return (
+      <div className="legend glass">
+        <h4>Route delay</h4>
+        <div className="lg-row"><span className="sw" style={{ background: delayColor(0) }} /> Very early</div>
+        <div className="lg-row"><span className="sw" style={{ background: delayColor(0.25) }} /> Early</div>
+        <div className="lg-row"><span className="sw" style={{ background: delayColor(0.5) }} /> On time</div>
+        <div className="lg-row"><span className="sw" style={{ background: delayColor(0.75) }} /> Late</div>
+        <div className="lg-row"><span className="sw" style={{ background: delayColor(1) }} /> Very late</div>
       </div>
     );
   }

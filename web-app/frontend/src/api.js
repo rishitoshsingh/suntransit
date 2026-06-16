@@ -23,6 +23,11 @@ export const API = {
   agencyHourly: (city) => get(`/api/hourly/agency/${city}`),
   routeHourly: (city) => get(`/api/hourly/routes/${city}`),
 
+  h3Delays: (city, res, hour = null) => {
+    const q = hour !== null ? `?hour=${hour}` : "";
+    return get(`/api/h3_delays/${city}/${res}${q}`);
+  },
+
   positions: (city) => get(`/api/positions/${city}`),
 };
 

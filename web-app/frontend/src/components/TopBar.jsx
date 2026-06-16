@@ -6,12 +6,11 @@ const TABS = [
   { id: "live", label: "Live" },
   { id: "stops", label: "Stops" },
   { id: "routes", label: "Routes" },
-  { id: "trends", label: "Trends" },
-  { id: "hourly", label: "Late Clock" },
+  { id: "analytics", label: "Analytics" },
 ];
 
 export default function TopBar({
-  cities, city, setCity, view, setView, date, setDate, agency, theme, setTheme, liveStatus,
+  cities, city, setCity, view, setView, date, setDate, agency, theme, setTheme, liveStatus, onAbout,
 }) {
   const [bounds, setBounds] = useState({ min: daysAgo(365), max: defaultMaxDate() });
 
@@ -30,7 +29,7 @@ export default function TopBar({
   return (
     <div className="topbar glass">
       <div className="brand">
-        <span className="dot" />
+        <img src="/logo.png" alt="SunTransit" className="brand-logo" />
         SunTransit
         <small>· transit intelligence</small>
       </div>
@@ -70,6 +69,10 @@ export default function TopBar({
 
       <button className="icon-btn" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} title="Toggle theme">
         {theme === "dark" ? "☀" : "☾"}
+      </button>
+
+      <button className="icon-btn" onClick={onAbout} title="About SunTransit" style={{ fontSize: 18 }}>
+        ℹ
       </button>
     </div>
   );

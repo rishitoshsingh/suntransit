@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {
-  AreaChart, Area, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine,
+  ComposedChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, ReferenceLine, CartesianGrid,
 } from "recharts";
 import { API } from "../api.js";
 import { fmtDelayShort } from "../util.js";
@@ -16,35 +16,38 @@ export default function TrendsPanel({ city, agency }) {
     return () => { cancel = true; };
   }, [city]);
 
-  const series = (agencyTrend?.series || []).map((d) => ({
-    date: d.date.slice(5),
-    mean: d.mean_delay != null ? +(d.mean_delay / 60).toFixed(2) : null,
-    lo: d.mean_delay != null ? +((d.mean_delay - (d.std_delay || 0)) / 60).toFixed(2) : null,
-    hi: d.mean_delay != null ? +((d.mean_delay + (d.std_delay || 0)) / 60).toFixed(2) : null,
-  }));
+  const series = (agencyTrend?.series || []).map((d) => {
+    const mean = d.mean_delay != null ? +(d.mean_delay / 60).toFixed(2) : null;
+    const std = d.std_delay != null ? +(d.std_delay / 60).toFixed(2) : 0;
+    return {
+      date: d.date.slice(5),
+      mean,
+      hi: mean != null ? +(mean + std).toFixed(2) : null,
+      lo: mean != null ? +(mean - std).toFixed(2) : null,
+    };
+  });
 
   return (
     <>
       <div className="chart-card">
         <h3>System on-time trend {agencyTrend && <TrendBadge badge={agencyTrend.badge} />}</h3>
-        <div className="sub">Daily mean delay (minutes), ± std band</div>
+        <div className="sub">Daily mean delay (minutes), ± std dev band</div>
+        <div className="chart-legend">
+          <span><span className="cleg-line" />Mean delay</span>
+          <span><span className="cleg-dashed" />±1 std dev</span>
+        </div>
         {series.length ? (
           <ResponsiveContainer width="100%" height={170}>
-            <AreaChart data={series} margin={{ top: 6, right: 6, left: -22, bottom: 0 }}>
-              <defs>
-                <linearGradient id="band" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--accent)" stopOpacity={0.25} />
-                  <stop offset="100%" stopColor="var(--accent)" stopOpacity={0.02} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="date" tick={{ fontSize: 10, fill: "var(--text-faint)" }} interval="preserveStartEnd" />
-              <YAxis tick={{ fontSize: 10, fill: "var(--text-faint)" }} width={42} />
-              <ReferenceLine y={0} stroke="var(--text-faint)" strokeDasharray="3 3" />
+            <ComposedChart data={series} margin={{ top: 6, right: 6, left: -22, bottom: 0 }}>
+              <CartesianGrid stroke="var(--border)" vertical={false} />
+              <XAxis dataKey="date" tick={{ fontSize: 10, fill: "var(--text-dim)" }} interval="preserveStartEnd" />
+              <YAxis tick={{ fontSize: 10, fill: "var(--text-dim)" }} width={42} />
+              <ReferenceLine y={0} stroke="var(--text-dim)" strokeDasharray="3 3" />
               <Tooltip content={<TrendTip />} />
-              <Area dataKey="hi" stroke="none" fill="url(#band)" />
-              <Area dataKey="lo" stroke="none" fill="var(--bg)" fillOpacity={1} />
-              <Line dataKey="mean" stroke="var(--accent)" strokeWidth={2.5} dot={false} />
-            </AreaChart>
+              <Line dataKey="hi" stroke="var(--accent)" strokeWidth={1} strokeOpacity={0.4} strokeDasharray="4 3" dot={false} connectNulls legendType="none" />
+              <Line dataKey="lo" stroke="var(--accent)" strokeWidth={1} strokeOpacity={0.4} strokeDasharray="4 3" dot={false} connectNulls legendType="none" />
+              <Line dataKey="mean" stroke="var(--accent)" strokeWidth={2.5} dot={false} connectNulls />
+            </ComposedChart>
           </ResponsiveContainer>
         ) : (
           <div className="empty">Not enough history yet.</div>
@@ -85,7 +88,6 @@ function TrendTip({ active, payload, label }) {
   );
 }
 
-// Tiny inline SVG sparkline.
 function Spark({ values, color }) {
   const v = values.filter((x) => x != null);
   if (v.length < 2) return <div className="s">—</div>;

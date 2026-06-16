@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { API } from "./api.js";
 import { MapController } from "./map/mapController.js";
-import { delayColor } from "./map/basemaps.js";
+import { delayColor } from "./map/basemaps.js"; // used by colorRoutes below
 import { useLive } from "./hooks/useLive.js";
 import { defaultMaxDate } from "./util.js";
 import TopBar from "./components/TopBar.jsx";
@@ -9,15 +9,19 @@ import PulseStrip from "./components/PulseStrip.jsx";
 import SidePanel from "./components/SidePanel.jsx";
 import Legend from "./components/Legend.jsx";
 import VehiclePopup from "./components/VehiclePopup.jsx";
+import HourSlider from "./components/HourSlider.jsx";
+import AboutModal from "./components/AboutModal.jsx";
 
 export default function App() {
   const mapRef = useRef(null);
   const mapEl = useRef(null);
 
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState("light");
   const [cities, setCities] = useState({});
   const [city, setCity] = useState("Phoenix");
   const [view, setView] = useState("live");
+  const [h3Res, setH3Res] = useState(8);    // driven by zoom in the stops view
+  const [h3Hour, setH3Hour] = useState(null); // null = all day, 0-23 = specific hour
   const [date, setDate] = useState(defaultMaxDate());
   const [panelOpen, setPanelOpen] = useState(true);
   const [colorBy, setColorBy] = useState("route"); // route | speed
@@ -26,6 +30,7 @@ export default function App() {
   const [selStop, setSelStop] = useState(null);      // stops view: clicked stop_id
   const [selRouteId, setSelRouteId] = useState(null); // routes view: clicked route_id
   const [selLiveRoute, setSelLiveRoute] = useState(null); // live view: highlighted route_id
+  const [showAbout, setShowAbout] = useState(false);
 
   const agency = cities[city]?.agency;
   const { snapshot, status } = useLive(city, view === "live");
@@ -33,8 +38,10 @@ export default function App() {
   // ---- one-time: load cities + create map ----
   useEffect(() => {
     API.cities().then(setCities).catch(() => {});
-    const mc = new MapController(mapEl.current, theme, (props, lngLat) =>
-      setPopup({ props, lngLat })
+    const mc = new MapController(
+      mapEl.current, theme,
+      (props, lngLat) => setPopup({ props, lngLat }),
+      (res) => setH3Res(res), // h3 view: zoom changed the resolution
     );
     mapRef.current = mc;
     return () => mc.destroy();
@@ -58,6 +65,7 @@ export default function App() {
   useEffect(() => {
     mapRef.current?.applyView(view);
     setPopup(null);
+    if (view === "analytics") setPanelOpen(true);
   }, [view]);
 
   // ---- clear any selection/highlight when the dataset context changes ----
@@ -65,6 +73,7 @@ export default function App() {
     setSelStop(null); setSelRouteId(null); setSelLiveRoute(null);
     mapRef.current?.highlightStop(null);
     mapRef.current?.clearRoute();
+    mapRef.current?.clearLiveRoute();
     mapRef.current?.setVehicleHighlight(null);
   }, [view, city, date]);
 
@@ -83,10 +92,16 @@ export default function App() {
     if (d?.route_path?.length) mapRef.current?.showRoute(d.route_path, r.route_color || d.route_color);
   };
 
-  const selectLiveRoute = (routeId) => {
+  const selectLiveRoute = async (routeId) => {
     const next = selLiveRoute === routeId ? null : routeId;
     setSelLiveRoute(next);
     mapRef.current?.setVehicleHighlight(next);
+    if (!next) { mapRef.current?.clearLiveRoute(); return; }
+    const d = await API.routePath(city, next).catch(() => null);
+    if (d?.route_path?.length) {
+      const routeColor = snapshot?.vehicles?.find((v) => v.route_id === next)?.route_color || "#ffffff";
+      mapRef.current?.setLiveRoute(d.route_path, routeColor);
+    }
   };
 
   // ---- push live snapshot to the map ----
@@ -94,7 +109,7 @@ export default function App() {
     if (view === "live" && snapshot) mapRef.current?.setLive(snapshot, colorBy);
   }, [snapshot, colorBy, view]);
 
-  // ---- historical views: fetch + draw on city/date/view change ----
+  // ---- stop positions + route data (re-fetched on city/date change) ----
   useEffect(() => {
     if (!agency) return;
     let cancelled = false;
@@ -104,6 +119,7 @@ export default function App() {
         setLoading(true);
         const d = await API.stopDelays(city, date).catch(() => null);
         if (!cancelled && d) mapRef.current?.setStops(d.delays);
+        if (!cancelled) setLoading(false);
       } else if (view === "routes") {
         setLoading(true);
         const d = await API.routeDelays(city, date).catch(() => null);
@@ -111,12 +127,22 @@ export default function App() {
           const all = [...(d.top_5_routes || []), ...(d.bottom_5_routes || [])];
           mapRef.current?.setRoutes(colorRoutes(all));
         }
+        if (!cancelled) setLoading(false);
       }
-      if (!cancelled) setLoading(false);
     }
     load();
     return () => { cancelled = true; };
-  }, [view, city, date, agency, colorBy]);
+  }, [view, city, date, agency]);
+
+  // ---- H3 hex heatmap (re-fetched on zoom/hour change, independent of stop data) ----
+  useEffect(() => {
+    if (view !== "stops" || !agency) return;
+    let cancelled = false;
+    API.h3Delays(city, h3Res, h3Hour).catch(() => null).then((d) => {
+      if (!cancelled && d) mapRef.current?.setH3(d.cells);
+    });
+    return () => { cancelled = true; };
+  }, [view, city, h3Res, h3Hour, agency]);
 
   return (
     <div className="app">
@@ -128,6 +154,7 @@ export default function App() {
         date={date} setDate={setDate} agency={agency}
         theme={theme} setTheme={setTheme}
         liveStatus={view === "live" ? status : null}
+        onAbout={() => setShowAbout(true)}
       />
 
       <Legend view={view} colorBy={colorBy} />
@@ -136,7 +163,7 @@ export default function App() {
 
       <SidePanel
         open={panelOpen} setOpen={setPanelOpen}
-        view={view} city={city} date={date} agency={agency}
+        view={view} city={city} date={date} agency={agency} h3Res={h3Res}
         snapshot={snapshot} colorBy={colorBy} setColorBy={setColorBy}
         onFocus={(lng, lat) => mapRef.current?.flyTo([lng, lat], 14)}
         onSelectStop={selectStop} selStop={selStop}
@@ -144,11 +171,16 @@ export default function App() {
         onSelectLiveRoute={selectLiveRoute} selLiveRoute={selLiveRoute}
       />
 
+      {view === "stops" && <HourSlider hour={h3Hour} onChange={setH3Hour} />}
+
       {loading && <div className="loading"><div className="spinner" /></div>}
 
       {popup && (
-        <VehiclePopup map={mapRef.current?.map} popup={popup} onClose={() => setPopup(null)} />
+        <VehiclePopup map={mapRef.current?.map} popup={popup} onClose={() => setPopup(null)}
+          cityTimezone={cities[city]?.timezone} />
       )}
+
+      {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
     </div>
   );
 }

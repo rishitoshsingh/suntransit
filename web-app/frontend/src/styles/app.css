@@ -22,7 +22,7 @@
   padding: 10px 14px;
 }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: .3px; }
-.brand .dot { width: 11px; height: 11px; border-radius: 50%; background: var(--accent); box-shadow: var(--glow); }
+.brand-logo { height: 28px; width: auto; object-fit: contain; }
 .brand small { color: var(--text-dim); font-weight: 500; }
 
 .tabs { display: flex; gap: 4px; background: var(--bg-2); padding: 4px; border-radius: 11px; border: 1px solid var(--border); }
@@ -112,11 +112,106 @@ html[data-theme="light"] .tab.active { color: #fff; }
 .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: .7px; color: var(--text-faint);
   font-weight: 700; margin: 14px 2px 8px; }
 
+/* ---- search box ---- */
+.search-box { position: relative; margin-bottom: 10px; }
+.search-box input {
+  width: 100%; box-sizing: border-box;
+  background: var(--bg-2); color: var(--text);
+  border: 1px solid var(--border-strong); border-radius: 9px;
+  padding: 8px 32px 8px 11px; font-size: 13px; font-family: inherit;
+}
+.search-box input:focus { outline: none; border-color: var(--accent); }
+.search-box input::placeholder { color: var(--text-faint); }
+.search-clear {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--text-dim); font-size: 18px;
+  cursor: pointer; padding: 0; line-height: 1;
+}
+.search-clear:hover { color: var(--text); }
+
 /* ---- legend ---- */
 .legend { position: absolute; left: 14px; top: 78px; z-index: 15; padding: 11px 13px; font-size: 12px; }
 .legend .lg-row { display: flex; align-items: center; gap: 8px; margin: 5px 0; color: var(--text-dim); }
 .legend .sw { width: 14px; height: 14px; border-radius: 4px; }
 .legend h4 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; letter-spacing: .6px; color: var(--text-faint); }
+
+/* ---- hour slider (stops + hex combined view) ---- */
+.hour-slider {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  padding: 10px 16px 12px;
+  min-width: 240px;
+}
+.hour-slider-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+.hour-slider-val { color: var(--text); font-weight: 600; }
+.hour-slider input[type="range"] { width: 100%; accent-color: var(--accent); cursor: pointer; }
+
+/* ---- analytics full-width dashboard ---- */
+.panel.analytics {
+  left: 14px;
+  width: auto;
+}
+.analytics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 32px;
+  align-items: start;
+}
+.analytics-col { min-width: 0; }
+
+/* ---- about modal ---- */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 50;
+  background: rgba(0,0,0,0.55);
+  display: grid; place-items: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.modal-card {
+  position: relative; width: 440px; max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 80px); overflow-y: auto;
+  border-radius: 18px; padding: 28px 28px 24px;
+}
+.modal-close {
+  position: absolute; top: 14px; right: 16px;
+  background: none; border: none; font-size: 22px; line-height: 1;
+  color: var(--text-dim); cursor: pointer;
+}
+.modal-close:hover { color: var(--text); }
+.modal-section { margin-bottom: 4px; }
+.modal-divider { border: none; border-top: 1px solid var(--border); margin: 18px 0; }
+.modal-label { font-size: 11px; text-transform: uppercase; letter-spacing: .7px; color: var(--text-faint); font-weight: 700; margin-bottom: 8px; }
+.modal-text { font-size: 13px; color: var(--text-dim); line-height: 1.7; margin: 0 0 6px; }
+.modal-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.modal-tag { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; background: var(--bg-2); border: 1px solid var(--border-strong); color: var(--text-dim); }
+.modal-star {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; box-sizing: border-box; margin-bottom: 12px;
+  padding: 10px; border-radius: 10px; font-size: 13px; font-weight: 700;
+  text-decoration: none;
+  background: color-mix(in srgb, #f5a623 18%, transparent);
+  border: 1px solid #f5a623;
+  color: #f5a623;
+  transition: var(--t-fast);
+}
+.modal-star:hover { background: color-mix(in srgb, #f5a623 28%, transparent); }
+.modal-links { display: flex; flex-direction: column; gap: 8px; }
+.modal-link {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; color: var(--accent);
+  text-decoration: none; padding: 8px 10px; border-radius: 9px;
+  border: 1px solid var(--border); transition: var(--t-fast);
+}
+.modal-link:hover { background: var(--bg-2); border-color: var(--accent); }
 
 /* ---- vehicle popup ---- */
 .maplibregl-popup-content {
@@ -131,7 +226,14 @@ html[data-theme="light"] .tab.active { color: #fff; }
 /* ---- charts ---- */
 .chart-card { margin-bottom: 16px; }
 .chart-card h3 { margin: 0 0 2px; font-size: 14px; }
-.chart-card .sub { font-size: 11px; color: var(--text-dim); margin-bottom: 10px; }
+.chart-card .sub { font-size: 11px; color: var(--text-dim); margin-bottom: 6px; }
+
+.chart-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 11px; color: var(--text-dim); margin-bottom: 10px; }
+.chart-legend span { display: flex; align-items: center; gap: 5px; }
+.cleg-line { display: inline-block; width: 18px; height: 2.5px; background: var(--accent); border-radius: 2px; }
+.cleg-dashed { display: inline-block; width: 18px; height: 0; border-top: 2px dashed var(--accent); opacity: 0.5; }
+.cleg-band { display: inline-block; width: 14px; height: 10px; background: var(--accent); opacity: 0.3; border-radius: 2px; }
+.cleg-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; }
 
 .empty { color: var(--text-dim); font-size: 13px; text-align: center; padding: 30px 12px; line-height: 1.6; }
 
@@ -188,6 +290,9 @@ html[data-theme="light"] .tab.active { color: #fff; }
   }
   .stat { min-width: 96px; padding: 8px 11px; }
   .stat .v { font-size: 19px; }
+
+  .panel.analytics { left: 8px; width: auto; }
+  .analytics-grid { grid-template-columns: 1fr; }
 
   /* ---- side panel: bottom sheet ---- */
   .panel {

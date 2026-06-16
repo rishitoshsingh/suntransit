@@ -103,3 +103,28 @@ def route_hourly(agency: str) -> pd.DataFrame:
         "WHERE agency = :a ORDER BY route_id, hour",
         a=agency,
     )
+
+
+# --- H3 hexagon heatmap (new) ----------------------------------------------
+
+def h3_delays(agency: str, resolution: int, hour: int | None = None) -> pd.DataFrame:
+    """Per-cell delay for one resolution.
+
+    `h3_hourly_delay` keeps the hour-of-day grain; for the all-day heatmap we
+    trip-weight the 24 hours back into one mean per cell. Pass `hour` for a
+    single hour-of-day slice (the optional time filter).
+    """
+    if hour is None:
+        return _q(
+            "SELECT h3_index, "
+            "       SUM(mean_delay * total_trips) / NULLIF(SUM(total_trips), 0) AS mean_delay, "
+            "       SUM(total_trips) AS total_trips "
+            "FROM h3_hourly_delay WHERE agency = :a AND resolution = :r "
+            "GROUP BY h3_index",
+            a=agency, r=resolution,
+        )
+    return _q(
+        "SELECT h3_index, mean_delay, total_trips FROM h3_hourly_delay "
+        "WHERE agency = :a AND resolution = :r AND hour = :h",
+        a=agency, r=resolution, h=hour,
+    )

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, ReferenceLine } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, ReferenceLine, CartesianGrid } from "recharts";
 import { API } from "../api.js";
 import { delayColor } from "../map/basemaps.js";
 import { fmtDelay } from "../util.js";
@@ -70,6 +70,11 @@ export default function HourlyPanel({ city }) {
       )}
 
       <div className="section-label">Delay by hour of day</div>
+      <div className="chart-legend" style={{ marginBottom: 6 }}>
+        <span><span className="cleg-swatch" style={{ background: "rgb(180,120,0)" }} />Early (&lt;−5 m)</span>
+        <span><span className="cleg-swatch" style={{ background: "rgb(34,197,94)" }} />On time</span>
+        <span><span className="cleg-swatch" style={{ background: "rgb(239,68,68)" }} />Late (&gt;5 m)</span>
+      </div>
       <div className="hourbar">
         {dense.map((d) => (
           <div key={d.hour} className="cell" style={{ background: d.color }} title={`${d.label}: ${fmtDelay(d.delay)}`} />
@@ -82,11 +87,12 @@ export default function HourlyPanel({ city }) {
       </div>
 
       <div className="chart-card" style={{ marginTop: 16 }}>
-        <div className="sub">Mean delay (minutes) — green early, red late</div>
+        <div className="sub">Mean delay (minutes)</div>
         <ResponsiveContainer width="100%" height={180}>
           <BarChart data={dense} margin={{ top: 6, right: 6, left: -24, bottom: 0 }}>
-            <XAxis dataKey="label" tick={{ fontSize: 9, fill: "var(--text-faint)" }} interval={2} />
-            <YAxis tick={{ fontSize: 10, fill: "var(--text-faint)" }} width={42} />
+            <CartesianGrid stroke="var(--border)" vertical={false} />
+            <XAxis dataKey="label" tick={{ fontSize: 9, fill: "var(--text-dim)" }} interval={2} />
+            <YAxis tick={{ fontSize: 10, fill: "var(--text-dim)" }} width={42} />
             <ReferenceLine y={0} stroke="var(--text-faint)" />
             <Tooltip content={<HourTip />} />
             <Bar dataKey="min" radius={[3, 3, 0, 0]}>

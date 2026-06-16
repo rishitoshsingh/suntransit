@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from app.config import ALLOWED_ORIGINS
-from app.routers import live, delays, trends, hourly, meta
+from app.routers import live, delays, trends, hourly, meta, h3
 
 logging.basicConfig(level=logging.INFO)
 
@@ -31,6 +31,7 @@ app.include_router(live.router)
 app.include_router(delays.router)
 app.include_router(trends.router)
 app.include_router(hourly.router)
+app.include_router(h3.router)
 
 
 @app.get("/api")

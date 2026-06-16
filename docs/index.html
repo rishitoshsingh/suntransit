@@ -529,6 +529,7 @@
         }
 
         @media (max-width: 960px) {
+
             .hero-panel,
             .content-grid,
             .cta-band,
@@ -568,7 +569,10 @@
 <body>
     <main class="page-shell">
         <nav class="topbar">
-            <a class="wordmark" href="https://rishitoshsingh.github.io/">Rishitosh Kumar Singh</a>
+            <a class="wordmark" href="https://rishitoshsingh.github.io/" style="display:flex;align-items:center;gap:0.55rem;">
+                <img src="assets/logo.png" alt="SunTransit logo" style="width:1.6rem;height:1.6rem;border-radius:6px;flex-shrink:0;" />
+                Rishitosh Kumar Singh
+            </a>
             <div class="topbar-links">
                 <a href="https://rishitoshsingh.github.io/">Portfolio</a>
                 <a href="#overview">Overview</a>
@@ -593,19 +597,19 @@
                     <span class="pill">Phoenix + Boston</span>
                 </div>
                 <div class="hero-actions">
-                    <a class="button button-primary" href="https://suntransit.live/" target="_blank"
-                        rel="noreferrer">
+                    <a class="button button-primary" href="https://suntransit.live/" target="_blank" rel="noreferrer">
                         <span class="button-icon" aria-hidden="true">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                 stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10" />
-                                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                                <path
+                                    d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
                             </svg>
                         </span>
                         Live Dashboard
                     </a>
-                    <a class="button button-secondary" href="https://github.com/rishitoshsingh/suntransit" target="_blank"
-                        rel="noreferrer">
+                    <a class="button button-secondary" href="https://github.com/rishitoshsingh/suntransit"
+                        target="_blank" rel="noreferrer">
                         <span class="button-icon" aria-hidden="true">
                             <svg viewBox="0 0 24 24" fill="currentColor">
                                 <path
@@ -635,7 +639,8 @@
             </article>
             <article class="stat-card">
                 <div class="stat-value">13M-34.6M</div>
-                <p class="stat-label">Vehicle-location messages processed each day from continuously polled GTFS-Realtime feeds.</p>
+                <p class="stat-label">Vehicle-location messages processed each day from continuously polled
+                    GTFS-Realtime feeds.</p>
             </article>
             <article class="stat-card">
                 <div class="stat-value">Stop-level</div>
@@ -652,7 +657,7 @@
                 <p class="eyebrow">Tech Stack</p>
                 <h2>Core systems behind SunTransit</h2>
             </div>
-            <div class="stack-grid">
+            <div class="stack-grid" style="grid-template-columns: repeat(6, minmax(0, 1fr));">
                 <div class="stack-card">
                     <img src="assets/tech/python.png" alt="Python" />
                     <span>Python</span>
@@ -668,10 +673,6 @@
                 <div class="stack-card">
                     <img src="assets/tech/docker.png" alt="Docker" />
                     <span>Docker</span>
-                </div>
-                <div class="stack-card">
-                    <img src="assets/tech/airflow.png" alt="Airflow" />
-                    <span>Airflow</span>
                 </div>
                 <div class="stack-card">
                     <img src="assets/tech/linux.svg" alt="Linux" />
@@ -726,11 +727,13 @@
                     </div>
                     <div class="entry">
                         <h3 class="entry-title">Deployment model</h3>
-                        <p class="muted">Cloud-friendly architecture, currently run locally to control operating cost.</p>
+                        <p class="muted">Cloud-friendly architecture, currently run locally to control operating cost.
+                        </p>
                     </div>
                     <div class="entry">
                         <h3 class="entry-title">Who it is for</h3>
-                        <p class="muted">Riders, transit operators, urban planners, and data-driven mobility projects.</p>
+                        <p class="muted">Riders, transit operators, urban planners, and data-driven mobility projects.
+                        </p>
                     </div>
                 </div>
             </aside>
@@ -782,7 +785,15 @@
             </div>
             <div class="visual-grid">
                 <article class="visual-card">
-                    <img src="livemap.gif" alt="Live map showing real-time vehicle tracking" />
+                    <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
+                        <iframe
+                            src="https://www.youtube.com/embed/WqL5QKEByUs"
+                            title="SunTransit Demo"
+                            style="position:absolute;inset:0;width:100%;height:100%;border:0;"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen>
+                        </iframe>
+                    </div>
                     <div class="visual-copy">
                         <h3>Live tracking</h3>
                         <p>
@@ -792,12 +803,24 @@
                     </div>
                 </article>
                 <article class="visual-card">
-                    <img src="heatmap.png" alt="Delay heatmap showing stop-level performance" />
+                    <img src="screenshot-stop-delay.png" alt="Stop and hex heatmap showing delay by area" />
                     <div class="visual-copy">
-                        <h3>Delay heatmap</h3>
+                        <h3>Stops + hex heatmap</h3>
                         <p>
-                            A stop-level view of where delays accumulate, making reliability issues much easier to spot
-                            than raw event logs or tables.
+                            A stop-level and H3 hex view of where delays accumulate, making reliability issues much
+                            easier to spot than raw event logs or tables.
+                        </p>
+                    </div>
+                </article>
+            </div>
+            <div style="margin-top: 1.25rem;">
+                <article class="visual-card">
+                    <img src="screenshot-analytics.png" alt="Analytics dashboard showing system on-time trends and route performance" style="aspect-ratio: auto; object-fit: contain;" />
+                    <div class="visual-copy">
+                        <h3>Analytics dashboard</h3>
+                        <p>
+                            System-wide on-time trends, hour-of-day delay profiles, and per-route performance ranked
+                            worst-first — giving operators and researchers a clear reliability picture.
                         </p>
                     </div>
                 </article>
@@ -858,15 +881,15 @@
                 <div class="cta-actions" style="margin-top: 1.5rem;">
                     <a class="button button-primary" href="https://suntransit.live/" target="_blank"
                         rel="noreferrer">Live Dashboard</a>
-                    <a class="button button-secondary" href="https://github.com/rishitoshsingh/suntransit" target="_blank"
-                        rel="noreferrer">View Repository</a>
-                    <a class="button button-secondary" href="https://rishitoshsingh.github.io/" rel="noreferrer">Open Portfolio</a>
+                    <a class="button button-secondary" href="https://github.com/rishitoshsingh/suntransit"
+                        target="_blank" rel="noreferrer">View Repository</a>
+                    <a class="button button-secondary" href="https://rishitoshsingh.github.io/" rel="noreferrer">Open
+                        Portfolio</a>
                 </div>
             </div>
 
             <aside class="author-card">
-                <img class="author-image" src="assets/images/profile.png"
-                    alt="Rishitosh Singh" />
+                <img class="author-image" src="assets/images/profile.png" alt="Rishitosh Singh" />
                 <div>
                     <div class="author-name">Rishitosh Kumar Singh</div>
                     <p style="margin-top: 0.35rem;">
