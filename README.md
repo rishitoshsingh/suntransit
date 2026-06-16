@@ -52,6 +52,9 @@ Due to cost constraints, SunTransit is currently online only for fetching data f
 3. Analytics Dashboard
   ![Analytics Dashboard](docs/screenshot-analytics.png)
 
+4. Spark Master UI
+  ![Spark Master UI](docs/screenshot-spark.png)
+
 
 ---
 
