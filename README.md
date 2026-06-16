@@ -43,8 +43,14 @@ Due to cost constraints, SunTransit is currently online only for fetching data f
 
 ## Screenshots
 
-2. Stops Delay Heatmap
-  ![Stops Delay Heatmap](docs/heatmap.png)
+1. Live Tracking
+  ![Live Tracking](docs/screenshot-live.png)
+
+2. Stops + Hex Heatmap
+  ![Stops Delay Heatmap](docs/screenshot-stop-delay.png)
+
+3. Analytics Dashboard
+  ![Analytics Dashboard](docs/screenshot-analytics.png)
 
 
 ---
