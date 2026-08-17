@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { API } from "../api.js";
 import { agencyLabel, defaultMaxDate, daysAgo } from "../util.js";
 
@@ -9,9 +9,9 @@ const TABS = [
   { id: "analytics", label: "Analytics" },
 ];
 
-export default function TopBar({
+const TopBar = forwardRef(function TopBar({
   cities, city, setCity, view, setView, date, setDate, agency, theme, setTheme, liveStatus, onAbout,
-}) {
+}, ref) {
   const [bounds, setBounds] = useState({ min: daysAgo(365), max: defaultMaxDate() });
 
   // Date range follows the selected agency's available history.
@@ -26,8 +26,9 @@ export default function TopBar({
 
   const showDate = view === "stops" || view === "routes";
 
+
   return (
-    <div className="topbar glass">
+    <div ref={ref} className="topbar glass">
       <div className="brand">
         <img src="/logo.png" alt="SunTransit" className="brand-logo" />
         SunTransit
@@ -76,4 +77,6 @@ export default function TopBar({
       </button>
     </div>
   );
-}
+});
+
+export default TopBar;

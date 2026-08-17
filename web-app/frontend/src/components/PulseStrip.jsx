@@ -1,12 +1,12 @@
+import { forwardRef } from "react";
 import { fmtDelay } from "../util.js";
 
-// Live "command center" stat cards. All but on-time come straight from Redis.
-export default function PulseStrip({ pulse }) {
+const PulseStrip = forwardRef(function PulseStrip({ pulse }, ref) {
   if (!pulse) return null;
   const ot = pulse.on_time;
 
   return (
-    <div className="pulse-strip glass">
+    <div ref={ref} className="pulse-strip glass">
       <Stat v={pulse.active_vehicles ?? "—"} l="Active vehicles" cls="accent" />
       <Stat v={pulse.avg_speed_mph != null ? `${pulse.avg_speed_mph}` : "—"} l="Avg mph" />
       <Stat v={`${pulse.moving ?? "—"}/${pulse.stopped ?? "—"}`} l="Moving / stopped" cls="good" />
@@ -23,7 +23,9 @@ export default function PulseStrip({ pulse }) {
       )}
     </div>
   );
-}
+});
+
+export default PulseStrip;
 
 function Stat({ v, l, cls = "" }) {
   return (

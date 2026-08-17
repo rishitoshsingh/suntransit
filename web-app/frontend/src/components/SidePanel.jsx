@@ -21,8 +21,11 @@ export default function SidePanel({
   return (
     <>
       {!isAnalytics && (
-        <button className={`icon-btn panel-toggle ${open ? "open" : ""}`} onClick={() => setOpen(!open)}
-          title="Toggle panel">
+        <button
+          className={`icon-btn panel-toggle ${open ? "open" : ""} ${view === "live" ? "live-tab" : ""}`}
+          onClick={() => setOpen(!open)}
+          title="Toggle panel"
+        >
           {open ? "›" : "‹"}
         </button>
       )}

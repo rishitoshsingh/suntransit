@@ -90,6 +90,7 @@ html[data-theme="light"] .tab.active { color: #fff; }
 }
 .panel-toggle.open { right: 388px; }
 
+
 /* ---- list rows ---- */
 .row {
   display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 9px;
@@ -130,7 +131,7 @@ html[data-theme="light"] .tab.active { color: #fff; }
 .search-clear:hover { color: var(--text); }
 
 /* ---- legend ---- */
-.legend { position: absolute; left: 14px; top: 78px; z-index: 15; padding: 11px 13px; font-size: 12px; }
+.legend { position: absolute; left: 14px; top: var(--topbar-bottom, 78px); z-index: 15; padding: 11px 13px; font-size: 12px; }
 .legend .lg-row { display: flex; align-items: center; gap: 8px; margin: 5px 0; color: var(--text-dim); }
 .legend .sw { width: 14px; height: 14px; border-radius: 4px; }
 .legend h4 { margin: 0 0 8px; font-size: 11px; text-transform: uppercase; letter-spacing: .6px; color: var(--text-faint); }
@@ -279,8 +280,8 @@ html[data-theme="light"] .tab.active { color: #fff; }
   .topbar .select, .topbar .datepick { padding: 6px 9px; font-size: 12px; }
   .topbar > .icon-btn { width: 34px; height: 34px; }
 
-  /* ---- legend: sits below the now taller two-row topbar ---- */
-  .legend { top: 104px; left: 8px; padding: 9px 11px; }
+  /* ---- legend: left margin tightens on mobile; top is dynamic via --topbar-bottom ---- */
+  .legend { left: 8px; padding: 9px 11px; }
 
   /* ---- pulse strip: full-width scroll, sits BELOW the sheet + toggle
      so the collapse/expand button is never hidden behind it ---- */
@@ -313,12 +314,15 @@ html[data-theme="light"] .tab.active { color: #fff; }
     width: 38px; height: 4px; border-radius: 3px; background: var(--border-strong);
   }
 
-  /* ---- toggle: floating handle that rides above the sheet ----
-     when closed it sits clear of the bottom pulse strip (live view) */
+  /* ---- toggle: floating handle that rides above the sheet ---- */
   .panel-toggle {
     top: auto; right: 12px; z-index: 23;
-    bottom: calc(86px + env(safe-area-inset-bottom));
+    bottom: calc(14px + env(safe-area-inset-bottom));
     transform: rotate(90deg);
+  }
+  /* live tab: sit above the pulse strip — height measured dynamically via --pulse-h */
+  .panel-toggle.live-tab {
+    bottom: calc(8px + var(--pulse-h, 80px) + 10px + env(safe-area-inset-bottom));
   }
   .panel-toggle.open {
     right: 12px;

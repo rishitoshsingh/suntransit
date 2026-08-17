@@ -1,0 +1,828 @@
+area_id,area_name
+105S,105th Ave & Santa Fe Dr
+107C,107th Ave & Camelback Rd
+107I,107th Ave & Indian School Rd
+107M,107th Ave & McDowell Rd
+DO10,10th Ave & Dobbins Rd
+110V,110th Pl & Via Linda
+11&V,11th St & Van Buren St
+129T,129th Ave & Thunderbird Rd
+12CA,12th St & Camelback Rd
+12GL,12th St & Glendale Ave
+JE12,12th St & Jefferson St
+12LI,12th St & Liberty Lane
+12TH,12th St & Thomas Rd
+JE121,12th St/Jefferson
+WA122,12th St/Washington
+15BU,15th Ave & Buckeye Rd
+15CA,15th Ave & Camelback Rd
+15DO,15th Ave & Dobbins Rd
+15JE,15th Ave & Jefferson St
+PE15,15th Ave & Peoria Ave
+15PI,15th Ave & Pima St
+15TH,15th Ave & Thomas Rd
+15VB,15th Ave & Van Buren St
+15WA,15th Ave & Washington St
+15CI,15th St & Cinnabar Ave
+16BA,16th St & Baseline Rd
+16BE,16th St & Bethany Home Rd
+16BD,16th St & Broadway Rd
+16BU,16th St & Buckeye Rd
+16CA,16th St & Camelback Rd
+16GL,16th St & Glendale Ave
+16NO,16th St & Northern Ave
+16RE,16th St & Roeser Rd
+16RO,16th St & Roosevelt St
+16SO,16th St & Southern Ave
+16TH,16th St & Thomas Rd
+16VB,16th St & Van Buren St
+16WA,16th St & Washington St
+17JE2,17th Ave & Jefferson St
+18JE,18th Ave & Jefferson St
+18MC,18th Ave & McDowell Rd
+19AD,19th Ave & Adams St
+19BL,19th Ave & Bell Rd
+19BE,19th Ave & Bethany Home Rd
+BD19,19th Ave & Broadway Rd
+19BU,19th Ave & Buckeye Rd
+19CT,19th Ave & Cactus Rd
+19CA,19th Ave & Camelback Rd
+19CP,19th Ave & Campbell Ave
+19CH,19th Ave & Cholla St
+19DV,19th Ave & Deer Valley Rd
+19DU,19th Ave & Dunlap Ave
+19GL,19th Ave & Glendale Ave
+GR19,19th Ave & Greenway Rd
+19HT,19th Ave & Hilton Ave
+19IN,19th Ave & Indian School Rd
+19JE-S,19th Ave & Jefferson St
+19JE-E,19th Ave & Jefferson St
+19JE,19th Ave & Jefferson St
+19MC,19th Ave & McDowell Rd
+19NO,19th Ave & Northern Ave
+19PE,19th Ave & Peoria Ave
+RO19,19th Ave & Roeser Rd
+19SH,19th Ave & Shangri-la Rd
+19SO,19th Ave & Southern Ave
+19SS,19th Ave & Sunnyside Dr
+19TH,19th Ave & Thomas Rd
+19TB,19th Ave & Thunderbird Rd
+19UN,19th Ave & Union Hills Dr
+19VB,19th Ave & Van Buren St
+19WH,19th Ave & Wahalla Ln
+LR19CA,19th Ave/Camelback
+LR19DU,19th Ave/Dunlap
+1AVB,1st Ave & Van Buren St
+22LB,22nd Ave & Lower Buckeye Rd
+23CA,23rd Ave & Camelback Rd
+23HP,23rd Ave & Happy Valley Rd
+23RO,23rd Ave & Rose Garden Ln
+24BA,24th St & Baseline Rd
+BD24,24th St & Broadway Rd
+24AR,24th St & Buchanan St
+24BU,24th St & Buckeye Rd
+24CA,24th St & Camelback Rd
+24IN,24th St & Indian School Rd
+24JE,24th St & Jefferson St
+24MC,24th St & McDowell Rd
+24RE,24th St & Roeser Rd
+SO24,24th St & Southern Ave
+24TH,24th St & Thomas Rd
+24VB,24th St & Van Buren St
+24WA,24th St & Washington St
+SKT5,24th St PHX Sky Train Station
+BA24,24th St/Baseline PNR
+24JE1,24th St/Jefferson
+24WA2,24th St/Washington
+25DU,25th Ave/Dunlap
+27BA,27th Av/Baseline PNR
+27BA2,27th Av/Baseline PNR
+27BA1,27th Av/Baseline PNR
+27BU,27th Ave & Buckeye Rd
+27CA,27th Ave & Camelback Rd
+27DV,27th Ave & Deer Valley Rd
+27DU,27th Ave & Durango Dr
+27GL,27th Ave & Glendale Ave
+27IN,27th Ave & Indian School Rd
+27LB,27th Ave & Lower Buckeye Rd
+27NO,27th Ave & Northern Ave
+27RO,27th Ave & Rose Garden Ln
+27SO,27th Ave & Southern Ave
+27TH,27th Ave & Thomas Rd
+27UN,27th Ave & Union Hills Dr
+27VB,27th Ave & Van Buren St
+28DU,28th Ave & Durango Dr
+28CA,28th St & Camelback Rd
+29BE,29th Ave & Bell Rd
+29GR,29th Ave & Greenway Rd
+31TB,31st Ave & Thunderbird Rd
+31UN,31st Ave & Union Hills Dr
+31YO,31st Ave & Yorkshire Dr
+32DU,32nd Dr & Durango St
+32BD,32nd St & Broadway Rd
+32CT,32nd St & Cactus Rd
+CH32,32nd St & Chandler Blvd
+GR32,32nd St & Greenway Rd
+32IN,32nd St & Indian School Rd
+LI32,32nd St & Liberty Ln
+32MC,32nd St & McDowell Rd
+32RO,32nd St & Roosevelt St
+32SH,32nd St & Shea Blvd
+SO32,32nd St & Southern Ave
+32TH,32nd St & Thomas Rd
+32TB,32nd St & Thunderbird Rd
+32UH,32nd St & Union Hills Dr
+32VB,32nd St & Van Buren St
+BE35,35th Ave & Bell Rd
+35BE,35th Ave & Bethany Home Rd
+35BD,35th Ave & Broadway Rd
+35BU,35th Ave & Buckeye Rd
+35CT,35th Ave & Cactus Rd
+35CA,35th Ave & Camelback Rd
+DV35,35th Ave & Deer Valley Rd
+35DU,35th Ave & Durango St
+35GL,35th Ave & Glendale Ave
+GR35,35th Ave & Greenway Rd
+35LB,35th Ave & Lower Buckeye Rd
+35MC,35th Ave & McDowell Rd
+35NO,35th Ave & Northern Ave
+35SO,35th Ave & Southern Ave
+35TH,35th Ave & Thomas Rd
+35TB,35th Ave & Thunderbird Rd
+35UN,35th Ave & Union Hills Dr
+35VB,35th Ave & Van Buren St
+LRWA38,38th St/Washington
+WA38,38th St/Washington
+39DU,39th Ave & Dunlap Ave
+39SO,39th Ave & Southern Ave
+39CA,39th Avenue & Camelback
+3AJE,3rd Ave & Jefferson St
+3AWA,3rd Ave & Washington St
+JE3S1,3rd St/Jefferson
+3SWA2,3rd St/Washington
+3SGR,3rd Street and Garfield
+40BA,40th St & Baseline Rd
+40BL,40th St & Bell Rd
+40BD,40th St & Broadway Rd
+40CT,40th St & Cactus Rd
+40CA,40th St & Camelback Rd
+GR40,40th St & Greenway Rd
+40SH,40th St & Shea Blvd
+40TB,40th St & Thunderbird Rd
+40UH,40th St & Union Hills Dr
+40WA,40th St & Washington St
+PCPR,40th St/Pecos PNR
+BE43,43rd Ave & Bell Rd
+43BL,43rd Ave & Bell Rd
+43BE,43rd Ave & Bethany Home Rd
+43BU,43rd Ave & Buckeye Rd
+43CT,43rd Ave & Cactus Rd
+43CA,43rd Ave & Camelback Rd
+43DU,43rd Ave & Dunlap Ave
+43GL,43rd Ave & Glendale Ave
+GR43,43rd Ave & Greenway Rd
+43IN,43rd Ave & Indian School Rd
+43LB,43rd Ave & Lower Buckeye Rd
+43MC,43rd Ave & McDowell Rd
+43NO,43rd Ave & Northern Ave
+43PE,43rd Ave & Peoria Ave
+43SO,43rd Ave & Southern Ave
+43TH,43rd Ave & Thomas Rd
+43TB,43rd Ave & Thunderbird Rd
+43UN,43rd Ave & Union Hills Dr
+43VB,43rd Ave & Van Buren St
+44CA,44th St & Camelback Rd
+44EL,44th St & Elliot Rd
+44IN,44th St & Indian School Rd
+KN44,44th St & Knox Rd
+44MC,44th St & McDowell Rd
+44TH,44th St & Thomas Rd
+44VB,44th St & Van Buren St
+44WA,44th St & Washington St
+SKTR,44th St PHX Sky Train Station
+LR44WA,44th St/Washington
+45GL,45th Ave & Glendale Ave
+48BA,48th St & Baseline Rd
+48BD,48th St & Broadway Rd
+48CH,48th St & Chandler Blvd
+48EL,48th St & Elliot Rd
+48FR,48th St & Frye Rd
+48MC,48th St & McDowell Rd
+RA48,48th St & Ray Rd
+48RO,48th St & Roeser Rd
+48SO,48th St & Southern Ave
+48UN,48th St & University Dr
+48&V,48th St & Van Buren St
+48WR,48th St & Warner-Elliot Loop
+CA4S,4th St & La Canada Blvd
+LR50WA,50th St/Washington St
+51DO,51st Av & Dobbins Rd
+BA51,51st Ave & Baseline Rd
+BE51,51st Ave & Bell Rd
+51BU,51st Ave & Buckeye Rd
+51CC,51st Ave & Cactus Rd
+51CA,51st Ave & Camelback Rd
+51GL,51st Ave & Glendale Ave
+51GR,51st Ave & Greenway Rd
+51IN,51st Ave & Indian School Rd
+51LB,51st Ave & Lower Buckeye Rd
+51MC,51st Ave & McDowell Rd
+51OL,51st Ave & Olive Ave
+51PE,51st Ave & Pecos Rd
+51RO,51st Ave & Roosevelt St
+51SO,51st Ave & Southern Ave
+51TH,51st Ave & Thomas Rd
+51TB,51st Ave & Thunderbird Rd
+51UN,51st Ave & Union Hills Dr
+51VB,51st Ave & Van Buren St
+EL51,51st St & Elliot Rd
+GL52,52nd Ave & Glendale Ave
+52DV,52nd St & Deer Valley Rd
+52MC,52nd St & McDowell Rd
+52TH,52nd St & Thomas Rd
+52UN,52nd St & University Dr
+52VB,52nd St & Van Buren St
+BE53,53rd Ave & Bell Rd
+54CH,54th St & Chandler Blvd
+55BT,55th Ave & Butler Dr
+55EN,55th Ave & Encanto Blvd
+55NO,55th Ave & Northern Ave
+IN56,56th St & Indian School Rd
+56MY,56th St & Mayo Blvd
+56RA,56th St & Ray Rd
+56SH,56th St & Shea Blvd
+56TH,56th St & Thomas Rd
+56WA,56th St & Washington St
+BA59,59th Ave & Baseline Rd
+59BR,59th Ave & Beardsley Rd
+59BE,59th Ave & Bell Rd
+59BU,59th Ave & Buckeye Rd
+59CA,59th Ave & Camelback Rd
+59GL,59th Ave & Glendale Ave
+GN59,59th Ave & Glenn Dr
+59GN,59th Ave & Glenn Dr
+59HA,59th Ave & Hayward Ave
+MNTC,59th Ave & Hayward Ave
+59IN,59th Ave & Indian School Rd
+59MC,59th Ave & McDowell Rd
+59MY,59th Ave & Myrtle Ave
+59NO,59th Ave & Northern Ave
+59OL,59th Ave & Olive Ave
+59PE,59th Ave & Peoria Ave
+59TH,59th Ave & Thomas Rd
+59TB,59th Ave & Thunderbird Rd
+59UH,59th Ave & Union Hills Dr
+59VB,59th Ave & Van Buren St
+BR59,59th Ave/Beardsley Rd Park-and-Ride
+5SFA,5th St & Farmer Ave
+5SPR,5th St & Priest Dr
+CHEV,623 W Pima St GB Chevron
+63FI,63rd Ave & Fillmore St
+63PE,63rd Ave & Peoria Ave
+64CA,64th St & Camelback Rd
+64IN,64th St & Indian School Rd
+64MC,64th St & McDowell Rd
+64SH,64th St & Shea Blvd
+64TH,64th St & Thomas Rd
+65LB,65th Dr & Lower Buckeye Rd
+BE67,67th Ave & Bell Rd
+67BE,67th Ave & Bethany Home Rd
+67BU,67th Ave & Buckeye Rd
+67CT,67th Ave & Cactus Rd
+67CA,67th Ave & Camelback Rd
+67CP,67th Ave & Campbell Ave
+67GL,67th Ave & Glendale Ave
+67GR,67th Ave & Grant St
+67IN,67th Ave & Indian School Rd
+67LB,67th Ave & Lower Buckeye Rd
+67MC,67th Ave & McDowell Rd
+67OL,67th Ave & Olive Ave
+67PE,67th Ave & Peoria Ave
+67TH,67th Ave & Thomas Rd
+67TB,67th Ave & Thunderbird Rd
+67UN,67th Ave & Union Hills Dr
+67VB,67th Ave & Van Buren St
+68MC,68th St & McDowell Rd
+68OB,68th St & Osborn Rd
+68TH,68th St & Thomas Rd
+6AWA,6th Ave & Washington St
+70SH,70th St & Sheal Blvd
+74MC,74th St & McDowell Rd
+BA75,75th Ave & Baseline Rd
+75BE,75th Ave & Bell Rd
+75BU,75th Ave & Buckeye Rd
+75CA,75th Ave & Camelback Rd
+TREV,75th Ave & Catalina Dr
+75EN,75th Ave & Encanto Blvd
+75LB,75th Ave & Lower Buckeye Rd
+75TH,75th Ave & Thomas Rd
+75VB,75th Ave & Van Buren St
+78MA,78th St & McDonald Dr
+79PR,79th Av PNR
+79&V,79th Ave & Van Buren St
+7ABA,7th Ave & Baseline Rd
+7ABE,7th Ave & Bell Rd
+7ABH,7th Ave & Bethany Home Rd
+7ABD,7th Ave & Broadway Rd
+7ABU,7th Ave & Buckeye Rd
+7ACA,7th Ave & Camelback Rd
+7ADE,7th Ave & Deer Valley Rd
+7ADO,7th Ave & Dobbins Rd
+7ADU,7th Ave & Dunlap Ave
+7AGL,7th Ave & Glendale Ave
+HA7A,7th Ave & Hatcher Rd
+7AIN,7th Ave & Indian School Rd
+7AJE,7th Ave & Jefferson St
+7ALB,7th Ave & Lower Buckeye Rd
+7AMC,7th Ave & McDowell Rd
+7ANO,7th Ave & Northern Ave
+7ARE,7th Ave & Roeser Rd
+7ASO,7th Ave & Southern Ave
+7ATH,7th Ave & Thomas Rd
+7AVB,7th Ave & Van Buren
+7AWA,7th Ave & Washington St
+LR7ACA,7th Ave/Camelback
+7SBA,7th St & Baseline Rd
+BE7S,7th St & Bell Rd
+7SBD,7th St & Broadway Rd
+7SBU,7th St & Buckeye Rd
+7SCA,7th St & Camelback Rd
+7SDE,7th St & Deer Valley Rd
+7SDO,7th St & Dobbins Rd
+7SDU,7th St & Dunlap Ave
+7SGL,7th St & Glendale Ave
+GR7S,7th St & Greenway Pkwy
+7SJO,7th St & Jesse Owens Pkwy
+7SNO,7th St & Northern Ave
+7SRE,7th St & Roeser Rd
+7SSO,7th St & Southern Ave
+7STH,7th St & Thomas Rd
+7STB,7th St & Thunderbird Rd
+7SUN,7th St & Union Hills Dr
+7SVB,7th St & Van Buren St
+83BE,83rd Ave & Bell Rd
+BE83,83rd Ave & Bethany Home Rd
+83CT,83rd Ave & Cactus Rd
+83CA,83rd Ave & Camelback Rd
+GL83,83rd Ave & Glendale Ave
+83IN,83rd Ave & Indian School Rd
+83LB,83rd Ave & Lower Buckeye Rd
+83MA,83rd Ave & Mariners Way
+83MC,83rd Ave & McDowell Rd
+83NO,83rd Ave & Northern Ave
+83OL,83rd Ave & Olive Ave
+83OS,83rd Ave & Osborn Rd
+83PE,83rd Ave & Peoria Ave
+83TH,83rd Ave & Thomas Rd
+83TB,83rd Ave & Thunderbird Rd
+83VB,83rd Ave & Van Buren St
+HD83,84th St & Hayden Rd
+8SFP,8th St & Fitch Park
+8SMC,8th St & McClintock Dr
+8SUN,8th St & Una Ave
+90SH,90th St & Shea Blvd
+91CA,91st Ave & Camelback Rd
+91GL,91st Ave & Glendale Ave
+91LB,91st Ave & Lower Buckeye Rd
+91MC,91st Ave & McDowell Rd
+91TH,91st Ave & Thomas Rd
+91VA,91st Ave & Van Buren St
+91VL,91st St & Via Linda
+93TH,93rd Ave & Thomas Rd
+95MC,95th Ave & McDowell Rd
+95PA,95th Ave & Palm Lane
+96VI,96th St & Via Linda
+99IN,99th Ave & Indian School Rd
+99LB,99th Ave & Lower Buckeye Rd
+99MC,99th Ave & McDowell Rd
+99PE,99th Ave & Peoria Ave
+99VB,99th Ave & Van Buren St
+ASUE,ASU Polytechnic Campus
+ASUR,ASU Research Park
+ASUW,ASU West Campus
+AD17,Adams St & 17th Ave
+AD18,Adams St & 18th Ave
+ALBA,Alma School Rd & Baseline Rd
+ALBD,Alma School Rd & Broadway Rd
+ALCH,Alma School Rd & Chandler Blvd
+ALEL,Alma School Rd & Elliot Rd
+ALFR,Alma School Rd & Frye Rd
+ALGU,Alma School Rd & Guadalupe Rd
+ALIS,Alma School Rd & Isabella Ave
+WECL,Alma School Rd & Peralta Ave
+ALRA,Alma School Rd & Ray Rd
+ALSO,Alma School Rd & Southern Ave
+ALUN,Alma School Rd & University Dr
+ALWA,Alma School Rd & Warner Rd
+LRMAAL,Alma School/Main St
+APCO,Apache Blvd & College Ave
+AZCH,Arizona Ave & Chandler Blvd
+AZEL,Arizona Ave & Elliot Rd
+AZGE,Arizona Ave & Germann Rd
+AZPE,Arizona Ave & Pecos Rd
+AZRA,Arizona Ave & Ray Rd
+AZWA,Arizona Ave & Warner Rd
+5SVB,Arizona Center
+AZCT,Arizona Center
+ARMA,Arrowhead Mall North
+ARMA1,Arrowhead Mall South
+AVCC,Avondale Civic Center
+AVTC,Avondale TC
+VALU,Banner Baywood Medical Center
+LRCEBA,Baseline/Central Ave
+BAFU,Basha Rd & Fulton Ranch Blvd
+DVPR,Bell Rd/I-17 PNR
+BLPR,Bell Rd/SR51 PNR
+BE17,Bethany Home Rd & 17th Ave
+BOWA,Boston St & Washington St
+BGCL,Boys and Girls Club of Old Town
+BDCE,Broadway Rd & Center St
+BDCC,Broadway Rd & Country Club Dr
+BDGR,Broadway Rd & Greenfield Rd
+BRPO,Broadway Rd & Power Rd
+BDRO,Broadway Rd & Roosevelt St
+BDWI,Broadway Rd & Williams Rd
+LRCEBD,Broadway/Central Ave
+BRME,Brown Rd & Mesa Dr
+BUPR,Buckeye PNR
+LRCEBU,Buckeye/Central Ave
+CAHS,Camelback High School
+CA95,Camelback Rd & 95th Ave
+CAMA,Camelback Rd & Marshall Way
+CECP,Campbell/Central Ave
+GLCL,Cascalote
+BECA,Cave Creek Rd & Bell Rd
+CACT,Cave Creek Rd & Cactus Rd
+CCRG,Cave Creek Rd & Rose Garden Ln
+CAUH,Cave Creek Rd & Union Hills Dr
+CEMA,Centennial Wy & Main St
+WACP,Center Pkwy/Washington
+CEMC,Center St & McKellips Rd
+CEUN,Center St & University Dr
+MACE,Center/Main St
+CEBA,Central Ave & Baseline Rd
+CEBE,Central Ave & Bethany Home Rd
+CEBD,Central Ave & Broadway Rd
+CEBU,Central Ave & Buckeye Rd
+CECA,Central Ave & Camelback Rd
+CEDO,Central Ave & Dobbins Rd
+CEGL,Central Ave & Glendale Ave
+CEIN,Central Ave & Indian School Rd
+CEMD,Central Ave & McDowell Rd
+CENO,Central Ave & Northern Ave
+CEPO,Central Ave & Polk St
+CERE,Central Ave & Roeser Rd
+CERO,Central Ave & Roosevelt St
+CESO,Central Ave & Southern Ave
+CETH,Central Ave & Thomas Rd
+CEVA,Central Ave & Van Buren St
+CEVA-W,Central Ave & Van Buren St
+LRCECA,Central Ave/Camelback
+BUCC,Centre Ave & Buckeye Senior Center
+CSCH,Cesar Chavez High School
+CH40,Chandler Blvd & 40th St
+CHVI,Chandler Blvd & Chandler Village Dr
+CHDF,Chandler Blvd & Desert Foothills Pkwy
+CHMC,Chandler Blvd & McQueen Rd
+CHFC,Chandler Fashion Center TC
+CHPR,Chandler PNR
+COCU,College Ave & Curry Rd
+COSO,College Ave & Southern Ave
+COUN,College Ave & University Dr
+CLAP,College Ave/Apache
+CORI,Connolly Middle School
+RACO,Cooper Rd & Ray Rd
+CCBD,Country Club Dr & Broadway Rd
+CCBR,Country Club Dr & Brown Rd
+CCGU,Country Club Dr & Guadalupe Rd
+CCJU,Country Club Dr & Juanita Ave
+CCMA,Country Club Dr & Main St
+CCMK,Country Club Dr & McKellips Rd
+CCME,Country Club Dr & Meseto Ave
+CCSA,Country Club Dr & San Angelo St
+SOCC,Country Club Dr & Southern Ave
+LRCCMA,Country Club/Main St
+COCO,Coyote Branch Library
+BOGR,Desert Botanical Garden
+DRMP,Desert Ridge Marketplace
+DSTC,Desert Sky TC
+DOBA,Dobson Rd & Baseline Rd
+DOBD,Dobson Rd & Broadway Rd
+DOCH,Dobson Rd & Chandler Blvd
+ELDO,Dobson Rd & Elliot Rd
+DOFR,Dobson Rd & Frye Rd
+DOGE,Dobson Rd & Germann Rd
+DOPE,Dobson Rd & Pecos Rd
+DOQC,Dobson Rd & Queen Creek Rd
+DORA,Dobson Rd & Ray Rd
+8SDO,Dobson Rd & Rio Salado Pkwy
+SODO,Dobson Rd & Southern Ave
+DOSO,Dobson Rd & Southern Ave
+DOUN,Dobson Rd & University Dr
+DOWA,Dobson Rd & Warner Rd
+DRBD,Dorsey Ln & Broadway Rd
+APDO,Dorsey Ln/Apache Blvd
+DP1A1,Downtown Phx Hub/1st Ave
+DPCE2,Downtown Phx Hub/Central Ave
+DPJE1,Downtown Phx Hub/Jefferson St
+DPWA2,Downtown Phx Hub/Washington St
+DRDW,Dreamy Draw PNR
+DRIN,Drinkwater Blvd & Indian School Rd
+DYGL,Dysart Rd & Glendale Ave
+DYVA,Dysart Rd & Van Buren St
+63IN1E,EB Indian School FS 63 Av
+45TH1E,EB Thomas FS 4500 East
+SKYEAS,East Economy Station
+ML11TH,Eleventh St/Mill
+CEEN,Encanto/Central Ave
+ESCL,Escalante Community Center
+ESLO,Esperanza Ave & Telera St
+EMCA,Estrella Mtn CC Avondale
+EMCC,Estrella Mtn CC Buckeye
+EVUN,Evergreen Rd & University Dr
+EVSO,Evergreen St & Southern Ave
+5SASH,Fifth St & Ash
+FI4S,Fillmore St & 4th St
+FOGA,Forest Ave & Gammage Pkwy
+VBGP,Galvin Pkwy & Van Buren St
+GBCO,Gila Bend Community Services Dept
+GBFR,Gila Bend Family Resource Center 303 E Pima St
+GRIC,Gila River Indian Community Service Center
+MRCY,Gilbert Mercy Hospital
+GIAS,Gilbert Rd & Ash St
+GIBA,Gilbert Rd & Baseline Rd
+GIBR,Gilbert Rd & Broadway Rd
+GIBN,Gilbert Rd & Brown Rd
+GICH,Gilbert Rd & Chandler Blvd
+GICV,Gilbert Rd & Civic Center Dr
+ELGI,Gilbert Rd & Elliot Rd
+GIGE,Gilbert Rd & Germann Rd
+GIHO,Gilbert Rd & Houston Ave
+GIIN,Gilbert Rd & Insight Way
+GIMC,Gilbert Rd & McDowell PNR
+GIMK,Gilbert Rd & McKellips Rd
+RAGI,Gilbert Rd & Ray Rd
+GIRY,Gilbert Rd & Ryan Rd
+GISO,Gilbert Rd & Southern Ave
+LRMAGI,Gilbert Rd/Main St
+GMTC,Gilbert Rd/Main St TC
+GLGH,Glen Harbor Blvd & Glendale Ave
+GLLR,Glendale Ave & Litchfield Rd
+95GL,Glendale Ave @ Westgate
+54OC,Glendale Community Center
+GEPR,Glendale PNR
+GL19,Glendale/19th Ave
+GYPR,Goodyear PNR
+GRCA,Granite Reef Rd & Camelback Rd
+GRCH,Granite Reef Rd & Chaparral Rd
+GRIN,Granite Reef Rd & Indian School Rd
+GRMC,Granite Reef Rd & McDowell Rd
+GRSE,Granite Reef Senior Center
+SOGR,Greenfield Rd & Southern Ave
+GSCS,Greg Stanton CS
+HAMO,Hamilton St & Morelos St
+HVPR,Happy Valley PNR
+HVPR1,Happy Valley Park-and-Ride
+HABA,Hardy Dr & Baseline Rd
+HABD,Hardy Dr & Broadway Rd
+TMSC,Hardy Dr & Tempe Sports Complex
+HAUN,Hardy Dr & University Dr
+HAWA,Hardy Dr & Warner Rd
+HAVD,Hayden & Via De Ventura
+HFRS,Hayden Ferry & Rio Salado
+HACA,Hayden Rd & Camelback Rd
+HAIB,Hayden Rd & Indian Bend Rd
+HAMP,Hayden Rd & McCormick Pkwy
+HAMD,Hayden Rd & McDonald Dr
+HAMC,Hayden Rd & McDowell Rd
+HAMK,Hayden Rd & McKellips Rd
+HARO,Hayden Rd & Roosevelt St
+HBMA,Hibbert & Main St
+IKEA,IKEA
+INTEL,INTEL
+IN91,Indian School Rd & 91st Ave
+INGW,Indian School Rd & Goldwater Blvd
+INHA,Indian School Rd & Hayden Rd
+LRCEIN,Indian School/Central Ave
+INST,Inverness Ave & Stapley Dr
+JE16,Jefferson St & 16th St
+JOBA,Jesse Owens Pkwy & Baseline Rd
+JCLH,John C. Lincoln Hospital
+KOHC,Komatke Health Center
+KYBA,Kyrene Rd & Baseline Rd
+KYCH,Kyrene Rd & Chandler Blvd
+KYEL,Kyrene Rd & Elliot Rd
+KYGU,Kyrene Rd & Guadalupe Rd
+KYRW,Kyrene Rd & Warner Rd
+LABA,Lakeshore Dr & Baseline Rd
+LAGU,Lakeshore Dr & Guadalupe Rd
+LERU,Lemon St & Rural Rd
+LECO,Lewis Ct & Coury Ave
+LEJA,Lewis Ct & Javelina Ave
+1SLI1,Lincoln/1st Ave
+CELI2,Lincoln/Central Ave
+MCLI,Litchfield Rd & McDowell Rd
+LFVB,Litchfield Rd & Van Buren St
+KYAL,Lone Butte Casino
+LT59,Lot 59
+LAFC,Luke AFB Lightning Gate
+MC85,MC 85 & Ash/Narramore
+MAAL,Main St & Alma School Rd
+MADO,Main St & Dobson Rd
+MAGI,Main St & Gilbert Rd
+MAGR,Main St & Greenfield Rd
+MAHI,Main St & Higley Rd
+MALI,Main St & Lindsay Rd
+MAPO,Main St & Power Rd
+MARE,Main St & Recker Rd
+MAST,Main St & Stapley Dr
+SYMA1,Main St & Sycamore
+MAVA,Main St & Val Vista Dr
+MAMR,Manistee Manor
+MMCT,Maricopa Medical Center
+MRHG,Marina Heights/Rio Salado
+DRMR,Marriott Desert Ridge Resort
+APMA,McAllister Av & Apache Blvd
+MAUN,McAllister Ave & University Dr
+MCAL,McClintock Dr & Alameda Dr
+MCAP,McClintock Dr & Apache Blvd
+MCBA,McClintock Dr & Baseline Rd
+BAMC,McClintock Dr & Baseline Rd
+MCBD,McClintock Dr & Broadway Rd
+MCCA,McClintock Dr & Campus Dr
+MCCH,McClintock Dr & Chandler Blvd
+GAMC,McClintock Dr & Guadalupe Rd
+MCSO,McClintock Dr & Southern Ave
+MCUN,McClintock Dr & University Dr
+MCWA,McClintock Dr & Warner Rd
+LRMCAP,McClintock Dr/Apache Blvd
+MCHI,McClintock High School
+LRCEMD,McDowell/Central Ave
+SECE,Mesa Active Adult Center
+MEBD,Mesa Dr & Broadway Rd
+MAME,Mesa Dr & Main St
+MESO,Mesa Dr & Southern Ave
+MEUN,Mesa Dr & University Dr
+LRMAME,Mesa Dr/Main St
+RVMP,Mesa Riverview
+RVMP1,Mesa Riverview
+LRMECE,Metro Pkwy
+ML6TH,Mill Ave & 6th St Street Car
+MIBA,Mill Ave & Baseline Rd
+MIBD,Mill Ave & Broadway Rd
+MIUN,Mill Ave & University Dr
+MI3S,Mill Ave/3rd St
+MICA,Miller Rd & Camelback Rd
+MICU,Miller Rd & Curry Rd
+MIIN,Miller Rd & Indian School Rd
+MIMC,Miller Rd & McDowell Rd
+MITH,Miller Rd & Thomas Rd
+LR19MB,Montebello/19th Ave
+19MB,Montebello/19th Ave TC
+25MV,Mountain View/25th Ave
+MUTC,Mustang TC
+44WI1N,NB 44 St FS 2600 North
+ML9TH,Ninth St/Mill
+NTMC,North Tempe Multi-Gen Center
+NO19,Northern/19th Ave
+CEOS,Osborn/Central Ave
+PCC,Paiute Community Center
+PVMP,Palm Valley Blvd & McDowell Rd
+PVCC,Paradise Valley CC
+PVTC,Paradise Valley TC
+PASAP,Paseo Del Saber/Apache
+ESMC,Pebble Creek Pkwy & McDowell Rd
+PARK,Pecos Park
+GWAP,Phoenix Mesa Gateway Airport
+PHZO,Phoenix Zoo
+PITH,Pima Park
+PICH,Pima Rd & Chaparral Rd
+PIIB,Pima Rd & Indian Bend Rd
+PIMC,Pima Rd & McDowell Rd
+PP23,Pinnacle Peak Rd & 23rd Ave
+LRCEPI,Pioneer/Central Ave
+POBA,Power Rd & Baseline Rd
+GUPO,Power Rd & Guadalupe Rd
+POMD,Power Rd & McDowell Rd
+POMC,Power Rd & McKellips Rd
+UNPO,Power Rd & University Dr
+POPR,Power Rd PNR
+BAPR,Price Rd & Baseline Rd
+BDPR,Price Rd & Broadway Rd
+PRSO,Price Rd & Southern Ave
+LRAPPR,Price-101/Apache Blvd
+PRBA,Priest Dr & Baseline Rd
+PRCA,Priest Dr & Carmen St
+PREL,Priest Dr & Elliot Rd
+PSSO,Priest Dr & Southern Ave
+PRUN,Priest Dr & University Dr
+PRWA,Priest Dr & Washington St
+LRPRWA,Priest Dr/Washington St
+RANS,Raintree Dr & Northsight Blvd
+LRCERE,Roeser/Central Ave
+RO7S,Roosevelt St & 7th St
+ROGR,Roosevelt St & Grand Ave
+LRCERO,Roosevelt/Central Ave
+RUAP,Rural Rd & Apache Blvd
+RUBA,Rural Rd & Baseline Rd
+BDRU,Rural Rd & Broadway Rd
+RUCH,Rural Rd & Chandler Blvd
+ELRU,Rural Rd & Elliot Rd
+RUGU,Rural Rd & Guadalupe Rd
+RURA,Rural Rd & Ray Rd
+RURI,Rural Rd & Rio Salado Pkwy
+RUSO,Rural Rd & Southern Ave
+TPLI,Rural Rd & Tempe Library PNR
+TERU,Rural Rd & Terrace Rd
+RUTY,Rural Rd & Tyler St
+RUUN,Rural Rd & University Dr
+SCRUAP,Rural/Apache
+SCAP,Scottsdale Airpark
+SCCC,Scottsdale CC
+SCCC1,Scottsdale CC PNR
+SCPR,Scottsdale PNR
+5ASC,Scottsdale Rd & 5th Ave
+SCCA,Scottsdale Rd & Camelback Rd
+SCCO,Scottsdale Rd & Continental Dr
+SCFL,Scottsdale Rd & FLWright Blvd
+GRSC,Scottsdale Rd & Greenway Pkwy
+SCIN,Scottsdale Rd & Indian School Rd
+SCLI,Scottsdale Rd & Lincoln Dr
+SCMY,Scottsdale Rd & Mayo Blvd
+SCMC,Scottsdale Rd & McDowell Rd
+SCMK,Scottsdale Rd & McKellips Rd
+SCSH,Scottsdale Rd & Shea Blvd
+SCTH,Scottsdale Rd & Thomas Rd
+SCTB,Scottsdale Rd & Thunderbird Rd
+SHVL,Shea Blvd & Via Linda
+ELSH,Shutterfly Way & Elliot Rd
+SLHS,Sierra Linda High School
+SKT3,Sky Harbor Terminal 3
+SKT4,Sky Harbor Terminal 4
+SKYRCC,Sky Train Rental Car Center Station
+APSM,Smith-Martin/Apache Blvd
+SMCC,South Mountain CC
+SOCW,Southern Ave & Country Club Way
+SOEV,Southern Ave & Evergreen St
+SOMI,Southern Ave & Mill Ave
+LRCESO,Southern/Central Ave
+SOLK,Southshore Dr & Lakeshore Dr
+SJMN,St. John's Manor
+STBA,Stapley Dr & Baseline Rd
+STBD,Stapley Dr & Broadway Rd
+STBR,Stapley Dr & Brown Rd
+STMC,Stapley Dr & McKellips Rd
+STSO,Stapley Dr & Southern Ave
+STUN,Stapley Dr & University Dr
+LRMAST,Stapley Dr/Main St
+SUVI,Sunland Village East
+SUCE,Sunnyslope TC
+SSPR,Superstition Springs PNR
+SPMA,Superstition Springs TC
+SUPR,Surprise PNR
+MALO,Sycamore/Main St
+SYMA,Sycamore/Main St TC
+45MY,Tanner Terrace
+BETA,Tatum Blvd & Bell Rd
+GRTA,Tatum Blvd & Greenway Rd
+TAMO,Tatum Blvd & Mockingbird Ln
+TBPRS,Tempe Beach Park & Rio Salado
+TCFA,Tempe Center for the Arts
+TEMP,Tempe Marketplace
+TELI,Tempe Public Library
+TMPE1,Tempe Transit Facility
+TETC,Tempe Transportation Center
+TWTC,Thelda Williams TC
+3SASH,Third St & Ash
+3DSML,Third St & Mill
+LRCETH,Thomas/Central Ave
+SCHE,Thompson Peak Medical Ctr
+FRAC,Union Hills Dr & Foothills Aquatics Ctr
+UHTA,Union Hills Dr & Tatum Blvd
+UNASH,University Dr & Ash
+UNCC,University Dr & Country Club
+UNGI,University Dr & Gilbert Rd
+UNGR,University Dr & Greenfield Rd
+UNPR,University Dr & Price Rd
+UNSO,University Dr & Sossaman Rd
+LRUNRU,University Dr/Rural Rd
+UNRU,University/Rural TC
+GUVA,Val Vista Dr & Guadalupe Rd
+VAPE,Val Vista Dr & Pecos Rd
+UNVA,Val Vista Dr & University Dr
+VB95,Van Buren St & 95th Ave
+VB96,Van Buren St & 96th Ave
+VBCE,Van Buren St & Central Ave
+1AVB1,Van Buren/1st Ave
+CEVA2,Van Buren/Central Ave
+VQCA,Vee Quiva Casino
+LRTETC,Veterans Way/College Ave
+VLFL,Via Linda & Frank Lloyd Wright Blvd
+VLLV,Via Linda & Lakeview Dr
+VLSC,Via Linda Senior Center
+WRRU,Warner Rd & Rural Rd
+WA12,Washington St & 12th St
+CEWA2,Washington/Central Ave
+WMPR,West Mesa PNR
+WFHI,Williams Field Rd & Higley Rd
+YUWA,Yuma Rd & Watson Rd

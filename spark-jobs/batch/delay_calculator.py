@@ -35,7 +35,7 @@ KAFKA_BOOTSTRAP = os.getenv("KAFKA_BROKER")
 GTFS_AGENCY = os.getenv("GTFS_AGENCY")
 TIMEZONE = os.getenv("TIMEZONE")
 
-STOP_TIMES_PATH = f"{S3_BUCKET}/static_gtfs/{GTFS_AGENCY}/stop_times.txt"
+STOP_TIMES_PATH = f"/data/static_gtfs/{GTFS_AGENCY}/stop_times.txt"
 PARQUET_PATH = f"{S3_BUCKET}/stop_times_delay/"
 
 import logging
@@ -212,7 +212,7 @@ def main():
             .withColumnRenamed("stop_id", "static_stop_id") \
             .withColumnRenamed("trip_id", "static_trip_id")
         
-        stop_times_df = adjust_arrival_time(stop_times_df, arrival_time_col="arrival_time")
+        stop_times_df = adjust_arrival_time(stop_times_df, arrival_time_col="arrival_time").cache()
 
         joined_df = filtered_df.join(
             stop_times_df,

@@ -15,6 +15,8 @@ import AboutModal from "./components/AboutModal.jsx";
 export default function App() {
   const mapRef = useRef(null);
   const mapEl = useRef(null);
+  const topbarRef = useRef(null);
+  const pulseRef = useRef(null);
 
   const [theme, setTheme] = useState("light");
   const [cities, setCities] = useState({});
@@ -48,6 +50,33 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // ---- legend position: track real topbar height so the legend clears it on all screens ----
+  useEffect(() => {
+    const el = topbarRef.current;
+    if (!el) return;
+    const update = () => {
+      const { top, height } = el.getBoundingClientRect();
+      document.documentElement.style.setProperty("--topbar-bottom", `${top + height + 8}px`);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // ---- pulse strip height: drives toggle position on mobile live tab ----
+  useEffect(() => {
+    const el = pulseRef.current;
+    if (!el) return;
+    const update = () => {
+      document.documentElement.style.setProperty("--pulse-h", `${el.offsetHeight}px`);
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [view, snapshot]);
+
   // ---- theme ----
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -65,7 +94,7 @@ export default function App() {
   useEffect(() => {
     mapRef.current?.applyView(view);
     setPopup(null);
-    if (view === "analytics") setPanelOpen(true);
+    setPanelOpen(true);
   }, [view]);
 
   // ---- clear any selection/highlight when the dataset context changes ----
@@ -149,6 +178,7 @@ export default function App() {
       <div id="map" ref={mapEl} />
 
       <TopBar
+        ref={topbarRef}
         cities={cities} city={city} setCity={setCity}
         view={view} setView={setView}
         date={date} setDate={setDate} agency={agency}
@@ -159,7 +189,7 @@ export default function App() {
 
       <Legend view={view} colorBy={colorBy} />
 
-      {view === "live" && <PulseStrip pulse={snapshot?.pulse} agency={agency} />}
+      {view === "live" && snapshot?.pulse && <PulseStrip ref={pulseRef} pulse={snapshot.pulse} />}
 
       <SidePanel
         open={panelOpen} setOpen={setPanelOpen}

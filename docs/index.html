@@ -577,6 +577,7 @@
                 <a href="https://rishitoshsingh.github.io/">Portfolio</a>
                 <a href="#overview">Overview</a>
                 <a href="#architecture">Architecture</a>
+                <a href="#eta">ETA Model</a>
                 <a href="#visuals">Visuals</a>
                 <a href="#dataset">Data Product</a>
             </div>
@@ -593,6 +594,7 @@
                 <div class="hero-meta">
                     <span class="pill">Real-time tracking</span>
                     <span class="pill">Delay analytics</span>
+                    <span class="pill">Predictive ETAs</span>
                     <span class="pill">Historical trip data</span>
                     <span class="pill">Phoenix + Boston</span>
                 </div>
@@ -657,7 +659,7 @@
                 <p class="eyebrow">Tech Stack</p>
                 <h2>Core systems behind SunTransit</h2>
             </div>
-            <div class="stack-grid" style="grid-template-columns: repeat(6, minmax(0, 1fr));">
+            <div class="stack-grid" style="grid-template-columns: repeat(7, minmax(0, 1fr));">
                 <div class="stack-card">
                     <img src="assets/tech/python.png" alt="Python" />
                     <span>Python</span>
@@ -669,6 +671,10 @@
                 <div class="stack-card">
                     <img src="assets/tech/spark.png" alt="Spark" />
                     <span>Spark</span>
+                </div>
+                <div class="stack-card">
+                    <img src="assets/tech/sagemaker.png" alt="AWS SageMaker" />
+                    <span>SageMaker</span>
                 </div>
                 <div class="stack-card">
                     <img src="assets/tech/docker.png" alt="Docker" />
@@ -767,7 +773,7 @@
             </article>
 
             <article class="visual-card visual-diagram-card">
-                <img class="visual-diagram" src="dataflow.png" alt="SunTransit dataflow diagram" />
+                <img class="visual-diagram" src="dataflow.svg" alt="SunTransit dataflow diagram" />
                 <div class="visual-copy">
                     <h3>System flow</h3>
                     <p>
@@ -776,6 +782,59 @@
                     </p>
                 </div>
             </article>
+        </section>
+
+        <section class="content-grid" id="eta">
+            <article class="panel">
+                <div class="section-heading">
+                    <p class="eyebrow">Machine Learning</p>
+                    <h2>Predicting delays before they happen</h2>
+                </div>
+                <div class="panel-stack">
+                    <p>
+                        Measuring delays after the fact is useful — predicting them is better. SunTransit now
+                        forecasts how late a vehicle will be at each of its upcoming stops, so the dashboard can
+                        show schedule-aware ETAs instead of naive timetable times.
+                    </p>
+                    <p>
+                        A gradient-boosted model (LightGBM) is trained and served entirely on AWS SageMaker. A
+                        monthly pipeline preprocesses historical trip records, trains a candidate model, and only
+                        promotes it if it beats the previous accuracy bar — then serves it from a scale-to-zero
+                        serverless endpoint the API queries in the background.
+                    </p>
+                    <ul class="bullet-list">
+                        <li>One inference call returns the predicted delay for the next 1–15 stops of a trip.</li>
+                        <li>Features: current delay, route, direction, stop position, hour, and day of week.</li>
+                        <li>Gated retraining — a new model ships only if it clears the accuracy threshold.</li>
+                        <li>Serverless, scale-to-zero inference keeps prediction cheap between bursts.</li>
+                    </ul>
+                </div>
+            </article>
+
+            <aside class="panel">
+                <div class="section-heading">
+                    <p class="eyebrow">Model performance</p>
+                    <h2>By the numbers</h2>
+                </div>
+                <div class="stack">
+                    <div class="entry">
+                        <div class="stat-value">86.7s</div>
+                        <p class="stat-label">Mean absolute error of the predicted arrival delay.</p>
+                    </div>
+                    <div class="entry">
+                        <div class="stat-value">~28% better</div>
+                        <p class="stat-label">Lower error than the persistence baseline (119.7s MAE).</p>
+                    </div>
+                    <div class="entry">
+                        <div class="stat-value">1–15 stops</div>
+                        <p class="stat-label">Look-ahead horizon returned in a single inference call.</p>
+                    </div>
+                    <div class="entry">
+                        <div class="stat-value">Monthly</div>
+                        <p class="stat-label">Automated SageMaker retrain with gated model registration.</p>
+                    </div>
+                </div>
+            </aside>
         </section>
 
         <section class="panel visual-section" id="visuals">
@@ -843,7 +902,7 @@
             <article class="panel">
                 <div class="section-heading">
                     <p class="eyebrow">Outputs</p>
-                    <h2>Two products in one system</h2>
+                    <h2>Three products in one system</h2>
                 </div>
                 <div class="stack">
                     <div class="entry">
@@ -859,6 +918,13 @@
                         <p>
                             A live interface that surfaces current vehicle positions and transit performance in a way
                             that is immediately readable for both operators and end users.
+                        </p>
+                    </div>
+                    <div class="entry">
+                        <h3 class="entry-title">3. Predictive ETA model</h3>
+                        <p>
+                            A SageMaker-served model that turns the historical dataset into forward-looking arrival
+                            predictions, closing the loop from measurement to forecasting.
                         </p>
                     </div>
                 </div>

@@ -82,6 +82,9 @@ services:
     container_name: spark-master
     hostname: spark-master
     restart: unless-stopped
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     depends_on:
       - kafka
       - redis
@@ -114,6 +117,9 @@ services:
       context: .
       dockerfile: spark-image/Dockerfile
     restart: unless-stopped
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     depends_on:
       - spark-master
       - kafka
@@ -121,6 +127,8 @@ services:
     command: ["/opt/spark/bin/spark-class", "org.apache.spark.deploy.worker.Worker", "spark://spark-master:7077", "--cores", "1", "--memory", "2G"]
     environment:
       - HADOOP_USER_NAME=spark
+    volumes:
+      - ./data:/data:ro
     deploy:
       replicas: 2
       resources:
@@ -160,6 +168,25 @@ services:
     networks:
       - suntransit-net
 
+
+  mcp-server:
+    build: ./mcp-server
+    container_name: suntransit-mcp
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8083:8083"
+    volumes:
+      - ./data/static_gtfs:/data/static_gtfs:ro
+    depends_on:
+      - postgres
+    env_file:
+      - ./credentials.env
+    environment:
+      - GTFS_ROOT=/data/static_gtfs
+      - POSTGRESQL_URL=postgresql+psycopg2://suntransit:suntransit@suntransit-postgres:5432/average_delays
+    mem_limit: 512m
+    networks:
+      - suntransit-net
 
   web-app:
     build: ./web-app

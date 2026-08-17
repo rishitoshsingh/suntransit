@@ -20,3 +20,6 @@ CRITIQUE.md
 NOTES.md
 PLAN.md
 Uber-Study.md
+
+# Oversized GTFS static file — exceeds GitHub's 100 MB limit (keep locally, not in git)
+data/static_gtfs/MassachusettsBayTransportationAuthority/stop_times.txt

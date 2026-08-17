@@ -1,0 +1,6 @@
+timeframe_group_id,start_time,end_time,service_id
+timeframe_regular,,,fare_regular
+timeframe_regular,00:00:00,02:30:00,fare_free_cr_fridays
+timeframe_cr_free,02:30:00,24:00:00,fare_free_cr_fridays
+timeframe_cr_free,00:00:00,02:30:00,fare_free_cr_fri_past_midnight
+timeframe_regular,02:30:00,24:00:00,fare_free_cr_fri_past_midnight
