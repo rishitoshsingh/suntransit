@@ -4,60 +4,72 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SunTransit | Case Study</title>
+    <title>SunTransit</title>
+    <meta name="description"
+        content="SunTransit: real-time transit tracking, stop-level delay analytics and predictive ETAs for Valley Metro (Phoenix) and MBTA (Boston)." />
+    <link rel="icon" type="image/png" href="assets/logo.png" />
+    <script>
+        try {
+            var t = localStorage.getItem('theme');
+            if (t) document.documentElement.dataset.theme = t;
+        } catch (e) {}
+    </script>
     <style>
         :root {
-            --bg: #f4efe4;
-            --bg-deep: #e8decb;
-            --panel: rgba(255, 251, 243, 0.88);
-            --panel-strong: #113f37;
-            --ink: #3f4138;
-            --ink-strong: #1f241c;
-            --muted: #6d7167;
-            --accent: #e0a75f;
-            --accent-strong: #8b4d16;
-            --border: rgba(45, 58, 41, 0.12);
-            --shadow: 0 20px 60px rgba(23, 30, 20, 0.08);
+            color-scheme: light;
+            --bg: #fafaf7;
+            --panel: #ffffff;
+            --ink: #2b2b2b;
+            --ink-strong: #1a1a1a;
+            --muted: #6b6b6b;
+            --accent: #1f4fd1;
+            --border: rgba(0, 0, 0, 0.1);
             --font-display: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
             --font-body: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme='light']) {
+                color-scheme: dark;
+                --bg: #111418;
+                --panel: #181c21;
+                --ink: #d4d7dc;
+                --ink-strong: #f0f1f3;
+                --muted: #8a9099;
+                --accent: #2dd4bf;
+                --border: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        :root[data-theme='dark'] {
+            color-scheme: dark;
+            --bg: #111418;
+            --panel: #181c21;
+            --ink: #d4d7dc;
+            --ink-strong: #f0f1f3;
+            --muted: #8a9099;
+            --accent: #2dd4bf;
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * {
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
-            min-height: 100%;
             margin: 0;
+            background: var(--bg);
             color: var(--ink);
             font-family: var(--font-body);
-            background:
-                radial-gradient(circle at top, rgba(224, 167, 95, 0.16), transparent 24rem),
-                linear-gradient(180deg, var(--bg), var(--bg-deep));
-            background-attachment: fixed;
-        }
-
-        body::before {
-            content: "";
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            background-image:
-                linear-gradient(rgba(17, 63, 55, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(17, 63, 55, 0.03) 1px, transparent 1px);
-            background-size: 32px 32px;
-            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.75), transparent);
         }
 
         h1,
         h2,
         h3,
         p,
-        ul {
+        ul,
+        dl,
+        figure {
             margin: 0;
         }
 
@@ -67,948 +79,657 @@
         }
 
         a {
-            color: inherit;
+            color: var(--accent);
+            text-underline-offset: 0.18em;
         }
 
-        .page-shell {
-            width: min(1180px, calc(100% - 2rem));
+        .page {
+            max-width: 880px;
             margin: 0 auto;
-            padding: 2rem 0 4rem;
+            padding: 4rem 1rem 3rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
-        .topbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.25rem;
-            padding: 0.95rem 1.25rem;
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            background: rgba(255, 251, 243, 0.72);
-            backdrop-filter: blur(16px);
-            position: sticky;
+        .theme-toggle {
+            position: fixed;
             top: 1rem;
+            right: 1rem;
             z-index: 10;
-        }
-
-        .wordmark {
-            font-family: var(--font-display);
-            font-size: 1.05rem;
-            color: var(--ink-strong);
-            text-decoration: none;
-        }
-
-        .topbar-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .topbar-links a {
-            color: var(--muted);
-            text-decoration: none;
-        }
-
-        .topbar-links a:hover,
-        .wordmark:hover {
-            color: var(--accent-strong);
-        }
-
-        .hero-panel,
-        .panel,
-        .stat-card,
-        .visual-card,
-        .cta-band {
-            border: 1px solid var(--border);
-            border-radius: 28px;
-            background: var(--panel);
-            box-shadow: var(--shadow);
-        }
-
-        .hero-panel {
             display: grid;
-            grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.95fr);
-            gap: 1.5rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            background:
-                radial-gradient(circle at top left, rgba(224, 167, 95, 0.22), transparent 24rem),
-                linear-gradient(145deg, rgba(255, 250, 240, 0.94), rgba(251, 247, 238, 0.88));
+            place-items: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            padding: 0;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            background: var(--panel);
+            color: var(--ink-strong);
+            cursor: pointer;
         }
 
-        .hero-banner {
-            min-height: 22rem;
-            border-radius: 22px;
-            overflow: hidden;
-            border: 1px solid rgba(139, 77, 22, 0.1);
-            background:
-                linear-gradient(rgba(17, 63, 55, 0.12), rgba(17, 63, 55, 0.2)),
-                url("banner.jpg") center / cover no-repeat;
+        .theme-toggle svg {
+            width: 1.25rem;
+            height: 1.25rem;
         }
 
-        .hero-copy {
+        .intro {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 1rem;
-            padding: 0.5rem 0;
+            flex-direction: row-reverse;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
         }
 
-        .eyebrow {
-            font-size: 0.78rem;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--accent-strong);
+        .mascot {
+            position: relative;
+            flex-shrink: 0;
+            width: 220px;
+            height: 220px;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .squash {
+            position: relative;
+            display: block;
+            width: 100%;
+            height: 100%;
+            transform-origin: 50% 78%;
+        }
+
+        .layer {
+            position: absolute;
+            inset: 0;
+            background-size: 300% 300%;
+            background-repeat: no-repeat;
+            background-position: 50% 50%;
+        }
+
+        .back {
+            font-size: 0.95rem;
         }
 
         h1,
-        h2,
         h3 {
             font-family: var(--font-display);
-            font-weight: 700;
-            line-height: 0.98;
-            letter-spacing: -0.03em;
             color: var(--ink-strong);
         }
 
         h1 {
-            font-size: clamp(2.8rem, 7vw, 5rem);
-            max-width: 11ch;
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            margin-top: 1.5rem;
+            font-size: clamp(2.4rem, 6vw, 3.8rem);
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+        }
+
+        h1 img {
+            width: 0.9em;
+            height: 0.9em;
+            border-radius: 10px;
         }
 
         h2 {
-            font-size: clamp(1.85rem, 4vw, 2.5rem);
-        }
-
-        h3 {
-            font-size: 1.2rem;
-        }
-
-        .hero-summary,
-        .panel p,
-        .panel li,
-        .cta-band p {
-            font-size: 1rem;
-            line-height: 1.75;
-            color: var(--ink);
-        }
-
-        .hero-summary {
-            max-width: 60ch;
-        }
-
-        .hero-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.55rem;
-        }
-
-        .pill {
-            display: inline-flex;
-            align-items: center;
-            min-height: 2rem;
-            padding: 0.34rem 0.78rem;
-            border-radius: 999px;
-            border: 1px solid rgba(139, 77, 22, 0.16);
-            background: rgba(224, 167, 95, 0.12);
-            color: var(--accent-strong);
-            font-size: 0.84rem;
-        }
-
-        .hero-actions,
-        .cta-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.85rem;
-        }
-
-        .button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.6rem;
-            min-height: 3rem;
-            padding: 0.8rem 1.25rem;
-            border-radius: 999px;
-            font-weight: 600;
-            line-height: 1;
-            text-decoration: none;
-            transition:
-                transform 180ms ease,
-                background-color 180ms ease,
-                border-color 180ms ease;
-        }
-
-        .button:hover,
-        .topbar-links a:hover,
-        .wordmark:hover {
-            transform: translateY(-1px);
-        }
-
-        .button-primary {
-            background: var(--accent);
-            color: #1e160f;
-        }
-
-        .button-secondary {
-            border: 1px solid rgba(21, 70, 61, 0.18);
-            background: rgba(255, 255, 255, 0.68);
-            color: var(--ink-strong);
-        }
-
-        .button-icon {
-            width: 1rem;
-            height: 1rem;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .button-icon svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .stack-section {
-            padding: 1.6rem 1.9rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .stack-grid {
-            display: grid;
-            grid-template-columns: repeat(7, minmax(0, 1fr));
-            gap: 0.9rem;
-            margin-top: 1rem;
-        }
-
-        .stack-card {
-            display: grid;
-            justify-items: center;
-            gap: 0.7rem;
-            padding: 1rem 0.7rem 0.9rem;
-            border-radius: 20px;
-            border: 1px solid rgba(139, 77, 22, 0.16);
-            background:
-                linear-gradient(180deg, rgba(255, 251, 243, 0.9), rgba(255, 249, 239, 0.82));
-            color: var(--ink-strong);
-            text-align: center;
-        }
-
-        .stack-card img {
-            width: 2rem;
-            height: 2rem;
-            object-fit: contain;
-            flex-shrink: 0;
-        }
-
-        .stack-card span {
-            font-size: 0.92rem;
-            line-height: 1.2;
-        }
-
-        .visual-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 1.25rem;
-            margin-bottom: 1.5rem;
-            align-items: start;
-        }
-
-        .stat-card {
-            padding: 1.4rem;
-            background: rgba(255, 251, 243, 0.68);
-        }
-
-        .stat-value {
-            font-family: var(--font-display);
-            font-size: 2rem;
-            color: var(--ink-strong);
-        }
-
-        .stat-label {
-            margin-top: 0.35rem;
-            color: var(--muted);
-            line-height: 1.5;
-        }
-
-        .content-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.2fr) minmax(300px, 0.8fr);
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .architecture-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .panel {
-            padding: 2rem;
-        }
-
-        .panel-stack {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .section-heading {
+            font-size: 0.8rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--accent);
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
             margin-bottom: 1.25rem;
         }
 
-        .bullet-list {
-            padding-left: 1.2rem;
+        h3 {
+            font-size: 1.3rem;
         }
 
-        .bullet-list li+li {
-            margin-top: 0.65rem;
+        .tagline {
+            margin-top: 0.75rem;
+            font-size: 1.3rem;
+            max-width: 40ch;
         }
 
-        .stack {
+        .meta,
+        figcaption {
+            color: var(--muted);
+        }
+
+        .meta {
+            margin-top: 0.5rem;
+        }
+
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            margin-top: 1.25rem;
+            font-weight: 600;
+        }
+
+        .links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .links svg {
+            flex-shrink: 0;
+            width: 1.15em;
+            height: 1.15em;
+        }
+
+        .banner {
+            width: 100%;
+            margin-top: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            opacity: 0.22;
+            pointer-events: none;
+            /* Clear behind the content column, visible only toward the corners. */
+            -webkit-mask-image: radial-gradient(ellipse at center, transparent 50%, #000 95%);
+            mask-image: radial-gradient(ellipse at center, transparent 50%, #000 95%);
+        }
+
+        .backdrop path {
+            vector-effect: non-scaling-stroke;
+        }
+
+        .backdrop .stops circle {
+            fill: var(--bg);
+            stroke: var(--ink-strong);
+        }
+
+        section {
+            margin-top: 2.5rem;
+        }
+
+        section p + p,
+        section p + ul,
+        section ul + p {
+            margin-top: 0.85rem;
+        }
+
+        ul {
+            padding-left: 1.1rem;
+        }
+
+        li + li {
+            margin-top: 0.35rem;
+        }
+
+        .facts {
             display: grid;
-            gap: 1.2rem;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1.25rem;
         }
 
-        .entry {
-            padding-top: 1rem;
+        .facts dt {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            color: var(--ink-strong);
+            line-height: 1.2;
+        }
+
+        .facts dd {
+            margin: 0.25rem 0 0;
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+
+        .facts-inline {
+            margin-top: 1.5rem;
+        }
+
+        .pairs {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.5rem 1.5rem;
+        }
+
+        .pairs dt {
+            font-weight: 600;
+            color: var(--ink-strong);
+        }
+
+        .pairs dd {
+            margin: 0;
+        }
+
+        figure img,
+        .video {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .video {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            overflow: hidden;
+            background: #000;
+        }
+
+        .video iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        figure img.diagram {
+            border: 0;
+            border-radius: 0;
+        }
+
+        figcaption {
+            margin-top: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        figure + figure {
+            margin-top: 2rem;
+        }
+
+        .item + .item {
+            margin-top: 1.25rem;
+        }
+
+        footer {
+            margin-top: 3rem;
+            padding-top: 1.25rem;
             border-top: 1px solid var(--border);
         }
 
-        .entry:first-child {
-            padding-top: 0;
-            border-top: 0;
+        footer .links {
+            margin-top: 0.5rem;
         }
 
-        .entry-title {
-            margin-bottom: 0.45rem;
-            color: var(--accent-strong);
-        }
+        @media (max-width: 700px) {
+            .page {
+                padding-top: 2rem;
+            }
 
-        .muted {
-            color: var(--muted);
-        }
+            .facts {
+                grid-template-columns: 1fr 1fr;
+            }
 
-        .visual-card {
-            overflow: hidden;
-            background: rgba(255, 251, 243, 0.92);
-        }
+            .intro {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
 
-        .visual-card img {
-            width: 100%;
-            aspect-ratio: 16 / 11;
-            object-fit: cover;
-            background: rgba(255, 255, 255, 0.8);
-        }
+            .mascot {
+                width: 160px;
+                height: 160px;
+            }
 
-        .visual-card img.visual-diagram {
-            aspect-ratio: auto;
-            object-fit: contain;
-        }
-
-        .visual-card.visual-diagram-card {
-            display: grid;
-            grid-template-rows: auto auto;
-        }
-
-        .visual-card.visual-diagram-card img.visual-diagram {
-            width: 100%;
-        }
-
-        .visual-copy {
-            padding: 1.35rem 1.5rem 1.55rem;
-        }
-
-        .visual-copy p {
-            margin-top: 0.45rem;
-            color: var(--muted);
-            line-height: 1.6;
-        }
-
-        .visual-section {
-            padding: 2rem;
-        }
-
-        .cta-band {
-            display: grid;
-            grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-            gap: 1.5rem;
-            padding: 2rem;
-            margin-top: 1.5rem;
-            background:
-                linear-gradient(180deg, rgba(18, 62, 54, 0.98), rgba(13, 42, 37, 0.98)),
-                var(--panel-strong);
-            color: #f7f0e1;
-        }
-
-        .cta-band h2,
-        .cta-band h3,
-        .cta-band p,
-        .cta-band a,
-        .cta-band .muted {
-            color: #f7f0e1;
-        }
-
-        .author-card {
-            display: grid;
-            grid-template-columns: auto 1fr;
-            gap: 1rem;
-            align-items: center;
-            padding: 1.25rem;
-            border: 1px solid rgba(247, 240, 225, 0.14);
-            border-radius: 22px;
-            background: rgba(247, 240, 225, 0.08);
-        }
-
-        .author-image {
-            width: 4.75rem;
-            height: 4.75rem;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 1px solid rgba(247, 240, 225, 0.18);
-        }
-
-        .author-name {
-            font-family: var(--font-display);
-            font-size: 1.35rem;
-        }
-
-        .social-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            margin-top: 1rem;
-        }
-
-        .social-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.55rem;
-            min-height: 2.7rem;
-            padding: 0.7rem 1rem;
-            border: 1px solid rgba(247, 240, 225, 0.18);
-            border-radius: 999px;
-            background: rgba(247, 240, 225, 0.08);
-            color: rgba(247, 240, 225, 0.9);
-            text-decoration: none;
-            transition:
-                transform 180ms ease,
-                background-color 180ms ease,
-                border-color 180ms ease;
-        }
-
-        .social-link:hover {
-            color: #fff7ea;
-            background: rgba(247, 240, 225, 0.14);
-            border-color: rgba(247, 240, 225, 0.3);
-        }
-
-        .social-link-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 1rem;
-            height: 1rem;
-            flex-shrink: 0;
-        }
-
-        .social-link-icon svg {
-            width: 100%;
-            height: 100%;
-        }
-
-        @media (max-width: 960px) {
-
-            .hero-panel,
-            .content-grid,
-            .cta-band,
-            .stats-grid,
-            .visual-grid {
+            .pairs {
                 grid-template-columns: 1fr;
             }
 
-            .stack-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
-
-            .page-shell {
-                width: min(100% - 1rem, 1180px);
-                padding-top: 1rem;
-            }
-
-            .topbar,
-            .hero-panel,
-            .panel,
-            .visual-card,
-            .cta-band {
-                border-radius: 22px;
-            }
-
-            .topbar {
-                position: static;
-            }
-
-            .hero-banner {
-                min-height: 16rem;
+            .pairs dd {
+                margin-bottom: 0.5rem;
             }
         }
     </style>
 </head>
 
 <body>
-    <main class="page-shell">
-        <nav class="topbar">
-            <a class="wordmark" href="https://rishitoshsingh.github.io/" style="display:flex;align-items:center;gap:0.55rem;">
-                <img src="assets/logo.png" alt="SunTransit logo" style="width:1.6rem;height:1.6rem;border-radius:6px;flex-shrink:0;" />
-                Rishitosh Kumar Singh
-            </a>
-            <div class="topbar-links">
-                <a href="https://rishitoshsingh.github.io/">Portfolio</a>
-                <a href="#overview">Overview</a>
-                <a href="#architecture">Architecture</a>
-                <a href="#eta">ETA Model</a>
-                <a href="#visuals">Visuals</a>
-                <a href="#dataset">Data Product</a>
-            </div>
-        </nav>
+    <button class="theme-toggle" type="button" aria-label="Toggle dark mode" onclick="
+        var r = document.documentElement;
+        var dark = r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+        r.dataset.theme = dark ? 'light' : 'dark';
+        try { localStorage.setItem('theme', r.dataset.theme); } catch (e) {}">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor" d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 2v16a8 8 0 0 1 0-16Z" />
+        </svg>
+    </button>
 
-        <section class="hero-panel" id="overview">
-            <div class="hero-copy">
-                <p class="eyebrow">Case Study · Transit Intelligence</p>
-                <h1>SunTransit</h1>
-                <p class="hero-summary">
-                    A real-time public transit tracking and performance analytics system that turns GTFS-Realtime feeds
-                    into live vehicle visibility, stop-level delay analysis, and reusable historical datasets.
-                </p>
-                <div class="hero-meta">
-                    <span class="pill">Real-time tracking</span>
-                    <span class="pill">Delay analytics</span>
-                    <span class="pill">Predictive ETAs</span>
-                    <span class="pill">Historical trip data</span>
-                    <span class="pill">Phoenix + Boston</span>
-                </div>
-                <div class="hero-actions">
-                    <a class="button button-primary" href="https://suntransit.live/" target="_blank" rel="noreferrer">
-                        <span class="button-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10" />
-                                <path
-                                    d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                            </svg>
-                        </span>
-                        Live Dashboard
-                    </a>
-                    <a class="button button-secondary" href="https://github.com/rishitoshsingh/suntransit"
-                        target="_blank" rel="noreferrer">
-                        <span class="button-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M12 2C6.48 2 2 6.58 2 12.24c0 4.53 2.87 8.37 6.84 9.72.5.1.68-.22.68-.49 0-.24-.01-1.05-.01-1.9-2.78.62-3.37-1.21-3.37-1.21-.45-1.18-1.11-1.49-1.11-1.49-.91-.64.07-.63.07-.63 1 .08 1.53 1.05 1.53 1.05.9 1.57 2.36 1.12 2.93.86.09-.67.35-1.12.63-1.38-2.22-.26-4.56-1.14-4.56-5.1 0-1.13.39-2.05 1.03-2.78-.1-.27-.45-1.32.1-2.75 0 0 .84-.28 2.75 1.06A9.3 9.3 0 0 1 12 6.84c.85 0 1.7.12 2.49.35 1.9-1.34 2.74-1.06 2.74-1.06.56 1.43.21 2.48.11 2.75.64.73 1.03 1.65 1.03 2.78 0 3.97-2.35 4.83-4.58 5.09.36.32.68.95.68 1.92 0 1.39-.01 2.5-.01 2.84 0 .27.18.6.69.49A10.18 10.18 0 0 0 22 12.24C22 6.58 17.52 2 12 2Z" />
-                            </svg>
-                        </span>
-                        View Repository
-                    </a>
-                    <a class="button button-secondary" href="https://rishitoshsingh.github.io/" rel="noreferrer">
-                        <span class="button-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M15 18l-6-6 6-6" />
-                            </svg>
-                        </span>
-                        Back to Portfolio
-                    </a>
-                </div>
-            </div>
-            <div class="hero-banner" role="img" aria-label="SunTransit dashboard banner"></div>
-        </section>
+    <svg class="backdrop" viewBox="0 0 1200 360" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <g fill="none" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+                <path stroke="#e0a75f" d="M-20 300 H260 L380 180 H700 L800 80 H1220" />
+                <path stroke="#1f4fd1" d="M-20 120 H180 L300 240 H620 L700 320 H1220" />
+                <path stroke="#2dd4bf" d="M140 -20 V60 L260 180 V380" />
+                <path stroke="#c2410c" d="M540 -20 V100 L620 180 V240 L760 380" />
+                <path stroke="#8b5cf6" d="M860 -20 L940 60 V240 L1040 340 H1220" />
+            </g>
+            <g class="stops" stroke-width="5">
+                <circle cx="260" cy="180" r="13" />
+                <circle cx="380" cy="180" r="9" />
+                <circle cx="540" cy="180" r="9" />
+                <circle cx="620" cy="180" r="13" />
+                <circle cx="620" cy="240" r="13" />
+                <circle cx="300" cy="240" r="9" />
+                <circle cx="180" cy="120" r="9" />
+                <circle cx="800" cy="80" r="9" />
+                <circle cx="940" cy="80" r="13" />
+                <circle cx="940" cy="240" r="9" />
+                <circle cx="700" cy="320" r="9" />
+                <circle cx="1040" cy="340" r="9" />
+                <circle cx="260" cy="300" r="9" />
+                <circle cx="540" cy="100" r="9" />
+                <circle cx="1100" cy="80" r="9" />
+                <circle cx="1100" cy="320" r="9" />
+            </g>
+        </svg>
 
-        <section class="stats-grid" aria-label="Project summary">
-            <article class="stat-card">
-                <div class="stat-value">2</div>
-                <p class="stat-label">Transit agencies currently integrated into the pipeline.</p>
-            </article>
-            <article class="stat-card">
-                <div class="stat-value">13M-34.6M</div>
-                <p class="stat-label">Vehicle-location messages processed each day from continuously polled
-                    GTFS-Realtime feeds.</p>
-            </article>
-            <article class="stat-card">
-                <div class="stat-value">Stop-level</div>
-                <p class="stat-label">Delay tracking compares actual arrivals against scheduled trips.</p>
-            </article>
-            <article class="stat-card">
-                <div class="stat-value">Reusable</div>
-                <p class="stat-label">Historical trip records are stored for later analysis and research.</p>
-            </article>
-        </section>
-
-        <section class="panel stack-section" aria-label="Tech stack">
-            <div class="section-heading">
-                <p class="eyebrow">Tech Stack</p>
-                <h2>Core systems behind SunTransit</h2>
-            </div>
-            <div class="stack-grid" style="grid-template-columns: repeat(7, minmax(0, 1fr));">
-                <div class="stack-card">
-                    <img src="assets/tech/python.png" alt="Python" />
-                    <span>Python</span>
-                </div>
-                <div class="stack-card">
-                    <img src="assets/tech/kafka.png" alt="Kafka" />
-                    <span>Kafka</span>
-                </div>
-                <div class="stack-card">
-                    <img src="assets/tech/spark.png" alt="Spark" />
-                    <span>Spark</span>
-                </div>
-                <div class="stack-card">
-                    <img src="assets/tech/sagemaker.png" alt="AWS SageMaker" />
-                    <span>SageMaker</span>
-                </div>
-                <div class="stack-card">
-                    <img src="assets/tech/docker.png" alt="Docker" />
-                    <span>Docker</span>
-                </div>
-                <div class="stack-card">
-                    <img src="assets/tech/linux.svg" alt="Linux" />
-                    <span>Linux</span>
-                </div>
-                <div class="stack-card">
-                    <img src="assets/tech/jupyter.svg" alt="Jupyter" />
-                    <span>Jupyter</span>
-                </div>
-            </div>
-        </section>
-
-        <section class="content-grid">
-            <article class="panel">
-                <div class="section-heading">
-                    <p class="eyebrow">Problem</p>
-                    <h2>What SunTransit solves</h2>
-                </div>
-                <div class="panel-stack">
-                    <p>
-                        Transit riders usually see fragments of the picture: a static route plan, an ETA, or a map
-                        that does not explain whether the system is actually performing well. SunTransit closes that
-                        gap by combining live location feeds with schedule-aware delay computation.
-                    </p>
-                    <p>
-                        The result is a system that behaves like a transit operations lens. Riders can see where buses
-                        and trains are right now, while planners and researchers can inspect reliability patterns over
-                        time at the stop, trip, and agency level.
-                    </p>
-                    <ul class="bullet-list">
-                        <li>Track buses and trains on a live map.</li>
-                        <li>Measure whether each vehicle is on time or delayed at each stop.</li>
-                        <li>Persist historical records for deeper analysis and downstream products.</li>
-                        <li>Support agencies, developers, and urban mobility research use cases.</li>
-                    </ul>
-                </div>
-            </article>
-
-            <aside class="panel">
-                <div class="section-heading">
-                    <p class="eyebrow">Coverage</p>
-                    <h2>Current scope</h2>
-                </div>
-                <div class="stack">
-                    <div class="entry">
-                        <h3 class="entry-title">Valley Metro</h3>
-                        <p class="muted">Phoenix, Arizona</p>
-                    </div>
-                    <div class="entry">
-                        <h3 class="entry-title">MBTA</h3>
-                        <p class="muted">Boston, Massachusetts</p>
-                    </div>
-                    <div class="entry">
-                        <h3 class="entry-title">Deployment model</h3>
-                        <p class="muted">Cloud-friendly architecture, currently run locally to control operating cost.
-                        </p>
-                    </div>
-                    <div class="entry">
-                        <h3 class="entry-title">Who it is for</h3>
-                        <p class="muted">Riders, transit operators, urban planners, and data-driven mobility projects.
-                        </p>
-                    </div>
-                </div>
-            </aside>
-        </section>
-
-        <section class="architecture-grid" id="architecture">
-            <article class="panel">
-                <div class="section-heading">
-                    <p class="eyebrow">Architecture</p>
-                    <h2>Data pipeline and system shape</h2>
-                </div>
-                <div class="panel-stack">
-                    <p>
-                        SunTransit continuously ingests transit updates, normalizes them against scheduled service, and
-                        computes stop-level delay signals that can be explored both live and historically. The core
-                        design goal is simple: keep the real-time experience responsive while preserving a structured
-                        data product for later analytics.
-                    </p>
-                    <p>
-                        This makes the project both an application and a data platform. One side serves an interface for
-                        live monitoring; the other side builds a durable dataset that can support research, reliability
-                        analysis, and future product extensions.
-                    </p>
-                    <ul class="bullet-list">
-                        <li>Ingest live agency feeds on a recurring schedule.</li>
-                        <li>Join real-time observations with schedule information.</li>
-                        <li>Compute arrival delay signals at the stop and trip level.</li>
-                        <li>Store processed events for dashboards and longitudinal analysis.</li>
-                    </ul>
-                </div>
-            </article>
-
-            <article class="visual-card visual-diagram-card">
-                <img class="visual-diagram" src="dataflow.svg" alt="SunTransit dataflow diagram" />
-                <div class="visual-copy">
-                    <h3>System flow</h3>
-                    <p>
-                        The platform ingests transit data, processes it into schedule-aware events, and exposes both a
-                        live monitoring experience and a historical performance dataset.
-                    </p>
-                </div>
-            </article>
-        </section>
-
-        <section class="content-grid" id="eta">
-            <article class="panel">
-                <div class="section-heading">
-                    <p class="eyebrow">Machine Learning</p>
-                    <h2>Predicting delays before they happen</h2>
-                </div>
-                <div class="panel-stack">
-                    <p>
-                        Measuring delays after the fact is useful — predicting them is better. SunTransit now
-                        forecasts how late a vehicle will be at each of its upcoming stops, so the dashboard can
-                        show schedule-aware ETAs instead of naive timetable times.
-                    </p>
-                    <p>
-                        A gradient-boosted model (LightGBM) is trained and served entirely on AWS SageMaker. A
-                        monthly pipeline preprocesses historical trip records, trains a candidate model, and only
-                        promotes it if it beats the previous accuracy bar — then serves it from a scale-to-zero
-                        serverless endpoint the API queries in the background.
-                    </p>
-                    <ul class="bullet-list">
-                        <li>One inference call returns the predicted delay for the next 1–15 stops of a trip.</li>
-                        <li>Features: current delay, route, direction, stop position, hour, and day of week.</li>
-                        <li>Gated retraining — a new model ships only if it clears the accuracy threshold.</li>
-                        <li>Serverless, scale-to-zero inference keeps prediction cheap between bursts.</li>
-                    </ul>
-                </div>
-            </article>
-
-            <aside class="panel">
-                <div class="section-heading">
-                    <p class="eyebrow">Model performance</p>
-                    <h2>By the numbers</h2>
-                </div>
-                <div class="stack">
-                    <div class="entry">
-                        <div class="stat-value">86.7s</div>
-                        <p class="stat-label">Mean absolute error of the predicted arrival delay.</p>
-                    </div>
-                    <div class="entry">
-                        <div class="stat-value">~28% better</div>
-                        <p class="stat-label">Lower error than the persistence baseline (119.7s MAE).</p>
-                    </div>
-                    <div class="entry">
-                        <div class="stat-value">1–15 stops</div>
-                        <p class="stat-label">Look-ahead horizon returned in a single inference call.</p>
-                    </div>
-                    <div class="entry">
-                        <div class="stat-value">Monthly</div>
-                        <p class="stat-label">Automated SageMaker retrain with gated model registration.</p>
-                    </div>
-                </div>
-            </aside>
-        </section>
-
-        <section class="panel visual-section" id="visuals">
-            <div class="section-heading">
-                <p class="eyebrow">Interface</p>
-                <h2>How the product is experienced</h2>
-            </div>
-            <div class="visual-grid">
-                <article class="visual-card">
-                    <div style="position:relative;width:100%;aspect-ratio:16/9;background:#000;">
-                        <iframe
-                            src="https://www.youtube.com/embed/WqL5QKEByUs"
-                            title="SunTransit Demo"
-                            style="position:absolute;inset:0;width:100%;height:100%;border:0;"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen>
-                        </iframe>
-                    </div>
-                    <div class="visual-copy">
-                        <h3>Live tracking</h3>
-                        <p>
-                            A continuously updating map surface for watching active buses and trains move through the
-                            network in real time.
-                        </p>
-                    </div>
-                </article>
-                <article class="visual-card">
-                    <img src="screenshot-stop-delay.png" alt="Stop and hex heatmap showing delay by area" />
-                    <div class="visual-copy">
-                        <h3>Stops + hex heatmap</h3>
-                        <p>
-                            A stop-level and H3 hex view of where delays accumulate, making reliability issues much
-                            easier to spot than raw event logs or tables.
-                        </p>
-                    </div>
-                </article>
-            </div>
-            <div style="margin-top: 1.25rem;">
-                <article class="visual-card">
-                    <img src="screenshot-analytics.png" alt="Analytics dashboard showing system on-time trends and route performance" style="aspect-ratio: auto; object-fit: contain;" />
-                    <div class="visual-copy">
-                        <h3>Analytics dashboard</h3>
-                        <p>
-                            System-wide on-time trends, hour-of-day delay profiles, and per-route performance ranked
-                            worst-first — giving operators and researchers a clear reliability picture.
-                        </p>
-                    </div>
-                </article>
-            </div>
-            <div style="margin-top: 1.25rem;">
-                <article class="visual-card">
-                    <img src="screenshot-spark.png" alt="Spark Master UI showing live cluster with running and completed jobs" style="aspect-ratio: auto; object-fit: contain;" />
-                    <div class="visual-copy">
-                        <h3>Spark cluster</h3>
-                        <p>
-                            The Spark Master UI showing live workers and submitted jobs — both the streaming
-                            Kafka→Redis jobs and the completed hourly batch delay calculations.
-                        </p>
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <section class="content-grid" id="dataset" style="margin-top: 1.5rem;">
-            <article class="panel">
-                <div class="section-heading">
-                    <p class="eyebrow">Outputs</p>
-                    <h2>Three products in one system</h2>
-                </div>
-                <div class="stack">
-                    <div class="entry">
-                        <h3 class="entry-title">1. Data product</h3>
-                        <p>
-                            A structured historical record of how each trip actually performed against schedule. This is
-                            the analytical backbone of the project and the piece that becomes most useful for deeper
-                            reliability studies.
-                        </p>
-                    </div>
-                    <div class="entry">
-                        <h3 class="entry-title">2. Dashboard</h3>
-                        <p>
-                            A live interface that surfaces current vehicle positions and transit performance in a way
-                            that is immediately readable for both operators and end users.
-                        </p>
-                    </div>
-                    <div class="entry">
-                        <h3 class="entry-title">3. Predictive ETA model</h3>
-                        <p>
-                            A SageMaker-served model that turns the historical dataset into forward-looking arrival
-                            predictions, closing the loop from measurement to forecasting.
-                        </p>
-                    </div>
-                </div>
-            </article>
-
-            <article class="panel">
-                <div class="section-heading">
-                    <p class="eyebrow">Access</p>
-                    <h2>Reuse and collaboration</h2>
-                </div>
-                <div class="panel-stack">
-                    <p>
-                        If you are working on transit analytics, urban systems, or downstream modeling and want access
-                        to the historical dataset, reach out directly. The project was built with reuse in mind.
-                    </p>
-                    <p class="muted">
-                        The only requirement is attribution if the dataset is used in a project, paper, or public
-                        release.
-                    </p>
-                </div>
-            </article>
-        </section>
-
-        <section class="cta-band">
+    <main class="page">
+        <header>
+            <a class="back" href="https://rishitoshsingh.github.io/">← Rishitosh Kumar Singh</a>
+            <div class="intro">
+            <button class="mascot" type="button" aria-label="Boop mini Rishitosh">
+                <span class="squash">
+                    <span class="layer" style="background-image: url(assets/mascots/rishitosh-directions.webp)"></span>
+                    <span class="layer" style="background-image: url(assets/mascots/rishitosh-reactions.webp); opacity: 0"></span>
+                </span>
+            </button>
             <div>
-                <p class="eyebrow" style="color: rgba(247, 240, 225, 0.72);">Project links</p>
-                <h2>Interested in the system or the dataset?</h2>
-                <p style="margin-top: 1rem;">
-                    The repository contains the implementation details. For collaboration, dataset access, or portfolio
-                    context, use the links here.
-                </p>
-                <div class="cta-actions" style="margin-top: 1.5rem;">
-                    <a class="button button-primary" href="https://suntransit.live/" target="_blank"
-                        rel="noreferrer">Live Dashboard</a>
-                    <a class="button button-secondary" href="https://github.com/rishitoshsingh/suntransit"
-                        target="_blank" rel="noreferrer">View Repository</a>
-                    <a class="button button-secondary" href="https://rishitoshsingh.github.io/" rel="noreferrer">Open
-                        Portfolio</a>
-                </div>
+            <h1><img src="assets/logo.png" alt="" />SunTransit</h1>
+            <p class="tagline">
+                Real-time transit tracking that turns GTFS-Realtime feeds into live vehicle positions, stop-level
+                delays, predicted ETAs, and a historical dataset of how every trip actually ran.
+            </p>
+            <p class="meta">Valley Metro (Phoenix) · MBTA (Boston)</p>
+            <nav class="links">
+                <a href="https://suntransit.live/" target="_blank" rel="noreferrer">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                    Live dashboard
+                </a>
+                <a href="https://github.com/rishitoshsingh/suntransit" target="_blank" rel="noreferrer">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path fill="currentColor"
+                            d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.22 1.84 1.22 1.08 1.82 2.82 1.3 3.5 1 .11-.77.42-1.3.76-1.6-2.67-.3-5.47-1.32-5.47-5.87 0-1.3.47-2.36 1.23-3.2-.12-.3-.53-1.5.12-3.12 0 0 1-.32 3.3 1.22a11.6 11.6 0 0 1 6 0c2.3-1.54 3.3-1.22 3.3-1.22.65 1.62.24 2.82.12 3.12.77.84 1.23 1.9 1.23 3.2 0 4.56-2.8 5.57-5.48 5.86.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.58A12 12 0 0 0 12 .5Z" />
+                    </svg>
+                    Code
+                </a>
+            </nav>
             </div>
+            </div>
+        </header>
 
-            <aside class="author-card">
-                <img class="author-image" src="assets/images/profile.png" alt="Rishitosh Singh" />
+        <img class="banner" src="banner.jpg" alt="Sunset over Tempe Town Lake" />
+
+        <section>
+            <dl class="facts">
                 <div>
-                    <div class="author-name">Rishitosh Kumar Singh</div>
-                    <p style="margin-top: 0.35rem;">
-                        Machine learning engineer with experience across data systems, real-time analytics, and applied
-                        AI products.
-                    </p>
-                    <div class="social-row">
-                        <a class="social-link" href="https://github.com/rishitoshsingh" target="_blank"
-                            rel="noreferrer">
-                            <span class="social-link-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24">
-                                    <path fill="currentColor"
-                                        d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.22 1.84 1.22 1.08 1.82 2.82 1.3 3.5 1 .11-.77.42-1.3.76-1.6-2.67-.3-5.47-1.32-5.47-5.87 0-1.3.47-2.36 1.23-3.2-.12-.3-.53-1.5.12-3.12 0 0 1-.32 3.3 1.22a11.6 11.6 0 0 1 6 0c2.3-1.54 3.3-1.22 3.3-1.22.65 1.62.24 2.82.12 3.12.77.84 1.23 1.9 1.23 3.2 0 4.56-2.8 5.57-5.48 5.86.43.37.81 1.1.81 2.22v3.29c0 .32.22.69.83.58A12 12 0 0 0 12 .5Z" />
-                                </svg>
-                            </span>
-                            <span>GitHub</span>
-                        </a>
-                        <a class="social-link" href="https://linkedin.com/in/rishitoshsingh" target="_blank"
-                            rel="noreferrer">
-                            <span class="social-link-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24">
-                                    <path fill="currentColor"
-                                        d="M6.94 8.5A1.56 1.56 0 1 1 6.94 5.4a1.56 1.56 0 0 1 0 3.1ZM5.6 9.68h2.68V18H5.6V9.68Zm4.35 0h2.57v1.14h.04c.36-.68 1.23-1.4 2.54-1.4 2.72 0 3.22 1.79 3.22 4.12V18h-2.68v-3.96c0-.94-.02-2.16-1.31-2.16-1.31 0-1.51 1.03-1.51 2.09V18H9.95V9.68Z" />
-                                </svg>
-                            </span>
-                            <span>LinkedIn</span>
-                        </a>
-                        <a class="social-link" href="mailto:rishitoshs@gmail.com">
-                            <span class="social-link-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24">
-                                    <path fill="currentColor"
-                                        d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 18.5v-13Zm2.12-.5 5.88 5.04L17.88 5H6.12Zm11.88 1.32-5.35 4.58a1 1 0 0 1-1.3 0L6 6.32V18.5a.5.5 0 0 0 .5.5h11a.5.5 0 0 0 .5-.5V6.32Z" />
-                                </svg>
-                            </span>
-                            <span>Email</span>
-                        </a>
-                    </div>
+                    <dt>2</dt>
+                    <dd>transit agencies integrated</dd>
                 </div>
-            </aside>
+                <div>
+                    <dt>13M–34.6M</dt>
+                    <dd>vehicle-location messages processed per day</dd>
+                </div>
+                <div>
+                    <dt>Stop-level</dt>
+                    <dd>delays: actual arrivals vs. scheduled trips</dd>
+                </div>
+                <div>
+                    <dt>Historical</dt>
+                    <dd>trip records kept for later analysis</dd>
+                </div>
+            </dl>
         </section>
+
+        <section>
+            <h2>Why</h2>
+            <p>
+                Riders usually get fragments: a static route plan, an ETA, or a map that doesn't say whether the system
+                is running well. SunTransit combines live location feeds with schedule-aware delay computation, so you
+                can see where buses and trains are right now and how reliable they've been at each stop, trip and
+                agency.
+            </p>
+            <ul>
+                <li>Track buses and trains on a live map.</li>
+                <li>See whether each vehicle is on time or late at each stop.</li>
+                <li>Keep historical records for deeper analysis.</li>
+                <li>Useful to agencies, developers and urban mobility research.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Coverage</h2>
+            <dl class="pairs">
+                <dt>Valley Metro</dt>
+                <dd>Phoenix, Arizona</dd>
+                <dt>MBTA</dt>
+                <dd>Boston, Massachusetts</dd>
+                <dt>Deployment</dt>
+                <dd>Cloud-ready, currently run locally to keep costs down</dd>
+                <dt>For</dt>
+                <dd>Riders, transit operators, urban planners, mobility researchers</dd>
+            </dl>
+        </section>
+
+        <section id="architecture">
+            <h2>Architecture</h2>
+            <p>
+                The pipeline polls agency feeds, joins live observations with the schedule, and computes delay at each
+                stop. Two goals: keep the live view fast, and keep a clean dataset for analysis later.
+            </p>
+            <ul>
+                <li>Ingest live agency feeds on a recurring schedule.</li>
+                <li>Join real-time observations with schedule data.</li>
+                <li>Compute arrival delay at the stop and trip level.</li>
+                <li>Store processed events for the dashboard and long-term analysis.</li>
+            </ul>
+            <figure style="margin-top: 1.5rem;">
+                <img class="diagram" src="dataflow.svg" alt="SunTransit dataflow diagram" />
+                <figcaption>Feeds come in, become schedule-aware events, and feed both the live view and the
+                    historical dataset.</figcaption>
+            </figure>
+        </section>
+
+        <section id="eta">
+            <h2>ETA model</h2>
+            <p>
+                Measuring delay after the fact is useful; predicting it is better. SunTransit forecasts how late a
+                vehicle will be at each upcoming stop, so the dashboard shows schedule-aware ETAs instead of raw
+                timetable times.
+            </p>
+            <p>
+                A LightGBM model is trained and served on AWS SageMaker. Every month a pipeline preprocesses
+                historical trips, trains a candidate, and promotes it only if it beats the current accuracy bar. It's
+                served from a scale-to-zero serverless endpoint that the API queries in the background.
+            </p>
+            <ul>
+                <li>One call returns predicted delay for the next 1–15 stops of a trip.</li>
+                <li>Features: current delay, route, direction, stop position, hour, day of week.</li>
+                <li>Gated retraining: a new model ships only if it clears the threshold.</li>
+                <li>Serverless inference keeps prediction cheap between bursts.</li>
+            </ul>
+            <dl class="facts facts-inline">
+                <div>
+                    <dt>86.7s</dt>
+                    <dd>mean absolute error of predicted arrival delay</dd>
+                </div>
+                <div>
+                    <dt>~28%</dt>
+                    <dd>lower error than the persistence baseline (119.7s)</dd>
+                </div>
+                <div>
+                    <dt>1–15</dt>
+                    <dd>stops of look-ahead per inference call</dd>
+                </div>
+                <div>
+                    <dt>Monthly</dt>
+                    <dd>automated retrain with gated model registration</dd>
+                </div>
+            </dl>
+        </section>
+
+        <section id="visuals">
+            <h2>Interface</h2>
+            <figure>
+                <div class="video">
+                    <iframe src="https://www.youtube.com/embed/WqL5QKEByUs" title="SunTransit demo"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>
+                </div>
+                <figcaption><strong>Live tracking.</strong> Buses and trains moving through the network in real
+                    time.</figcaption>
+            </figure>
+            <figure>
+                <img src="screenshot-stop-delay.png" alt="Stop and hex heatmap showing delay by area" />
+                <figcaption><strong>Stops + hex heatmap.</strong> Delay by stop and by H3 hex, so problem areas
+                    stand out.</figcaption>
+            </figure>
+            <figure>
+                <img src="screenshot-analytics.png"
+                    alt="Analytics dashboard showing system on-time trends and route performance" />
+                <figcaption><strong>Analytics.</strong> System-wide on-time trends, delay by hour of day, and routes
+                    ranked worst-first.</figcaption>
+            </figure>
+            <figure>
+                <img src="screenshot-spark.png" alt="Spark Master UI showing live cluster with running and completed jobs" />
+                <figcaption><strong>Spark cluster.</strong> Live workers running the streaming Kafka→Redis jobs, plus
+                    completed hourly batch delay jobs.</figcaption>
+            </figure>
+        </section>
+
+        <section id="dataset">
+            <h2>Outputs</h2>
+            <div class="item">
+                <h3>Dataset</h3>
+                <p>
+                    A historical record of how each trip actually ran against its schedule. This is the part most
+                    useful for reliability studies.
+                </p>
+            </div>
+            <div class="item">
+                <h3>Dashboard</h3>
+                <p>Live vehicle positions and on-time performance, readable by operators and riders alike.</p>
+            </div>
+            <div class="item">
+                <h3>ETA model</h3>
+                <p>Turns the historical dataset into forward-looking arrival predictions, served from SageMaker.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Dataset access</h2>
+            <p>
+                Working on transit analytics, urban systems or modeling and want the historical data?
+                <a href="mailto:rishitoshs@gmail.com">Email me</a>. The only ask is attribution if you use it in a
+                project, paper or public release.
+            </p>
+        </section>
+
+        <section>
+            <h2>Stack</h2>
+            <p>Python · Kafka · Spark · AWS SageMaker · Docker · Linux · Jupyter</p>
+        </section>
+
+        <footer>
+            <a href="https://rishitoshsingh.github.io/">Rishitosh Kumar Singh</a>
+            <nav class="links">
+                <a href="https://github.com/rishitoshsingh" target="_blank" rel="noreferrer">GitHub</a>
+                <a href="https://linkedin.com/in/rishitoshsingh" target="_blank" rel="noreferrer">LinkedIn</a>
+                <a href="mailto:rishitoshs@gmail.com">Email</a>
+            </nav>
+        </footer>
     </main>
+
+    <script>
+        // Cursor-tracking mascot: two 3x3 sprite sheets swapped via background-position.
+        (function () {
+            var DIRECTIONS = ['up-left', 'up', 'up-right', 'left', 'center', 'right', 'down-left', 'down', 'down-right'];
+            var REACTIONS = ['blink', 'heart', 'sparkle', 'surprised', 'wink', 'bashful', 'sleepy', 'dizzy', 'delighted'];
+            var CLOCKWISE = ['right', 'down-right', 'down', 'down-left', 'left', 'up-left', 'up', 'up-right'];
+            var SECTOR = (Math.PI * 2) / CLOCKWISE.length;
+            var HYSTERESIS = 0.12, DEAD_ZONE = 70;
+            var PAYOFFS = ['heart', 'sparkle', 'delighted'];
+            var SQUASH = [
+                { transform: 'scale(1, 1)', easing: 'ease-in' },
+                { transform: 'scale(1.10, 0.86)', offset: 0.18, easing: 'ease-out' },
+                { transform: 'scale(0.95, 1.08)', offset: 0.45, easing: 'ease-in-out' },
+                { transform: 'scale(1.03, 0.97)', offset: 0.72, easing: 'ease-in-out' },
+                { transform: 'scale(1, 1)' }
+            ];
+
+            var button = document.querySelector('.mascot');
+            var squash = button.querySelector('.squash');
+            var layers = button.querySelectorAll('.layer');
+            var cell = function (i) { return (i % 3) * 50 + '% ' + Math.floor(i / 3) * 50 + '%'; };
+            var wrap = function (a) { return Math.atan2(Math.sin(a), Math.cos(a)); };
+
+            function look(direction) {
+                layers[0].style.backgroundPosition = cell(DIRECTIONS.indexOf(direction));
+            }
+
+            function react(reaction) {
+                if (reaction) layers[1].style.backgroundPosition = cell(REACTIONS.indexOf(reaction));
+                layers[0].style.opacity = reaction ? 0 : 1;
+                layers[1].style.opacity = reaction ? 1 : 0;
+            }
+
+            if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+                var sector = -1, pointer = null;
+                var aim = function () {
+                    if (!pointer) return;
+                    var box = button.getBoundingClientRect();
+                    var dx = pointer.x - (box.left + box.width / 2);
+                    var dy = pointer.y - (box.top + box.height / 2);
+                    if (Math.hypot(dx, dy) < DEAD_ZONE) {
+                        sector = -1;
+                        look('center');
+                        return;
+                    }
+                    // Hold the current sector until the pointer is well past its edge.
+                    var angle = Math.atan2(dy, dx);
+                    if (sector !== -1 && Math.abs(wrap(angle - sector * SECTOR)) < SECTOR / 2 + HYSTERESIS) return;
+                    sector = (Math.round(angle / SECTOR) + CLOCKWISE.length) % CLOCKWISE.length;
+                    look(CLOCKWISE[sector]);
+                };
+                addEventListener('pointermove', function (e) {
+                    pointer = { x: e.clientX, y: e.clientY };
+                    aim();
+                }, { passive: true });
+                addEventListener('scroll', aim, { passive: true });
+            }
+
+            var timers = [], boops = { count: 0, at: 0 };
+            button.addEventListener('click', function () {
+                timers.forEach(clearTimeout);
+                timers = [];
+                var later = function (ms, next) { timers.push(setTimeout(function () { react(next); }, ms)); };
+                var now = Date.now();
+                boops.count = now - boops.at < 1600 ? boops.count + 1 : 1;
+                boops.at = now;
+                if (boops.count >= 4) {
+                    boops.count = 0;
+                    react('dizzy');
+                    later(1100, null);
+                } else {
+                    react('blink');
+                    later(120, PAYOFFS[(boops.count - 1) % PAYOFFS.length]);
+                    later(560, null);
+                }
+                if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    squash.animate(SQUASH, { duration: 420, easing: 'linear' });
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>
